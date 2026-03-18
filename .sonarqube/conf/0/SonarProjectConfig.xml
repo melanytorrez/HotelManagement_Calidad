@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SonarProjectConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/analyzer/2021/1">
+  <AnalysisConfigPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\SonarQubeAnalysisConfig.xml</AnalysisConfigPath>
+  <ProjectPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\HotelManagement.csproj</ProjectPath>
+  <FilesToAnalyzePath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\0\FilesToAnalyze.txt</FilesToAnalyzePath>
+  <OutPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\out\0</OutPath>
+  <ProjectType>Product</ProjectType>
+  <TargetFramework>net9.0</TargetFramework>
+</SonarProjectConfig>
