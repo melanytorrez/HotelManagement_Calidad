@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AnalysisConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
-  <SonarConfigDir>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf</SonarConfigDir>
-  <SonarOutputDir>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\out</SonarOutputDir>
-  <SonarBinDir>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\bin</SonarBinDir>
-  <SonarScannerWorkingDirectory>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement</SonarScannerWorkingDirectory>
-  <JavaExePath>C:\Users\torre\.sonar\cache\39c5e23f3ce4d420663afba8ffde28034b72e2b3e240943dc2321bc1f912eef9\OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip_extracted\jdk-21.0.9+10-jre\bin\java.exe</JavaExePath>
-  <EngineJarPath>C:\Users\torre\.sonar\cache\6638ba85ce42e3932d84e2a6fa4e88da59fb6dc108749aa9079633593d82b651\sonar-scanner-engine-shaded-26.3.0.120487-all.jar</EngineJarPath>
+  <SonarConfigDir>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf</SonarConfigDir>
+  <SonarOutputDir>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\out</SonarOutputDir>
+  <SonarBinDir>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\bin</SonarBinDir>
+  <SonarScannerWorkingDirectory>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad</SonarScannerWorkingDirectory>
+  <JavaExePath>C:\Users\GIGABYTE\.sonar\cache\39c5e23f3ce4d420663afba8ffde28034b72e2b3e240943dc2321bc1f912eef9\OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip_extracted\jdk-21.0.9+10-jre\bin\java.exe</JavaExePath>
+  <EngineJarPath>C:\Users\GIGABYTE\.sonar\cache\6638ba85ce42e3932d84e2a6fa4e88da59fb6dc108749aa9079633593d82b651\sonar-scanner-engine-shaded-26.3.0.120487-all.jar</EngineJarPath>
   <UseSonarScannerCli>false</UseSonarScannerCli>
   <ScanAllAnalysis>true</ScanAllAnalysis>
   <HasBeginStepCommandLineCredentials>true</HasBeginStepCommandLineCredentials>
   <HasBeginStepCommandLineTruststorePassword>false</HasBeginStepCommandLineTruststorePassword>
   <SonarQubeHostUrl>http://localhost:9000</SonarQubeHostUrl>
   <SonarQubeVersion>26.3.0.120487</SonarQubeVersion>
-  <SonarProjectKey>hotel</SonarProjectKey>
+  <SonarProjectKey>HotelManagement</SonarProjectKey>
   <AdditionalConfig>
     <ConfigSetting Id="BuildUri" />
     <ConfigSetting Id="TfsUri" />
     <ConfigSetting Id="VsCoverageConverterToolPath" />
     <ConfigSetting Id="UnchangedFilesPath" />
-    <ConfigSetting Id="sonar.pullrequest.cache.basepath" Value="D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement" />
-    <ConfigSetting Id="settings.file.path" Value="C:\Users\torre\.dotnet\tools\.store\dotnet-sonarscanner\11.2.0\dotnet-sonarscanner\11.2.0\tools\netcoreapp3.1\any\SonarQube.Analysis.xml" />
+    <ConfigSetting Id="sonar.pullrequest.cache.basepath" Value="C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad" />
+    <ConfigSetting Id="settings.file.path" Value="C:\Users\GIGABYTE\.dotnet\tools\.store\dotnet-sonarscanner\11.2.0\dotnet-sonarscanner\11.2.0\tools\netcoreapp3.1\any\SonarQube.Analysis.xml" />
   </AdditionalConfig>
   <ServerSettings>
     <Property Name="sonar.cs.ignoreHeaderComments">true</Property>
@@ -150,8 +150,8 @@
     <Property Name="sonaranalyzer-vbnet.pluginKey">vbnet</Property>
     <Property Name="sonar.java.jvmframeworkconfig.activate">true</Property>
     <Property Name="sonar.updatecenter.url">https://downloads.sonarsource.com/sonarqube/update/update-center.properties</Property>
-    <Property Name="sonar.core.id">147B411E-AZzpavejHxgXxhlx3PQ4</Property>
-    <Property Name="sonar.core.startTime">17/03/2026 11:15:56</Property>
+    <Property Name="sonar.core.id">147B411E-AZzacnfmbqmiZWzsMXNF</Property>
+    <Property Name="sonar.core.startTime">3/18/2026 1:33:44 PM</Property>
   </ServerSettings>
   <LocalSettings>
     <Property Name="sonar.host.url">http://localhost:9000</Property>
@@ -161,38 +161,38 @@
   <AnalyzersSettings>
     <AnalyzerSettings>
       <Language>cs</Language>
-      <RulesetPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\Sonar-cs.ruleset</RulesetPath>
-      <DeactivatedRulesetPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\Sonar-cs-none.ruleset</DeactivatedRulesetPath>
+      <RulesetPath>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf\Sonar-cs.ruleset</RulesetPath>
+      <DeactivatedRulesetPath>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf\Sonar-cs-none.ruleset</DeactivatedRulesetPath>
       <AnalyzerPlugins>
         <AnalyzerPlugin Key="csharp" Version="10.19.0.132793" StaticResourceName="SonarAnalyzer-csharp-10.19.0.132793.zip">
           <AssemblyPaths>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\0\SonarAnalyzer.CSharp.dll</Path>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\0\licenses\LICENSE.txt</Path>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\0\licenses\THIRD_PARTY_LICENSES\Google.Protobuf-LICENSE.txt</Path>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\0\licenses\THIRD_PARTY_LICENSES\StyleCop.Analyzers-LICENSE.txt</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\0\SonarAnalyzer.CSharp.dll</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\0\licenses\LICENSE.txt</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\0\licenses\THIRD_PARTY_LICENSES\Google.Protobuf-LICENSE.txt</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\0\licenses\THIRD_PARTY_LICENSES\StyleCop.Analyzers-LICENSE.txt</Path>
           </AssemblyPaths>
         </AnalyzerPlugin>
       </AnalyzerPlugins>
       <AdditionalFilePaths>
-        <Path>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\cs\SonarLint.xml</Path>
+        <Path>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf\cs\SonarLint.xml</Path>
       </AdditionalFilePaths>
     </AnalyzerSettings>
     <AnalyzerSettings>
       <Language>vbnet</Language>
-      <RulesetPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\Sonar-vbnet.ruleset</RulesetPath>
-      <DeactivatedRulesetPath>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\Sonar-vbnet-none.ruleset</DeactivatedRulesetPath>
+      <RulesetPath>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf\Sonar-vbnet.ruleset</RulesetPath>
+      <DeactivatedRulesetPath>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf\Sonar-vbnet-none.ruleset</DeactivatedRulesetPath>
       <AnalyzerPlugins>
         <AnalyzerPlugin Key="vbnet" Version="10.19.0.132793" StaticResourceName="SonarAnalyzer-vbnet-10.19.0.132793.zip">
           <AssemblyPaths>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\1\SonarAnalyzer.VisualBasic.dll</Path>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\1\licenses\LICENSE.txt</Path>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\1\licenses\THIRD_PARTY_LICENSES\Google.Protobuf-LICENSE.txt</Path>
-            <Path>C:\Users\torre\AppData\Local\Temp\.sonarqube\resources\1\licenses\THIRD_PARTY_LICENSES\StyleCop.Analyzers-LICENSE.txt</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\1\SonarAnalyzer.VisualBasic.dll</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\1\licenses\LICENSE.txt</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\1\licenses\THIRD_PARTY_LICENSES\Google.Protobuf-LICENSE.txt</Path>
+            <Path>C:\Users\GIGABYTE\AppData\Local\Temp\.sonarqube\resources\1\licenses\THIRD_PARTY_LICENSES\StyleCop.Analyzers-LICENSE.txt</Path>
           </AssemblyPaths>
         </AnalyzerPlugin>
       </AnalyzerPlugins>
       <AdditionalFilePaths>
-        <Path>D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\conf\vbnet\SonarLint.xml</Path>
+        <Path>C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\conf\vbnet\SonarLint.xml</Path>
       </AdditionalFilePaths>
     </AnalyzerSettings>
   </AnalyzersSettings>

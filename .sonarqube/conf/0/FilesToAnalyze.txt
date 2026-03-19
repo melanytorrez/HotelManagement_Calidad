@@ -1,54 +1,55 @@
-﻿D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Exceptions\CustomExceptions.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\ClienteService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\DetalleReservaService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\HabitacionService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\HuespedService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\IClienteService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\IDetalleReservaService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\IHabitacionService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\IHuespedService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\IReservaService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Services\ReservaService.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Validators\ClienteValidator.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Validators\DetalleReservaValidator.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Validators\HabitacionValidator.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Validators\HuespedValidator.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Validators\IClienteValidator.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Application\Validators\ReservaValidator.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Config\HotelDbContext.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\ApiResponse.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\ClienteDTO.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\DetalleReservaDTO.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\HabitacionDTO.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\HuespedDTO.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\ReservaDTO.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\DTOs\TipoHabitacionDTO.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\Cliente.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\DetalleReserva.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\Habitacion.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\Huesped.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\Reserva.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\TipoHabitacion.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Models\Usuario.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\ClienteRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\DetalleReservaRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\HabitacionRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\HuespedRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\IClienteRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\IDetalleReservaRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\IHabitacionRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\IHuespedRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\IReservaRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Data\Repositories\ReservaRepository.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Controllers\ClienteController.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Controllers\DetalleReservaController.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Controllers\HabitacionController.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Controllers\HuespedController.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Controllers\ReservaController.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Controllers\TipoHabitacionController.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Presentation\Middleware\ErrorHandlingMiddleware.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\Program.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\obj\Debug\net9.0\HotelManagement.GlobalUsings.g.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\obj\Debug\net9.0\HotelManagement.AssemblyInfo.cs
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\backend\obj\Debug\net9.0\HotelManagement.MvcApplicationPartsAssemblyInfo.cs
+﻿C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Exceptions\CustomExceptions.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\ClienteService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\DetalleReservaService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\HabitacionService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\HuespedService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\IClienteService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\IDetalleReservaService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\IHabitacionService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\IHuespedService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\IReservaService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Services\ReservaService.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Validators\ClienteValidator.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Validators\DetalleReservaValidator.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Validators\HabitacionValidator.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Validators\HuespedValidator.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Validators\IClienteValidator.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Application\Validators\ReservaValidator.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Config\HotelDbContext.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\ApiResponse.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\ClienteDTO.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\DetalleReservaDTO.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\HabitacionDTO.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\HuespedDTO.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\ReservaDTO.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\DTOs\TipoHabitacionDTO.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\Cliente.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\DetalleReserva.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\Habitacion.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\Huesped.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\Reserva.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\TipoHabitacion.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Models\Usuario.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\ClienteRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\DetalleReservaRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\HabitacionRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\HuespedRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\IClienteRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\IDetalleReservaRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\IHabitacionRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\IHuespedRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\IReservaRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Data\Repositories\ReservaRepository.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Controllers\ClienteController.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Controllers\DetalleReservaController.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Controllers\HabitacionController.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Controllers\HuespedController.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Controllers\ReservaController.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Controllers\TipoHabitacionController.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Presentation\Middleware\ErrorHandlingMiddleware.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\Program.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\obj\Debug\net9.0\HotelManagement.GlobalUsings.g.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\obj\Debug\net9.0\HotelManagement.AssemblyInfo.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\obj\Debug\net9.0\HotelManagement.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\backend\obj\Debug\net9.0\apphost.exe
