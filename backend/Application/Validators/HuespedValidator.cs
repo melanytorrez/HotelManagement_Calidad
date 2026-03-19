@@ -38,11 +38,10 @@ namespace HotelManagement.Aplicacion.Validators
             {
                 errors["nombre"] = new List<string> { "El Nombre no puede exceder 30 caracteres" };
             }
-            else if (!Regex.IsMatch(dto.Nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+            else if (!Regex.IsMatch(dto.Nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors["nombre"] = new List<string> { "El Nombre debe contener solo letras" };
             }
-
             // Validar Apellido
             if (string.IsNullOrWhiteSpace(dto.Apellido))
             {

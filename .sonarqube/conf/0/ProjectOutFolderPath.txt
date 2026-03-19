@@ -1,1 +1,1 @@
-D:\TORREZ\Escritorio\UNIVERSIDAD\SEMESTRE 1-2026\Gestion de Calidad de Sistemas\EjemploSQ\HotelManagement\.sonarqube\out\0
+C:\Users\GIGABYTE\Documents\Calidad de Sistemas\HotelManagement_Calidad\.sonarqube\out\0
