@@ -70,7 +70,10 @@ namespace HotelManagement.Aplicacion.Validators
             var errors = new Dictionary<string, List<string>>();
 
             if (!IsValidUuid(id))
+            {
                 errors["id"] = new List<string> { "ID debe ser un UUID válido" };
+            }
+                
 
             ValidateDates(dto, errors);
 
