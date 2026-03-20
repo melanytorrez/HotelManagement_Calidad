@@ -156,7 +156,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       tipo_Id: tipoIdFinal,
       Tipo_Habitacion_ID: tipoIdFinal,  // Campo REQUERIDO por el backend
       tipo_Nombre: tipoNombre,
-      capacidad_Maxima: parseInt(this.habitacionAEditar.capacidad),
+      capacidad_Maxima: Number.parseInt(this.habitacionAEditar.capacidad, 10),
       estado_Habitacion: this.habitacionAEditar.estado || 'Libre'
     };
 
