@@ -120,7 +120,16 @@ namespace HotelManagement.Aplicacion.Validators
 
         private byte[] ConvertToGuid(string uuid)
         {
-            return Guid.Parse(uuid).ToByteArray();
+            Guid guid = Guid.Parse(uuid);
+            byte[] bytes = guid.ToByteArray();
+
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(bytes, 0, 4);
+                Array.Reverse(bytes, 4, 2);
+                Array.Reverse(bytes, 6, 2);
+            }
+        return bytes;
         }
         
         private async Task ValidateHabitacionExistenceAsync(string habitacionId, Dictionary<string, List<string>> errors)   
