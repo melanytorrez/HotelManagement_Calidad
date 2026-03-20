@@ -81,15 +81,7 @@ namespace HotelManagement.Aplicacion.Validators
 
             if (!string.IsNullOrEmpty(dto.Huesped_ID))
             {
-                if (!IsValidUuid(dto.Huesped_ID))
-                    errors["huesped_ID"] = new List<string> { "Huesped_ID debe ser un UUID válido" };
-                else
-                {
-                    var huespedExists = await _context.Huespedes
-                        .AnyAsync(h => h.ID == ConvertToGuid(dto.Huesped_ID));
-                    if (!huespedExists)
-                        errors["huesped_ID"] = new List<string> { $"No existe un huésped con ID: {dto.Huesped_ID}" };
-                }
+                await ValidateHuespedExistenceAsync(dto.Huesped_ID, errors);
             }
 
             if (errors.Any())
@@ -143,7 +135,7 @@ namespace HotelManagement.Aplicacion.Validators
                 errors["habitacion_ID"] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
             }
         }
-        private void ValidateDates(DetalleReservaUpdateDTO dto, Dictionary<string, List<string>> errors)
+        private static void ValidateDates(DetalleReservaUpdateDTO dto, Dictionary<string, List<string>> errors)
         {
             var entrada = dto.Fecha_Entrada;
             var salida = dto.Fecha_Salida;
@@ -156,6 +148,22 @@ namespace HotelManagement.Aplicacion.Validators
             if (entrada.HasValue && salida.HasValue && salida.Value <= entrada.Value)
             {
                 errors["fecha_Salida"] = new List<string> { "Fecha_Salida debe ser posterior a Fecha_Entrada" };
+            }
+        }
+
+        private async Task ValidateHuespedExistenceAsync(string huespedId, Dictionary<string, List<string>> errors)
+        {
+            if (!IsValidUuid(huespedId))
+            {
+                errors["huesped_ID"] = new List<string> { "Huesped_ID debe ser un UUID válido" };
+                return; 
+            }
+            var huespedExists = await _context.Huespedes
+                .AnyAsync(h => h.ID == ConvertToGuid(huespedId));
+
+            if (!huespedExists)
+            {
+                errors["huesped_ID"] = new List<string> { $"No existe un huésped con ID: {huespedId}" };
             }
         }
     }
