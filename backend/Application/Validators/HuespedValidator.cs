@@ -55,7 +55,7 @@ namespace HotelManagement.Aplicacion.Validators
             {
                 errors["apellido"] = new List<string> { "El Apellido no puede exceder 30 caracteres" };
             }
-            else if (!Regex.IsMatch(dto.Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+            else if (!Regex.IsMatch(dto.Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors["apellido"] = new List<string> { "El Apellido debe contener solo letras" };
             }
@@ -67,7 +67,7 @@ namespace HotelManagement.Aplicacion.Validators
                 {
                     errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido no puede exceder 30 caracteres" };
                 }
-                else if (!Regex.IsMatch(dto.Segundo_Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                else if (!Regex.IsMatch(dto.Segundo_Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
                 {
                     errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido debe contener solo letras" };
                 }
@@ -86,7 +86,7 @@ namespace HotelManagement.Aplicacion.Validators
             {
                 errors["documento_Identidad"] = new List<string> { "El Documento de Identidad no puede exceder 20 caracteres" };
             }
-            else if (!Regex.IsMatch(dto.Documento_Identidad, @"^\d+$"))
+            else if (!Regex.IsMatch(dto.Documento_Identidad, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
             }
@@ -111,7 +111,7 @@ namespace HotelManagement.Aplicacion.Validators
                 {
                     errors["telefono"] = new List<string> { "El Teléfono no puede exceder 20 caracteres" };
                 }
-                else if (!Regex.IsMatch(dto.Telefono, @"^[0-9+\-\s()]+$"))
+                else if (!Regex.IsMatch(dto.Telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
                 {
                     errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos (+, -, espacios, paréntesis)" };
                 }
