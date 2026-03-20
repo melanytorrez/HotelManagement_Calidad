@@ -158,6 +158,7 @@ wwwroot/
 .DS_Store
 .AppleDouble
 .LSOverride
+CommandsRunScanner.txt
 
 # Windows
 Thumbs.db
@@ -175,3 +176,6 @@ Desktop.ini
 !.vscode/extensions.json
 
 Reqnroll/CoverageReport/*
+
+# SonarQube temporary analysis files
+.sonarqube/
