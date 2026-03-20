@@ -86,37 +86,50 @@
       <h2>Editar huésped</h2>
       <form (ngSubmit)="guardarEdicion()" #formEditar="ngForm" class="form-grid">
         <div class="form-group">
-          <label>PRIMER NOMBRE <span class="campo-requerido">*</span></label>
-          <input type="text" [(ngModel)]="huespedAEditar.primerNombre" name="primerNombre" required 
-                 class="form-control uppercase-input" style="text-transform: uppercase;" />
+          <label>
+            PRIMER NOMBRE <span class="campo-requerido">*</span>
+            <input type="text" [(ngModel)]="huespedAEditar.primerNombre" name="primerNombre" required 
+                   class="form-control uppercase-input" style="text-transform: uppercase;" />
+          </label>
         </div>
         <div class="form-group">
-          <label>SEGUNDO NOMBRE</label>
-          <input type="text" [(ngModel)]="huespedAEditar.segundoNombre" name="segundoNombre" 
-                 class="form-control uppercase-input" style="text-transform: uppercase;" />
+          <label>SEGUNDO NOMBRE
+            <input type="text" [(ngModel)]="huespedAEditar.segundoNombre" name="segundoNombre" 
+                   class="form-control uppercase-input" style="text-transform: uppercase;" />
+          </label>
         </div>
         <div class="form-group">
-          <label>PRIMER APELLIDO <span class="campo-requerido">*</span></label>
-          <input type="text" [(ngModel)]="huespedAEditar.primerApellido" name="primerApellido" required 
-                 class="form-control uppercase-input" style="text-transform: uppercase;" />
+          <label>
+            PRIMER APELLIDO <span class="campo-requerido">*</span>
+            <input type="text" [(ngModel)]="huespedAEditar.primerApellido" name="primerApellido" required 
+                   class="form-control uppercase-input" style="text-transform: uppercase;" />
+          </label>
         </div>
         <div class="form-group">
-          <label>SEGUNDO APELLIDO</label>
-          <input type="text" [(ngModel)]="huespedAEditar.segundoApellido" name="segundoApellido" 
-                 class="form-control uppercase-input" style="text-transform: uppercase;" />
+          <label>
+            SEGUNDO APELLIDO
+            <input type="text" [(ngModel)]="huespedAEditar.segundoApellido" name="segundoApellido" 
+                   class="form-control uppercase-input" style="text-transform: uppercase;" />
+          </label>
         </div>
         <div class="form-group">
-          <label>DOCUMENTO <span class="campo-requerido">*</span></label>
-          <input type="text" [(ngModel)]="huespedAEditar.documento" name="documento" required 
-                 class="form-control uppercase-input" style="text-transform: uppercase;" />
+          <label>
+            DOCUMENTO <span class="campo-requerido">*</span>
+            <input type="text" [(ngModel)]="huespedAEditar.documento" name="documento" required 
+                   class="form-control uppercase-input" style="text-transform: uppercase;" />
+          </label>
         </div>
         <div class="form-group">
-          <label>TELÉFONO</label>
-          <input type="tel" [(ngModel)]="huespedAEditar.telefono" name="telefono" class="form-control" />
+          <label>
+            TELÉFONO
+            <input type="tel" [(ngModel)]="huespedAEditar.telefono" name="telefono" class="form-control" />
+          </label>
         </div>
-        <div class="form-group fecha-group">
-          <label>FECHA DE NACIMIENTO</label>
-          <input type="date" [(ngModel)]="huespedAEditar.fechaNacimiento" name="fechaNacimiento" class="form-control" />
+        <div class="form-group">
+          <label>
+            FECHA DE NACIMIENTO
+            <input type="date" [(ngModel)]="huespedAEditar.fechaNacimiento" name="fechaNacimiento" class="form-control" />
+          </label>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" (click)="cerrarModalEditar()">Cancelar</button>
