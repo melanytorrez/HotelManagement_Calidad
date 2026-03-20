@@ -81,15 +81,7 @@ namespace HotelManagement.Aplicacion.Validators
 
             if (!string.IsNullOrEmpty(dto.Habitacion_ID))
             {
-                if (!IsValidUuid(dto.Habitacion_ID))
-                    errors["habitacion_ID"] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
-                else
-                {
-                    var habitacionExists = await _context.Habitaciones
-                        .AnyAsync(h => h.ID == ConvertToGuid(dto.Habitacion_ID));
-                    if (!habitacionExists)
-                        errors["habitacion_ID"] = new List<string> { $"No existe una habitación con ID: {dto.Habitacion_ID}" };
-                }
+               await ValidateHabitacionExistenceAsync(dto.Habitacion_ID, errors);
             }
 
             if (!string.IsNullOrEmpty(dto.Huesped_ID))
@@ -129,6 +121,23 @@ namespace HotelManagement.Aplicacion.Validators
         private byte[] ConvertToGuid(string uuid)
         {
             return Guid.Parse(uuid).ToByteArray();
+        }
+        
+        private async Task ValidateHabitacionExistenceAsync(string habitacionId, Dictionary<string, List<string>> errors)   
+        {
+        if (!IsValidUuid(habitacionId))
+        {
+            errors["habitacion_ID"] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
+            return; 
+        }
+
+        var habitacionExists = await _context.Habitaciones
+            .AnyAsync(h => h.ID == ConvertToGuid(habitacionId));
+
+        if (!habitacionExists)
+        {
+            errors["habitacion_ID"] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
+        }
         }
     }
 }
