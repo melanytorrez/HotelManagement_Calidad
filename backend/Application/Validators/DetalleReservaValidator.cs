@@ -72,12 +72,7 @@ namespace HotelManagement.Aplicacion.Validators
             if (!IsValidUuid(id))
                 errors["id"] = new List<string> { "ID debe ser un UUID válido" };
 
-            if (dto.Fecha_Entrada.HasValue && dto.Fecha_Entrada.Value < DateTime.Today)
-                errors["fecha_Entrada"] = new List<string> { "Fecha_Entrada no puede ser anterior a hoy" };
-            
-            if (dto.Fecha_Entrada.HasValue && dto.Fecha_Salida.HasValue && 
-                dto.Fecha_Salida.Value <= dto.Fecha_Entrada.Value)
-                errors["fecha_Salida"] = new List<string> { "Fecha_Salida debe ser posterior a Fecha_Entrada" };
+            ValidateDates(dto, errors);
 
             if (!string.IsNullOrEmpty(dto.Habitacion_ID))
             {
@@ -134,19 +129,34 @@ namespace HotelManagement.Aplicacion.Validators
         
         private async Task ValidateHabitacionExistenceAsync(string habitacionId, Dictionary<string, List<string>> errors)   
         {
-        if (!IsValidUuid(habitacionId))
-        {
-            errors["habitacion_ID"] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
-            return; 
-        }
+            if (!IsValidUuid(habitacionId))
+            {
+                errors["habitacion_ID"] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
+                return; 
+            }
 
-        var habitacionExists = await _context.Habitaciones
-            .AnyAsync(h => h.ID == ConvertToGuid(habitacionId));
+            var habitacionExists = await _context.Habitaciones
+                .AnyAsync(h => h.ID == ConvertToGuid(habitacionId));
 
-        if (!habitacionExists)
-        {
-            errors["habitacion_ID"] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
+            if (!habitacionExists)
+            {
+                errors["habitacion_ID"] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
+            }
         }
+        private void ValidateDates(DetalleReservaUpdateDTO dto, Dictionary<string, List<string>> errors)
+        {
+            var entrada = dto.Fecha_Entrada;
+            var salida = dto.Fecha_Salida;
+
+            if (entrada.HasValue && entrada.Value < DateTime.Today)
+            {
+                errors["fecha_Entrada"] = new List<string> { "Fecha_Entrada no puede ser anterior a hoy" };
+            }
+
+            if (entrada.HasValue && salida.HasValue && salida.Value <= entrada.Value)
+            {
+                errors["fecha_Salida"] = new List<string> { "Fecha_Salida debe ser posterior a Fecha_Entrada" };
+            }
         }
     }
 }
