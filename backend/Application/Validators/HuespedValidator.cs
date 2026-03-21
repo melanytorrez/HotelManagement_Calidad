@@ -2,6 +2,7 @@ using HotelManagement.DTOs;
 using HotelManagement.Aplicacion.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace HotelManagement.Aplicacion.Validators
 {
@@ -181,7 +182,7 @@ namespace HotelManagement.Aplicacion.Validators
         {
             if (string.IsNullOrWhiteSpace(fechaNacimientoStr)) return;
 
-            if (!DateTime.TryParse(fechaNacimientoStr, out var fechaNacimiento))
+            if (!DateTime.TryParse(fechaNacimientoStr,CultureInfo.InvariantCulture, DateTimeStyles.None, out var fechaNacimiento))
             {
                 errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento tiene un formato inválido. Use formato: YYYY-MM-DD" };
                 return;
