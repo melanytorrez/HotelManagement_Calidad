@@ -8,6 +8,7 @@ namespace HotelManagement.Aplicacion.Validators
     public class ClienteValidator : IClienteValidator
     {
         private readonly Datos.Config.HotelDbContext _context;
+        private static readonly TimeSpan timeout = TimeSpan.FromMilliseconds(100);
 
         public ClienteValidator(Datos.Config.HotelDbContext context)
         {
@@ -45,7 +46,7 @@ namespace HotelManagement.Aplicacion.Validators
             {
                 errors["nit"] = new List<string> { "El NIT no puede exceder 20 caracteres" };
             }
-            else if (!Regex.IsMatch(dto.NIT, @"^[0-9]+$"))
+            else if (!Regex.IsMatch(dto.NIT, @"^[0-9]+$", RegexOptions.IgnoreCase, timeout))
             {
                 errors["nit"] = new List<string> { "El NIT debe contener solo números" };
             }
@@ -123,7 +124,7 @@ namespace HotelManagement.Aplicacion.Validators
                 {
                     errors["nit"] = new List<string> { "El NIT debe tener entre 7 y 20 caracteres" };
                 }
-                else if (!Regex.IsMatch(dto.NIT, @"^[0-9]+$"))
+                else if (!Regex.IsMatch(dto.NIT, @"^[0-9]+$", RegexOptions.IgnoreCase, timeout))
                 {
                     errors["nit"] = new List<string> { "El NIT debe contener solo números" };
                 }
@@ -187,7 +188,7 @@ namespace HotelManagement.Aplicacion.Validators
 
         private bool IsValidEmail(string email)
         {
-            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, timeout);
         }
 
         private byte[] ConvertToGuid(string uuid) => Guid.Parse(uuid).ToByteArray();
