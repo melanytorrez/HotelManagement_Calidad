@@ -29,33 +29,7 @@ namespace HotelManagement.Aplicacion.Validators
             ValidateText("apellido", dto.Apellido, "Apellido", errors);
             ValidateText("segundo_Apellido", dto.Segundo_Apellido ?? "", "Segundo Apellido", errors, isOptional: true);
 
-            // Validar Documento de Identidad
-            if (string.IsNullOrWhiteSpace(dto.Documento_Identidad))
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad es obligatorio" };
-            }
-            else if (dto.Documento_Identidad.Length < 5)
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener al menos 5 caracteres" };
-            }
-            else if (dto.Documento_Identidad.Length > 20)
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad no puede exceder 20 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.Documento_Identidad, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
-            }
-            else
-            {
-                // Verificar si el documento ya existe
-                var docExists = await _context.Huespedes.AnyAsync(h => h.Documento_Identidad == dto.Documento_Identidad);
-                if (docExists)
-                {
-                    errors["documento_Identidad"] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {dto.Documento_Identidad}" };
-                }
-            }
-
+            await ValidateDocumentAsync(dto.Documento_Identidad, errors);
             // Validar Teléfono (opcional)
             if (!string.IsNullOrWhiteSpace(dto.Telefono))
             {
@@ -260,6 +234,32 @@ namespace HotelManagement.Aplicacion.Validators
             if (!Regex.IsMatch(value, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors[fieldName] = new List<string> { $"El {label} debe contener solo letras" };
+            }
+        }
+
+        private async Task ValidateDocumentAsync(string? documento, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(documento))
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad es obligatorio" };
+                return;
+            }
+
+            if (documento.Length < 5 || documento.Length > 20)
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
+            }
+
+            if (!Regex.IsMatch(documento, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
+                return;
+            }
+
+            var docExists = await _context.Huespedes.AnyAsync(h => h.Documento_Identidad == documento);
+            if (docExists)
+            {
+                errors["documento_Identidad"] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {documento}" };
             }
         }
     }
