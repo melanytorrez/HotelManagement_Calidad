@@ -16,7 +16,7 @@ import { OrderByNumeroPipe } from './order-by-numero.pipe';
 })
 export class HabitacionesListComponent implements OnInit, OnDestroy {
     mensajeExito: string | null = null;
-  private api = inject(NuevaReservaService);
+  private readonly api = inject(NuevaReservaService);
 
   habitaciones: any[] = [];
   loading = true;
@@ -39,8 +39,8 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   busquedaNumero: string = '';
 
   constructor(
-    private habitacionService: HabitacionService,
-    private router: Router
+    private readonly habitacionService: HabitacionService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
