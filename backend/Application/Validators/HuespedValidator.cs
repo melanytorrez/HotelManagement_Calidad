@@ -17,6 +17,7 @@ namespace HotelManagement.Aplicacion.Validators
     {
         private readonly Datos.Config.HotelDbContext _context;
 
+        private const string DocumentoIdentidadField = "documento_Identidad";
         public HuespedValidator(Datos.Config.HotelDbContext context)
         {
             _context = context;
@@ -124,36 +125,36 @@ namespace HotelManagement.Aplicacion.Validators
         {
             if (string.IsNullOrWhiteSpace(documento))
             {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad es obligatorio" };
+                errors[DocumentoIdentidadField] = new List<string> { "El Documento de Identidad es obligatorio" };
                 return;
             }
 
             if (documento.Length < 5 || documento.Length > 20)
             {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
+                errors[DocumentoIdentidadField] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
             }
 
             if (!Regex.IsMatch(documento, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
+                errors[DocumentoIdentidadField] = new List<string> { "El Documento de Identidad debe contener solo números" };
                 return;
             }
 
             var docExists = await _context.Huespedes.AnyAsync(h => h.Documento_Identidad == documento);
             if (docExists)
             {
-                errors["documento_Identidad"] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {documento}" };
+                errors[DocumentoIdentidadField] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {documento}" };
             }
         }
 
         private async Task ValidateDocumentUpdateAsync(string documento, byte[] currentId, Dictionary<string, List<string>> errors)
         {
             if (documento.Length < 5 || documento.Length > 20)
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
+                errors[DocumentoIdentidadField] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
 
             if (!Regex.IsMatch(documento, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
+                errors[DocumentoIdentidadField] = new List<string> { "El Documento de Identidad debe contener solo números" };
                 return;
             }
 
@@ -161,7 +162,7 @@ namespace HotelManagement.Aplicacion.Validators
                 .AnyAsync(h => h.Documento_Identidad == documento && !h.ID.SequenceEqual(currentId));
 
             if (docExists)
-                errors["documento_Identidad"] = new List<string> { $"Ya existe otro huésped con el Documento de Identidad: {documento}" };
+                errors[DocumentoIdentidadField] = new List<string> { $"Ya existe otro huésped con el Documento de Identidad: {documento}" };
         }
 
         private static void ValidatePhone(string? telefono, Dictionary<string, List<string>> errors)
