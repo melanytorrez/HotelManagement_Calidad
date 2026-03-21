@@ -96,7 +96,7 @@ export class HuespedesListComponent implements OnInit {
     if (fechaNacimiento) {
       // Convierte a formato yyyy-MM-dd para el input date
       const fecha = new Date(fechaNacimiento);
-      if (!isNaN(fecha.getTime())) {
+      if (!Number.isNaN(fecha.getTime())) {
         const yyyy = fecha.getFullYear();
         const mm = String(fecha.getMonth() + 1).padStart(2, '0');
         const dd = String(fecha.getDate()).padStart(2, '0');
