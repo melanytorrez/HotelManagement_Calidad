@@ -35,7 +35,7 @@ namespace HotelManagement.Aplicacion.Validators
             {
                 errors["numero_Habitacion"] = new List<string> { "El Número de Habitación no puede exceder 10 caracteres" };
             }
-            else if (!Regex.IsMatch(dto.Numero_Habitacion, @"^[0-9A-Za-z\-]+$", RegexOptions.None, timeout))
+            else if (!Regex.IsMatch(dto.Numero_Habitacion, @"^[0-9A-Za-z\-]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors["numero_Habitacion"] = new List<string> { "El Número de Habitación debe contener solo números, letras y guiones" };
             }
@@ -119,7 +119,7 @@ namespace HotelManagement.Aplicacion.Validators
             {
                 errors["numero_Habitacion"] = new List<string> { "El Número de Habitación no puede exceder 10 caracteres" };
             }
-            else if (!Regex.IsMatch(dto.Numero_Habitacion, @"^[0-9A-Za-z\-]+$", RegexOptions.None, timeout))
+            else if (!Regex.IsMatch(dto.Numero_Habitacion, @"^[0-9A-Za-z\-]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors["numero_Habitacion"] = new List<string> { "El Número de Habitación debe contener solo números, letras y guiones" };
             }
@@ -189,7 +189,7 @@ namespace HotelManagement.Aplicacion.Validators
                 {
                     errors["numero_Habitacion"] = new List<string> { "El Número de Habitación no puede exceder 10 caracteres" };
                 }
-                else if (!Regex.IsMatch(dto.Numero_Habitacion, @"^[0-9A-Za-z\-]+$", RegexOptions.None, timeout))
+                else if (!Regex.IsMatch(dto.Numero_Habitacion, @"^[0-9A-Za-z\-]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
                 {
                     errors["numero_Habitacion"] = new List<string> { "El Número de Habitación debe contener solo números, letras y guiones" };
                 }
