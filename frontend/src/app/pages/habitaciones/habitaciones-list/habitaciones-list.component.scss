@@ -165,6 +165,7 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
+  padding-left: 8px;
 }
 
 /* Botones (ya definidos) */
@@ -311,21 +312,6 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   font-size: 1rem;
 }
 
-.modal-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  justify-content: flex-end;
-}
-
-/* Botones de acción (consistentes con Huéspedes) */
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  justify-content: flex-end;
-}
-
 /* Botón genérico icon-only */
 .btn-icon {
   display: inline-flex;
@@ -361,11 +347,6 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   width: 18px;
   height: 18px;
   display: inline-block;
-}
-
-/* Asegura que la celda de acciones tenga espacio suficiente */
-.table-row .actions {
-  padding-left: 8px;
 }
 
 /* Pequeño ajuste para el badge y los botones juntos */
