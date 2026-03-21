@@ -279,7 +279,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
           }
 
           // si no hay cuerpo, manejo estándar
-          if (err && err.status && err.status >= 500 && index < estadosUnicos.length - 1) {
+          if (err ?. err.status ?. err.status >= 500 && index < estadosUnicos.length - 1) {
             tryUpdate(index + 1);
             return;
           }
@@ -325,7 +325,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   // Genera la clase CSS para el badge a partir del estado (reemplaza espacios por guiones)
   getStatusClass(status: string | null | undefined): string {
     const s = (status || 'Libre').toString();
-    const safe = s.replaceAll(/\s+/g, '-').replaceAll(/[^A-Za-z0-9\-]/g, '');
+    const safe = s.replaceAll(/\s+/g, '-').replaceAll(/[^A-Za-z0-9-]/g, '');
     return 'status-' + safe;
   }
 
