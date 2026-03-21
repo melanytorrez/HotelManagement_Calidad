@@ -157,6 +157,7 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   font-size: 0.8rem;
   font-weight: 600;
   text-align: center;
+  margin-right: 0.5rem;
 }
 
 /* Ajustes para la celda de acciones: alinear a la derecha */
@@ -326,10 +327,6 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   display: inline-block;
 }
 
-/* Pequeño ajuste para el badge y los botones juntos */
-.status-badge {
-  margin-right: 0.5rem;
-}
 
 /* =======================================================
  * RESPONSIVIDAD (Móviles)
