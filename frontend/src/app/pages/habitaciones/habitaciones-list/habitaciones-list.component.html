@@ -101,38 +101,48 @@
       <h2>Editar habitación</h2>
       <form (ngSubmit)="guardarEdicion()" #formEditar="ngForm" class="form-grid">
         <div class="form-group">
-          <label>NÚMERO</label>
-          <input type="text" [(ngModel)]="habitacionAEditar.numero" name="numero" required class="form-control" />
+          <label>
+            NÚMERO
+            <input type="text" [(ngModel)]="habitacionAEditar.numero" name="numero" required class="form-control" />
+          </label>
         </div>
         <div class="form-group">
-          <label>PISO</label>
-          <input type="text" [(ngModel)]="habitacionAEditar.piso" name="piso" class="form-control" />
+          <label>
+            PISO
+            <input type="text" [(ngModel)]="habitacionAEditar.piso" name="piso" class="form-control" />
+          </label>
         </div>
         <div class="form-group">
-          <label>TIPO</label>
-          <select [(ngModel)]="habitacionAEditar.tipoId" name="tipoId" class="form-control">
-            <option [ngValue]="null">Seleccione un tipo</option>
-            <option *ngFor="let t of tipos" [ngValue]="t.id">
-              {{ t.tipo_Nombre ?? t.nombre ?? t.tipoNombre }}
-            </option>
-          </select>
+          <label>
+            TIPO
+            <select [(ngModel)]="habitacionAEditar.tipoId" name="tipoId" class="form-control">
+              <option [ngValue]="null">Seleccione un tipo</option>
+              <option *ngFor="let t of tipos" [ngValue]="t.id">
+                {{ t.tipo_Nombre ?? t.nombre ?? t.tipoNombre }}
+              </option>
+            </select>
+          </label>
         </div>
         <div class="form-group">
-          <label>CAPACIDAD</label>
-          <input type="number" [(ngModel)]="habitacionAEditar.capacidad" name="capacidad" class="form-control" />
+          <label>
+            CAPACIDAD
+            <input type="number" [(ngModel)]="habitacionAEditar.capacidad" name="capacidad" class="form-control" />
+          </label>
         </div>
         <div class="form-group">
-          <label>ESTADO</label>
-          <select
-            [(ngModel)]="habitacionAEditar.estado"
-            name="estado"
-            class="form-control status-select"
-            [ngClass]="getStatusClass(habitacionAEditar.estado)">
-           <option [ngValue]="'Libre'">Libre</option>
-           <option [ngValue]="'Reservada'">Reservada</option>
-           <option [ngValue]="'Ocupada'">Ocupada</option>
-           <option [ngValue]="'Fuera de Servicio'">Fuera de Servicio</option>
-          </select>
+          <label>
+            ESTADO
+            <select
+              [(ngModel)]="habitacionAEditar.estado"
+              name="estado"
+              class="form-control status-select"
+              [ngClass]="getStatusClass(habitacionAEditar.estado)">
+             <option [ngValue]="'Libre'">Libre</option>
+             <option [ngValue]="'Reservada'">Reservada</option>
+             <option [ngValue]="'Ocupada'">Ocupada</option>
+             <option [ngValue]="'Fuera de Servicio'">Fuera de Servicio</option>
+            </select>
+          </label>
         </div>
 
         <div class="modal-actions">
