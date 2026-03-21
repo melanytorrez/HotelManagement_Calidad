@@ -256,18 +256,18 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   background-size: 12px;
 
   &.status-Libre {
-    background-color: rgba(34, 197, 94, 0.1);
-    color: #166534;
+    background-color: rgba(22, 101, 52, 0.15);
+    color: #14532d;
   }
 
   &.status-Reservada {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: rgba(30, 58, 138, 0.15);
     color: #1e3a8a;
   }
 
   &.status-Ocupada {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: #991b1b;
+    background-color: rgba(153, 27, 27, 0.15);
+    color: #7f1d1d;
   }
 
   &:focus {
