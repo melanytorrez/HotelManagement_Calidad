@@ -30,33 +30,12 @@ namespace HotelManagement.Aplicacion.Validators
             ValidateText("segundo_Apellido", dto.Segundo_Apellido ?? "", "Segundo Apellido", errors, isOptional: true);
 
             await ValidateDocumentAsync(dto.Documento_Identidad, errors);
-           
-            ValidateTelefono(dto.Telefono, errors);
 
-            // Validar Fecha de Nacimiento (opcional)
-            if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
-            {
-                if (!DateTime.TryParse(dto.Fecha_Nacimiento, out var fechaNacimiento))
-                {
-                    errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento tiene un formato inválido. Use formato: YYYY-MM-DD" };
-                }
-                else
-                {
-                    var edad = DateTime.Now.Year - fechaNacimiento.Year;
-                    if (fechaNacimiento > DateTime.Now.AddYears(-edad)) edad--;
+            ValidatePhone(dto.Telefono, errors);
 
-                    if (edad < 0 || fechaNacimiento > DateTime.Now)
-                    {
-                        errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no puede ser una fecha futura" };
-                    }
-                    else if (edad > 150)
-                    {
-                        errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no es válida" };
-                    }
-                }
-            }
+            ValidateBirthDate(dto.Fecha_Nacimiento, errors);
 
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ValidationException(errors);
         }
 
@@ -196,7 +175,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ConflictException("No se puede eliminar el huésped porque tiene detalles de reserva asociados", "id");
         }
 
-        private void ValidateText(string fieldName, string value, string label, Dictionary<string, List<string>> errors, bool isOptional = false)
+        private static void ValidateText(string fieldName, string value, string label, Dictionary<string, List<string>> errors, bool isOptional = false)
         {
             if (isOptional && string.IsNullOrWhiteSpace(value)) return;
 
@@ -249,7 +228,7 @@ namespace HotelManagement.Aplicacion.Validators
             }
         }
 
-        private void ValidateTelefono(string? telefono, Dictionary<string, List<string>> errors)
+        private static void ValidatePhone(string? telefono, Dictionary<string, List<string>> errors)
         {
             if (string.IsNullOrWhiteSpace(telefono)) return;
 
@@ -260,6 +239,29 @@ namespace HotelManagement.Aplicacion.Validators
             else if (!Regex.IsMatch(telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
             {
                 errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos (+, -, espacios, paréntesis)" };
+            }
+        }
+
+        private static void ValidateBirthDate(string? fechaNacimientoStr, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(fechaNacimientoStr)) return;
+
+            if (!DateTime.TryParse(fechaNacimientoStr, out var fechaNacimiento))
+            {
+                errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento tiene un formato inválido. Use formato: YYYY-MM-DD" };
+                return;
+            }
+
+            var edad = DateTime.Now.Year - fechaNacimiento.Year;
+            if (fechaNacimiento > DateTime.Now.AddYears(-edad)) edad--;
+
+            if (fechaNacimiento > DateTime.Now)
+            {
+                errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no puede ser una fecha futura" };
+            }
+            else if (edad > 150)
+            {
+                errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no es válida" };
             }
         }
     }
