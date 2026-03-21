@@ -168,7 +168,7 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   padding-left: 8px;
 }
 
-/* Botones (ya definidos) */
+/* Botones de acción unificados */
 .btn-icon {
   display: inline-flex;
   align-items: center;
@@ -180,16 +180,23 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   background: #fff;
   border: 1px solid rgba(0,0,0,0.06);
   cursor: pointer;
-}
+  transition: all 0.2s ease;
 
-.btn-editar {
-  border: 1px solid rgba(37,99,235,0.14);
-  color: #2563eb;
-}
+  &:hover {
+    background-color: #f8f9fa;
+  }
 
-.btn-eliminar {
-  border: 1px solid rgba(220,38,38,0.12);
-  color: #dc2626;
+  &.btn-editar {
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    color: #2563eb;
+    &:hover { background-color: rgba(37, 99, 235, 0.05); }
+  }
+
+  &.btn-eliminar {
+    border: 1px solid rgba(220, 38, 38, 0.12);
+    color: #dc2626;
+    &:hover { background-color: rgba(220, 38, 38, 0.05); }
+  }
 }
 
 /* Utilidades de alineación y estilo de celda */
@@ -310,36 +317,6 @@ $ocupada-color: #dc3545;         // Rojo para Ocupada
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 1rem;
-}
-
-/* Botón genérico icon-only */
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 8px;
-  min-width: 40px;
-  min-height: 36px;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.06);
-  cursor: pointer;
-}
-
-/* Botón eliminar (rojo) */
-.btn-eliminar {
-  @extend .btn-icon;
-  border: 1px solid rgba(220,38,38,0.12);
-  color: #dc2626;
-  background: #fff;
-}
-
-/* Botón editar (azul) */
-.btn-editar {
-  @extend .btn-icon;
-  border: 1px solid rgba(37,99,235,0.14);
-  color: #2563eb;
-  background: #fff;
 }
 
 /* Iconos dentro de botones */
