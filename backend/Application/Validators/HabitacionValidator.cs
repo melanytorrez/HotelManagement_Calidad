@@ -205,12 +205,9 @@ namespace HotelManagement.Aplicacion.Validators
             }
 
             // Validar Piso (si se proporciona)
-            if (dto.Piso.HasValue)
+            if (dto.Piso.HasValue && (dto.Piso < 0 || dto.Piso > 100))
             {
-                if (dto.Piso.Value < 0 || dto.Piso.Value > 100)
-                {
-                    errors["piso"] = new List<string> { "El Piso debe estar entre 0 y 100" };
-                }
+                errors["piso"] = new List<string> { "El Piso debe estar entre 0 y 100" };  
             }
 
             // Validar Estado de Habitación (si se proporciona)
