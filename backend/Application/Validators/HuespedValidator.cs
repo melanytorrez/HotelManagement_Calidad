@@ -25,53 +25,9 @@ namespace HotelManagement.Aplicacion.Validators
         {
             var errors = new Dictionary<string, List<string>>();
 
-            // Validar Nombre
-            if (string.IsNullOrWhiteSpace(dto.Nombre))
-            {
-                errors["nombre"] = new List<string> { "El Nombre es obligatorio" };
-            }
-            else if (dto.Nombre.Length < 2)
-            {
-                errors["nombre"] = new List<string> { "El Nombre debe tener al menos 2 caracteres" };
-            }
-            else if (dto.Nombre.Length > 30)
-            {
-                errors["nombre"] = new List<string> { "El Nombre no puede exceder 30 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.Nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-            {
-                errors["nombre"] = new List<string> { "El Nombre debe contener solo letras" };
-            }
-            // Validar Apellido
-            if (string.IsNullOrWhiteSpace(dto.Apellido))
-            {
-                errors["apellido"] = new List<string> { "El Apellido es obligatorio" };
-            }
-            else if (dto.Apellido.Length < 2)
-            {
-                errors["apellido"] = new List<string> { "El Apellido debe tener al menos 2 caracteres" };
-            }
-            else if (dto.Apellido.Length > 30)
-            {
-                errors["apellido"] = new List<string> { "El Apellido no puede exceder 30 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-            {
-                errors["apellido"] = new List<string> { "El Apellido debe contener solo letras" };
-            }
-
-            // Validar Segundo Apellido (opcional)
-            if (!string.IsNullOrWhiteSpace(dto.Segundo_Apellido))
-            {
-                if (dto.Segundo_Apellido.Length > 30)
-                {
-                    errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido no puede exceder 30 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Segundo_Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido debe contener solo letras" };
-                }
-            }
+            ValidateText("nombre", dto.Nombre, "Nombre", errors);
+            ValidateText("apellido", dto.Apellido, "Apellido", errors);
+            ValidateText("segundo_Apellido", dto.Segundo_Apellido ?? "", "Segundo Apellido", errors, isOptional: true);
 
             // Validar Documento de Identidad
             if (string.IsNullOrWhiteSpace(dto.Documento_Identidad))
@@ -278,6 +234,33 @@ namespace HotelManagement.Aplicacion.Validators
 
             if (hasDetalles)
                 throw new ConflictException("No se puede eliminar el huésped porque tiene detalles de reserva asociados", "id");
+        }
+
+        private void ValidateText(string fieldName, string value, string label, Dictionary<string, List<string>> errors, bool isOptional = false)
+        {
+            if (isOptional && string.IsNullOrWhiteSpace(value)) return;
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                errors[fieldName] = new List<string> { $"El {label} es obligatorio" };
+                return;
+            }
+
+            if (value.Length < 2)
+            {
+                errors[fieldName] = new List<string> { $"El {label} debe tener al menos 2 caracteres" };
+ 
+            }
+    
+            if (value.Length > 30)
+            {                
+                errors[fieldName] = new List<string> { $"El {label} no puede exceder 30 caracteres" };
+            }
+
+            if (!Regex.IsMatch(value, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors[fieldName] = new List<string> { $"El {label} debe contener solo letras" };
+            }
         }
     }
 }
