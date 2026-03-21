@@ -29,9 +29,9 @@ namespace HotelManagement.Aplicacion.Validators
             if (!IsValidUuid(dto.Reserva_ID))
                 errors["reserva_ID"] = new List<string> { "Reserva_ID debe ser un UUID válido" };
             if (!IsValidUuid(dto.Habitacion_ID))
-                errors["HabitacionIdField"] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
+                errors[HabitacionIdField] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
             if (!IsValidUuid(dto.Huesped_ID))
-                errors["HuespedIdField"] = new List<string> { "Huesped_ID debe ser un UUID válido" };
+                errors[HuespedIdField] = new List<string> { "Huesped_ID debe ser un UUID válido" };
 
             if (dto.Fecha_Entrada < DateTime.Today.AddDays(-1)) // Permitir reservas de hoy
                 errors["fecha_Entrada"] = new List<string> { "Fecha_Entrada no puede ser muy anterior a hoy" };
@@ -52,7 +52,7 @@ namespace HotelManagement.Aplicacion.Validators
                 var habitacionExists = await _context.Habitaciones
                     .AnyAsync(h => h.ID == ConvertToGuid(dto.Habitacion_ID));
                 if (!habitacionExists)
-                    errors["HabitacionIdField"] = new List<string> { $"No existe una habitación con ID: {dto.Habitacion_ID}" };
+                    errors[HabitacionIdField] = new List<string> { $"No existe una habitación con ID: {dto.Habitacion_ID}" };
             }
 
             if (IsValidUuid(dto.Huesped_ID))
@@ -60,7 +60,7 @@ namespace HotelManagement.Aplicacion.Validators
                 var huespedExists = await _context.Huespedes
                     .AnyAsync(h => h.ID == ConvertToGuid(dto.Huesped_ID));
                 if (!huespedExists)
-                    errors["HuespedIdField"] = new List<string> { $"No existe un huésped con ID: {dto.Huesped_ID}" };
+                    errors[HuespedIdField] = new List<string> { $"No existe un huésped con ID: {dto.Huesped_ID}" };
             }
 
             if (errors.Any())
@@ -128,7 +128,7 @@ namespace HotelManagement.Aplicacion.Validators
         {
             if (!IsValidUuid(habitacionId))
             {
-                errors["HabitacionIdField"] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
+                errors[HabitacionIdField] = new List<string> { "Habitacion_ID debe ser un UUID válido" };
                 return; 
             }
 
@@ -137,7 +137,7 @@ namespace HotelManagement.Aplicacion.Validators
 
             if (!habitacionExists)
             {
-                errors["HabitacionIdField"] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
+                errors[HabitacionIdField] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
             }
         }
         private static void ValidateDates(DetalleReservaUpdateDTO dto, Dictionary<string, List<string>> errors)
@@ -160,7 +160,7 @@ namespace HotelManagement.Aplicacion.Validators
         {
             if (!IsValidUuid(huespedId))
             {
-                errors["HuespedIdField"] = new List<string> { "Huesped_ID debe ser un UUID válido" };
+                errors[HuespedIdField] = new List<string> { "Huesped_ID debe ser un UUID válido" };
                 return; 
             }
             var huespedExists = await _context.Huespedes
@@ -168,7 +168,7 @@ namespace HotelManagement.Aplicacion.Validators
 
             if (!huespedExists)
             {
-                errors["HuespedIdField"] = new List<string> { $"No existe un huésped con ID: {huespedId}" };
+                errors[HuespedIdField] = new List<string> { $"No existe un huésped con ID: {huespedId}" };
             }
         }
     }
