@@ -25,122 +25,17 @@ namespace HotelManagement.Aplicacion.Validators
         {
             var errors = new Dictionary<string, List<string>>();
 
-            // Validar Nombre
-            if (string.IsNullOrWhiteSpace(dto.Nombre))
-            {
-                errors["nombre"] = new List<string> { "El Nombre es obligatorio" };
-            }
-            else if (dto.Nombre.Length < 2)
-            {
-                errors["nombre"] = new List<string> { "El Nombre debe tener al menos 2 caracteres" };
-            }
-            else if (dto.Nombre.Length > 30)
-            {
-                errors["nombre"] = new List<string> { "El Nombre no puede exceder 30 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.Nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-            {
-                errors["nombre"] = new List<string> { "El Nombre debe contener solo letras" };
-            }
-            // Validar Apellido
-            if (string.IsNullOrWhiteSpace(dto.Apellido))
-            {
-                errors["apellido"] = new List<string> { "El Apellido es obligatorio" };
-            }
-            else if (dto.Apellido.Length < 2)
-            {
-                errors["apellido"] = new List<string> { "El Apellido debe tener al menos 2 caracteres" };
-            }
-            else if (dto.Apellido.Length > 30)
-            {
-                errors["apellido"] = new List<string> { "El Apellido no puede exceder 30 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-            {
-                errors["apellido"] = new List<string> { "El Apellido debe contener solo letras" };
-            }
+            ValidateText("nombre", dto.Nombre, "Nombre", errors);
+            ValidateText("apellido", dto.Apellido, "Apellido", errors);
+            ValidateText("segundo_Apellido", dto.Segundo_Apellido ?? "", "Segundo Apellido", errors, isOptional: true);
 
-            // Validar Segundo Apellido (opcional)
-            if (!string.IsNullOrWhiteSpace(dto.Segundo_Apellido))
-            {
-                if (dto.Segundo_Apellido.Length > 30)
-                {
-                    errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido no puede exceder 30 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Segundo_Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido debe contener solo letras" };
-                }
-            }
+            await ValidateDocumentAsync(dto.Documento_Identidad, errors);
 
-            // Validar Documento de Identidad
-            if (string.IsNullOrWhiteSpace(dto.Documento_Identidad))
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad es obligatorio" };
-            }
-            else if (dto.Documento_Identidad.Length < 5)
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener al menos 5 caracteres" };
-            }
-            else if (dto.Documento_Identidad.Length > 20)
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad no puede exceder 20 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.Documento_Identidad, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-            {
-                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
-            }
-            else
-            {
-                // Verificar si el documento ya existe
-                var docExists = await _context.Huespedes.AnyAsync(h => h.Documento_Identidad == dto.Documento_Identidad);
-                if (docExists)
-                {
-                    errors["documento_Identidad"] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {dto.Documento_Identidad}" };
-                }
-            }
+            ValidatePhone(dto.Telefono, errors);
 
-            // Validar Teléfono (opcional)
-            if (!string.IsNullOrWhiteSpace(dto.Telefono))
-            {
-                if (dto.Telefono.Length < 7)
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono debe tener al menos 7 caracteres" };
-                }
-                else if (dto.Telefono.Length > 20)
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono no puede exceder 20 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos (+, -, espacios, paréntesis)" };
-                }
-            }
+            ValidateBirthDate(dto.Fecha_Nacimiento, errors);
 
-            // Validar Fecha de Nacimiento (opcional)
-            if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
-            {
-                if (!DateTime.TryParse(dto.Fecha_Nacimiento, out var fechaNacimiento))
-                {
-                    errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento tiene un formato inválido. Use formato: YYYY-MM-DD" };
-                }
-                else
-                {
-                    var edad = DateTime.Now.Year - fechaNacimiento.Year;
-                    if (fechaNacimiento > DateTime.Now.AddYears(-edad)) edad--;
-
-                    if (edad < 0 || fechaNacimiento > DateTime.Now)
-                    {
-                        errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no puede ser una fecha futura" };
-                    }
-                    else if (edad > 150)
-                    {
-                        errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no es válida" };
-                    }
-                }
-            }
-
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ValidationException(errors);
         }
 
@@ -148,7 +43,6 @@ namespace HotelManagement.Aplicacion.Validators
         {
             var errors = new Dictionary<string, List<string>>();
 
-            // Validar ID
             if (!Guid.TryParse(id, out var guid))
             {
                 errors["id"] = new List<string> { "El ID debe ser un UUID válido" };
@@ -161,104 +55,22 @@ namespace HotelManagement.Aplicacion.Validators
             if (huesped == null)
                 throw new NotFoundException($"No se encontró el huésped con ID: {id}", "id");
 
-            // Validar Nombre (si se proporciona)
             if (!string.IsNullOrEmpty(dto.Nombre))
-            {
-                if (dto.Nombre.Length < 2 || dto.Nombre.Length > 30)
-                {
-                    errors["nombre"] = new List<string> { "El Nombre debe tener entre 2 y 30 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["nombre"] = new List<string> { "El Nombre debe contener solo letras" };
-                }
-            }
+                ValidateText("nombre", dto.Nombre, "Nombre", errors);
 
-            // Validar Apellido (si se proporciona)
             if (!string.IsNullOrEmpty(dto.Apellido))
-            {
-                if (dto.Apellido.Length < 2 || dto.Apellido.Length > 30)
-                {
-                    errors["apellido"] = new List<string> { "El Apellido debe tener entre 2 y 30 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["apellido"] = new List<string> { "El Apellido debe contener solo letras" };
-                }
-            }
+                ValidateText("apellido", dto.Apellido, "Apellido", errors);
 
-            // Validar Segundo Apellido (si se proporciona)
             if (!string.IsNullOrEmpty(dto.Segundo_Apellido))
-            {
-                if (dto.Segundo_Apellido.Length > 30)
-                {
-                    errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido no puede exceder 30 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Segundo_Apellido, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["segundo_Apellido"] = new List<string> { "El Segundo Apellido debe contener solo letras" };
-                }
-            }
+                ValidateText("segundo_Apellido", dto.Segundo_Apellido, "Segundo Apellido", errors, isOptional: true);
 
-            // Validar Documento de Identidad (si se proporciona)
             if (!string.IsNullOrEmpty(dto.Documento_Identidad))
-            {
-                if (dto.Documento_Identidad.Length < 5 || dto.Documento_Identidad.Length > 20)
-                {
-                    errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Documento_Identidad, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
-                }
-                else
-                {
-                    var docExists = await _context.Huespedes
-                        .AnyAsync(h => h.Documento_Identidad == dto.Documento_Identidad && !h.ID.SequenceEqual(guidBytes));
-                    if (docExists)
-                    {
-                        errors["documento_Identidad"] = new List<string> { $"Ya existe otro huésped con el Documento de Identidad: {dto.Documento_Identidad}" };
-                    }
-                }
-            }
+                await ValidateDocumentUpdateAsync(dto.Documento_Identidad, guidBytes, errors);
 
-            // Validar Teléfono (si se proporciona)
-            if (!string.IsNullOrEmpty(dto.Telefono))
-            {
-                if (dto.Telefono.Length < 7 || dto.Telefono.Length > 20)
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono debe tener entre 7 y 20 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos" };
-                }
-            }
+            ValidatePhone(dto.Telefono, errors);
+            ValidateBirthDate(dto.Fecha_Nacimiento, errors);
 
-            // Validar Fecha de Nacimiento (si se proporciona)
-            if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
-            {
-                if (!DateTime.TryParse(dto.Fecha_Nacimiento, out var fechaNacimiento))
-                {
-                    errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento tiene un formato inválido. Use formato: YYYY-MM-DD" };
-                }
-                else
-                {
-                    var edad = DateTime.Now.Year - fechaNacimiento.Year;
-                    if (fechaNacimiento > DateTime.Now.AddYears(-edad)) edad--;
-
-                    if (fechaNacimiento > DateTime.Now)
-                    {
-                        errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no puede ser una fecha futura" };
-                    }
-                    else if (edad > 150)
-                    {
-                        errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no es válida" };
-                    }
-                }
-            }
-
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ValidationException(errors);
         }
 
@@ -278,6 +90,114 @@ namespace HotelManagement.Aplicacion.Validators
 
             if (hasDetalles)
                 throw new ConflictException("No se puede eliminar el huésped porque tiene detalles de reserva asociados", "id");
+        }
+
+        private static void ValidateText(string fieldName, string value, string label, Dictionary<string, List<string>> errors, bool isOptional = false)
+        {
+            if (isOptional && string.IsNullOrWhiteSpace(value)) return;
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                errors[fieldName] = new List<string> { $"El {label} es obligatorio" };
+                return;
+            }
+
+            if (value.Length < 2)
+            {
+                errors[fieldName] = new List<string> { $"El {label} debe tener al menos 2 caracteres" };
+ 
+            }
+    
+            if (value.Length > 30)
+            {                
+                errors[fieldName] = new List<string> { $"El {label} no puede exceder 30 caracteres" };
+            }
+
+            if (!Regex.IsMatch(value, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors[fieldName] = new List<string> { $"El {label} debe contener solo letras" };
+            }
+        }
+
+        private async Task ValidateDocumentAsync(string? documento, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(documento))
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad es obligatorio" };
+                return;
+            }
+
+            if (documento.Length < 5 || documento.Length > 20)
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
+            }
+
+            if (!Regex.IsMatch(documento, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
+                return;
+            }
+
+            var docExists = await _context.Huespedes.AnyAsync(h => h.Documento_Identidad == documento);
+            if (docExists)
+            {
+                errors["documento_Identidad"] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {documento}" };
+            }
+        }
+
+        private async Task ValidateDocumentUpdateAsync(string documento, byte[] currentId, Dictionary<string, List<string>> errors)
+        {
+            if (documento.Length < 5 || documento.Length > 20)
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe tener entre 5 y 20 caracteres" };
+
+            if (!Regex.IsMatch(documento, @"^\d+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors["documento_Identidad"] = new List<string> { "El Documento de Identidad debe contener solo números" };
+                return;
+            }
+
+            var docExists = await _context.Huespedes
+                .AnyAsync(h => h.Documento_Identidad == documento && !h.ID.SequenceEqual(currentId));
+
+            if (docExists)
+                errors["documento_Identidad"] = new List<string> { $"Ya existe otro huésped con el Documento de Identidad: {documento}" };
+        }
+
+        private static void ValidatePhone(string? telefono, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(telefono)) return;
+
+            if (telefono.Length < 7 || telefono.Length > 20)
+            {
+                errors["telefono"] = new List<string> { "El Teléfono debe tener entre 7 y 20 caracteres" };
+            }
+            else if (!Regex.IsMatch(telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos (+, -, espacios, paréntesis)" };
+            }
+        }
+
+        private static void ValidateBirthDate(string? fechaNacimientoStr, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(fechaNacimientoStr)) return;
+
+            if (!DateTime.TryParse(fechaNacimientoStr, out var fechaNacimiento))
+            {
+                errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento tiene un formato inválido. Use formato: YYYY-MM-DD" };
+                return;
+            }
+
+            var edad = DateTime.Now.Year - fechaNacimiento.Year;
+            if (fechaNacimiento > DateTime.Now.AddYears(-edad)) edad--;
+
+            if (fechaNacimiento > DateTime.Now)
+            {
+                errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no puede ser una fecha futura" };
+            }
+            else if (edad > 150)
+            {
+                errors["fecha_Nacimiento"] = new List<string> { "La Fecha de Nacimiento no es válida" };
+            }
         }
     }
 }
