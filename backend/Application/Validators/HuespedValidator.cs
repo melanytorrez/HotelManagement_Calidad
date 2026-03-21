@@ -30,22 +30,8 @@ namespace HotelManagement.Aplicacion.Validators
             ValidateText("segundo_Apellido", dto.Segundo_Apellido ?? "", "Segundo Apellido", errors, isOptional: true);
 
             await ValidateDocumentAsync(dto.Documento_Identidad, errors);
-            // Validar Teléfono (opcional)
-            if (!string.IsNullOrWhiteSpace(dto.Telefono))
-            {
-                if (dto.Telefono.Length < 7)
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono debe tener al menos 7 caracteres" };
-                }
-                else if (dto.Telefono.Length > 20)
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono no puede exceder 20 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.Telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
-                {
-                    errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos (+, -, espacios, paréntesis)" };
-                }
-            }
+           
+            ValidateTelefono(dto.Telefono, errors);
 
             // Validar Fecha de Nacimiento (opcional)
             if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
@@ -260,6 +246,20 @@ namespace HotelManagement.Aplicacion.Validators
             if (docExists)
             {
                 errors["documento_Identidad"] = new List<string> { $"Ya existe un huésped con el Documento de Identidad: {documento}" };
+            }
+        }
+
+        private void ValidateTelefono(string? telefono, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(telefono)) return;
+
+            if (telefono.Length < 7 || telefono.Length > 20)
+            {
+                errors["telefono"] = new List<string> { "El Teléfono debe tener entre 7 y 20 caracteres" };
+            }
+            else if (!Regex.IsMatch(telefono, @"^[0-9+\-\s()]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+            {
+                errors["telefono"] = new List<string> { "El Teléfono debe contener solo números y caracteres válidos (+, -, espacios, paréntesis)" };
             }
         }
     }
