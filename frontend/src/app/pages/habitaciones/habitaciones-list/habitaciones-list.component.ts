@@ -325,7 +325,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   // Genera la clase CSS para el badge a partir del estado (reemplaza espacios por guiones)
   getStatusClass(status: string | null | undefined): string {
     const s = (status || 'Libre').toString();
-    const safe = s.replace(/\s+/g, '-').replace(/[^A-Za-z0-9\-]/g, '');
+    const safe = s.replaceAll(/\s+/g, '-').replaceAll(/[^A-Za-z0-9\-]/g, '');
     return 'status-' + safe;
   }
 
@@ -339,7 +339,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     if (/^reservad/i.test(s)) return 'Reservada';
     if (/^ocupad/i.test(s)) return 'Ocupada';
     // Por defecto convertir guiones/underscores a espacios
-    return s.replace(/[-_]+/g, ' ').trim();
+    return s.replaceAll(/[-_]+/g, ' ').trim();
   }
 
   get habitacionesFiltradas() {
