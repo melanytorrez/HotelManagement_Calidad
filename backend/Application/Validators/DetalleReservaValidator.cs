@@ -105,12 +105,12 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new NotFoundException($"No se encontró el detalle de reserva con ID: {id}", "id");
         }
 
-        private bool IsValidUuid(string value)
+        private static bool IsValidUuid(string value)
         {
             return Guid.TryParse(value, out _);
         }
 
-        private byte[] ConvertToGuid(string uuid)
+        private static byte[] ConvertToGuid(string uuid)
         {
             Guid guid = Guid.Parse(uuid);
             byte[] bytes = guid.ToByteArray();
