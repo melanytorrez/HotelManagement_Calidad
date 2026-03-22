@@ -17,7 +17,7 @@ namespace HotelManagement.DTOs
     {
         public string Tipo_Habitacion_ID { get; set; } = string.Empty;
         public string Numero_Habitacion { get; set; } = string.Empty;
-        public short Piso { get; set; }
+        public short? Piso { get; set; }
         public string Estado_Habitacion { get; set; } = "Libre";
     }
 
