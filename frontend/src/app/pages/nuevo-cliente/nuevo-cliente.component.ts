@@ -77,7 +77,7 @@ export class NuevoClienteComponent implements OnInit {
     const valor = control.value.toString().trim();
     
     // Solo números
-    const regex = /^[0-9]+$/;
+    const regex = /^\d+$/;
     
     if (!regex.test(valor)) {
       return { formatoInvalido: true };
