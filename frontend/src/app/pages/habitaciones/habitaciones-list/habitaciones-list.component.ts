@@ -258,6 +258,15 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     this.cerrarModalEditar();
     alert('El estado no se reflejó en la tabla tras actualizar.');
   }
+  private manejarActualizacionExitosa(response: any): void {
+    console.log('=== RESPUESTA EXITOSA ===');
+    console.log('response:', response);
+
+    const numero = this.habitacionAEditar.numero;
+    const estadoEsperado = this.habitacionAEditar.estado;
+
+    this.verificarCambioHabitacion(numero, estadoEsperado, 0, 30);
+  }
 
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
