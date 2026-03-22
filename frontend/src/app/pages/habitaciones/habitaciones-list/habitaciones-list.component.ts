@@ -225,7 +225,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       this.mensajeExito = null;
     }, 3000);
   }
-  private verificarCambioHabitacion(
+    private verificarCambioHabitacion(
     numero: string,
     estadoEsperado: string,
     intentos: number,
@@ -233,18 +233,32 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   ): void {
     this.cargarHabitaciones();
     setTimeout(() => {
-      const hab = this.buscarHabitacionPorNumero(numero);
-      if (hab && hab.estado === estadoEsperado) {
-        this.mostrarMensajeExitoTemporal('Habitación actualizada correctamente');
-        this.cerrarModalEditar();
-      } else if (intentos + 1 < maxIntentos) {
-        this.verificarCambioHabitacion(numero, estadoEsperado, intentos + 1, maxIntentos);
-      } else {
-        this.cerrarModalEditar();
-        alert('El estado no se reflejó en la tabla tras actualizar.');
-      }
+      this.evaluarCambioHabitacion(numero, estadoEsperado, intentos, maxIntentos);
     }, 500);
   }
+  private evaluarCambioHabitacion(
+    numero: string,
+    estadoEsperado: string,
+    intentos: number,
+    maxIntentos: number
+  ): void {
+    const hab = this.buscarHabitacionPorNumero(numero);
+
+    if (hab && hab.estado === estadoEsperado) {
+      this.mostrarMensajeExitoTemporal('Habitación actualizada correctamente');
+      this.cerrarModalEditar();
+      return;
+    }
+
+    if (intentos + 1 < maxIntentos) {
+      this.verificarCambioHabitacion(numero, estadoEsperado, intentos + 1, maxIntentos);
+      return;
+    }
+
+    this.cerrarModalEditar();
+    alert('El estado no se reflejó en la tabla tras actualizar.');
+  }
+
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
   private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
