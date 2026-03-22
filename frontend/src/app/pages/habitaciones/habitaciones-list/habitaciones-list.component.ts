@@ -267,6 +267,28 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
     this.verificarCambioHabitacion(numero, estadoEsperado, 0, 30);
   }
+  private manejarErrorActualizacion(err: any): void {
+    console.error('=== ERROR AL ACTUALIZAR ===');
+    console.error('Error completo:', err);
+    console.error('Status:', err.status);
+    console.error('Status Text:', err.statusText);
+    console.error('Error body:', err.error);
+    console.error('URL:', err.url);
+
+    let mensaje = 'No se pudo actualizar la habitación.\n\n';
+    if (err.status === 404) {
+      mensaje += 'Error 404: La habitación no fue encontrada en el servidor.';
+    } else if (err.status === 400) {
+      mensaje += 'Error 400: Datos inválidos.\n';
+      mensaje += JSON.stringify(err.error);
+    } else if (err.status === 500) {
+      mensaje += 'Error 500: Error interno del servidor.';
+    } else {
+      mensaje += `Error ${err.status}: ${err.statusText}`;
+    }
+
+    alert(mensaje);
+  }
 
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
