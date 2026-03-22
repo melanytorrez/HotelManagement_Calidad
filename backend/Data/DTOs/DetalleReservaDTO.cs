@@ -26,10 +26,10 @@ namespace HotelManagement.DTOs
         public string Huesped_ID { get; set; } = string.Empty;
         
         [Required]
-        public DateTime Fecha_Entrada { get; set; }
+        public DateTime? Fecha_Entrada { get; set; }
         
         [Required]
-        public DateTime Fecha_Salida { get; set; }
+        public DateTime? Fecha_Salida { get; set; }
     }
 
     public class DetalleReservaUpdateDTO
