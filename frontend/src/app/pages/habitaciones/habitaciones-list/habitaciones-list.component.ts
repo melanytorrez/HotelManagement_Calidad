@@ -41,13 +41,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Leer mensaje de exito desde query param si viene de creacion
-    const url = new URL(window.location.href);
+    const url = new URL(globalThis.location.href);
     const exito = url.searchParams.get('exito');
     if (exito) {
       this.mensajeExito = exito;
       setTimeout(() => this.mensajeExito = null, 3000);
       // Limpiar el query param de la URL sin recargar
-      window.history.replaceState({}, document.title, window.location.pathname);
+      globalThis.history.replaceState({}, document.title, globalThis.location.pathname);
     }
 
     this.cargarHabitaciones();
