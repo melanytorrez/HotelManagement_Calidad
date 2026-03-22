@@ -696,17 +696,6 @@
   color: #111827;
 }
 
-/* scroll más discreto */
-.suggestions::-webkit-scrollbar {
-  width: 8px;
-}
-.suggestions::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 4px;
-}
-.suggestions::-webkit-scrollbar-thumb:hover {
-  background: #d1d5db;
-}
 
 .readonly-field {
   background-color: #f5f5f5;
