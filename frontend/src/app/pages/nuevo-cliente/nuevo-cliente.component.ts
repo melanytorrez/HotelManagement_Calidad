@@ -12,9 +12,9 @@ import { ClienteService } from '../../core/services/cliente.service';
   styleUrls: ['./nuevo-cliente.component.scss']
 })
 export class NuevoClienteComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private api = inject(ClienteService);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly api = inject(ClienteService);
 
   // Signals
   submitting = signal(false);
