@@ -338,6 +338,16 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       capacidad_Maxima: this.habitacionAEditar.capacidad
     };
   }
+  private obtenerEstadosUnicos(estadoBackend: string): string[] {
+    const variantesEstado = [estadoBackend];
+    const up = estadoBackend.toUpperCase();
+
+    if (up !== estadoBackend) {
+      variantesEstado.push(up);
+    }
+
+    return variantesEstado.filter((v, i, a) => !!v && a.indexOf(v) === i);
+  }
 
   // Eliminar
   abrirModalEliminar(h: any) {
