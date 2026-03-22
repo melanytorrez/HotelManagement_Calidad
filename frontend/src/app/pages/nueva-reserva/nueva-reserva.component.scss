@@ -627,19 +627,21 @@
 /* panel como el dropdown del select */
 .suggestions {
   position: absolute;
-  z-index: 30;
+  z-index: 999;
   top: calc(100% + 4px);
-  left: 0; right: 0;
-  background: var(--select-bg);
-  border: 1px solid var(--select-border);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  box-shadow: var(--select-shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin: 0;
   padding: 4px 0;
   list-style: none;
-  max-height: 260px;
+  max-height: 250px;
   overflow-y: auto;
 }
+
 
 /* opción con mismo padding/hover del select */
 .select-like__option {
