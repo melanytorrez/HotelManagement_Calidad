@@ -326,6 +326,18 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
     tryUpdate(0);
   }
+  private construirPayloadBaseEdicionCompleta(tipoNombre: string): any {
+    return {
+      id: this.habitacionAEditar.id,
+      ID: this.habitacionAEditar.id,
+      numero_Habitacion: this.habitacionAEditar.numero,
+      piso: this.habitacionAEditar.piso,
+      tipo_Id: this.habitacionAEditar.tipoId ?? null,
+      Tipo_Habitacion_ID: this.habitacionAEditar.tipoId ?? null,
+      tipo_Nombre: tipoNombre,
+      capacidad_Maxima: this.habitacionAEditar.capacidad
+    };
+  }
 
   // Eliminar
   abrirModalEliminar(h: any) {
