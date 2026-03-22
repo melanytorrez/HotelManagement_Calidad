@@ -19,69 +19,9 @@ namespace HotelManagement.Aplicacion.Validators
         {
             var errors = new Dictionary<string, List<string>>();
 
-            // Validar Razón Social
-            if (string.IsNullOrWhiteSpace(dto.Razon_Social))
-            {
-                errors["razon_Social"] = new List<string> { "La Razón Social es obligatoria" };
-            }
-            else if (dto.Razon_Social.Length < 3)
-            {
-                errors["razon_Social"] = new List<string> { "La Razón Social debe tener al menos 3 caracteres" };
-            }
-            else if (dto.Razon_Social.Length > 20)
-            {
-                errors["razon_Social"] = new List<string> { "La Razón Social no puede exceder 20 caracteres" };
-            }
-            
-            // Validar NIT
-            if (string.IsNullOrWhiteSpace(dto.NIT))
-            {
-                errors["nit"] = new List<string> { "El NIT es obligatorio" };
-            }
-            else if (dto.NIT.Length < 7)
-            {
-                errors["nit"] = new List<string> { "El NIT debe tener al menos 7 caracteres" };
-            }
-            else if (dto.NIT.Length > 20)
-            {
-                errors["nit"] = new List<string> { "El NIT no puede exceder 20 caracteres" };
-            }
-            else if (!Regex.IsMatch(dto.NIT, @"^[0-9]+$", RegexOptions.IgnoreCase, timeout))
-            {
-                errors["nit"] = new List<string> { "El NIT debe contener solo números" };
-            }
-            else
-            {
-                // Verificar si el NIT ya existe
-                var nitExists = await _context.Clientes.AnyAsync(c => c.NIT == dto.NIT);
-                if (nitExists)
-                {
-                    errors["nit"] = new List<string> { $"Ya existe un cliente con el NIT: {dto.NIT}" };
-                }
-            }
-
-            // Validar Email
-            if (string.IsNullOrWhiteSpace(dto.Email))
-            {
-                errors["email"] = new List<string> { "El Email es obligatorio" };
-            }
-            else if (!IsValidEmail(dto.Email))
-            {
-                errors["email"] = new List<string> { "El Email debe tener un formato válido (ejemplo@dominio.com)" };
-            }
-            else if (dto.Email.Length > 30)
-            {
-                errors["email"] = new List<string> { "El Email no puede exceder 30 caracteres" };
-            }
-            else
-            {
-                // Verificar si el email ya existe
-                var emailExists = await _context.Clientes.AnyAsync(c => c.Email == dto.Email);
-                if (emailExists)
-                {
-                    errors["email"] = new List<string> { $"Ya existe un cliente con el Email: {dto.Email}" };
-                }
-            }
+            ValidateRazonSocial(dto.Razon_Social, errors);
+            await ValidateNitAsync(dto.NIT, errors);
+            await ValidateEmailAsync(dto.Email, errors);
 
             if (errors.Any())
                 throw new ValidationException(errors);
@@ -91,7 +31,6 @@ namespace HotelManagement.Aplicacion.Validators
         {
             var errors = new Dictionary<string, List<string>>();
 
-            // Validar ID
             if (!IsValidUuid(id))
             {
                 errors["id"] = new List<string> { "El ID debe ser un UUID válido" };
@@ -99,70 +38,124 @@ namespace HotelManagement.Aplicacion.Validators
             }
 
             var guidBytes = Guid.Parse(id).ToByteArray();
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ID.SequenceEqual(guidBytes));
-
-            if (cliente == null)
+            var exists = await _context.Clientes.AnyAsync(c => c.ID.SequenceEqual(guidBytes));
+            if (!exists)
                 throw new NotFoundException($"No se encontró el cliente con ID: {id}", "id");
 
-            // Validar Razón Social (si se proporciona)
-            if (!string.IsNullOrEmpty(dto.Razon_Social))
-            {
-                if (dto.Razon_Social.Length < 3)
-                {
-                    errors["razon_Social"] = new List<string> { "La Razón Social debe tener al menos 3 caracteres" };
-                }
-                else if (dto.Razon_Social.Length > 20)
-                {
-                    errors["razon_Social"] = new List<string> { "La Razón Social no puede exceder 20 caracteres" };
-                }
-            }
-
-            // Validar NIT (si se proporciona)
-            if (!string.IsNullOrEmpty(dto.NIT))
-            {
-                if (dto.NIT.Length < 7 || dto.NIT.Length > 20)
-                {
-                    errors["nit"] = new List<string> { "El NIT debe tener entre 7 y 20 caracteres" };
-                }
-                else if (!Regex.IsMatch(dto.NIT, @"^[0-9]+$", RegexOptions.IgnoreCase, timeout))
-                {
-                    errors["nit"] = new List<string> { "El NIT debe contener solo números" };
-                }
-                else
-                {
-                    var nitExists = await _context.Clientes
-                        .AnyAsync(c => c.NIT == dto.NIT && !c.ID.SequenceEqual(guidBytes));
-                    if (nitExists)
-                    {
-                        errors["nit"] = new List<string> { $"Ya existe otro cliente con el NIT: {dto.NIT}" };
-                    }
-                }
-            }
-
-            // Validar Email (si se proporciona)
-            if (!string.IsNullOrEmpty(dto.Email))
-            {
-                if (!IsValidEmail(dto.Email))
-                {
-                    errors["email"] = new List<string> { "El Email debe tener un formato válido (ejemplo@dominio.com)" };
-                }
-                else if (dto.Email.Length > 30)
-                {
-                    errors["email"] = new List<string> { "El Email no puede exceder 30 caracteres" };
-                }
-                else
-                {
-                    var emailExists = await _context.Clientes
-                        .AnyAsync(c => c.Email == dto.Email && !c.ID.SequenceEqual(guidBytes));
-                    if (emailExists)
-                    {
-                        errors["email"] = new List<string> { $"Ya existe otro cliente con el Email: {dto.Email}" };
-                    }
-                }
-            }
+            ValidateRazonSocial(dto.Razon_Social, errors);
+            await ValidateNitAsync(dto.NIT, errors, guidBytes);
+            await ValidateEmailAsync(dto.Email, errors, guidBytes);
 
             if (errors.Any())
                 throw new ValidationException(errors);
+        }
+
+        public async Task ValidatePartialUpdateAsync(string id, ClienteUpdateDTO dto)
+        {
+            var errors = new Dictionary<string, List<string>>();
+
+            if (!IsValidUuid(id))
+            {
+                errors["id"] = new List<string> { "El ID debe ser un UUID válido" };
+                throw new ValidationException(errors);
+            }
+
+            var guidBytes = Guid.Parse(id).ToByteArray();
+            var exists = await _context.Clientes.AnyAsync(c => c.ID.SequenceEqual(guidBytes));
+            if (!exists)
+                throw new NotFoundException($"No se encontró el cliente con ID: {id}", "id");
+
+            if (!string.IsNullOrEmpty(dto.Razon_Social))
+                ValidateRazonSocial(dto.Razon_Social, errors);
+
+            if (!string.IsNullOrEmpty(dto.NIT))
+                await ValidateNitAsync(dto.NIT, errors, guidBytes);
+
+            if (!string.IsNullOrEmpty(dto.Email))
+                await ValidateEmailAsync(dto.Email, errors, guidBytes);
+
+            if (errors.Any())
+                throw new ValidationException(errors);
+        }
+
+        private void ValidateRazonSocial(string? razonSocial, Dictionary<string, List<string>> errors)
+        {
+            if (string.IsNullOrWhiteSpace(razonSocial))
+            {
+                errors["razon_Social"] = new List<string> { "La Razón Social es obligatoria" };
+            }
+            else if (razonSocial.Length < 3)
+            {
+                errors["razon_Social"] = new List<string> { "La Razón Social debe tener al menos 3 caracteres" };
+            }
+            else if (razonSocial.Length > 20)
+            {
+                errors["razon_Social"] = new List<string> { "La Razón Social no puede exceder 20 caracteres" };
+            }
+        }
+
+        private async Task ValidateNitAsync(string? nit, Dictionary<string, List<string>> errors, byte[]? currentId = null)
+        {
+            if (string.IsNullOrWhiteSpace(nit))
+            {
+                errors["nit"] = new List<string> { "El NIT es obligatorio" };
+                return;
+            }
+
+            if (nit.Length < 7 || nit.Length > 20)
+            {
+                errors["nit"] = new List<string> { "El NIT debe tener entre 7 y 20 caracteres" };
+            }
+            else if (!Regex.IsMatch(nit, @"^[0-9]+$", RegexOptions.IgnoreCase, timeout))
+            {
+                errors["nit"] = new List<string> { "El NIT debe contener solo números" };
+            }
+            else
+            {
+                var query = _context.Clientes.AsQueryable();
+                if (currentId != null)
+                {
+                    query = query.Where(c => !c.ID.SequenceEqual(currentId));
+                }
+
+                var nitExists = await query.AnyAsync(c => c.NIT == nit);
+                if (nitExists)
+                {
+                    errors["nit"] = new List<string> { $"Ya existe {(currentId == null ? "un" : "otro")} cliente con el NIT: {nit}" };
+                }
+            }
+        }
+
+        private async Task ValidateEmailAsync(string? email, Dictionary<string, List<string>> errors, byte[]? currentId = null)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                errors["email"] = new List<string> { "El Email es obligatorio" };
+                return;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                errors["email"] = new List<string> { "El Email debe tener un formato válido (ejemplo@dominio.com)" };
+            }
+            else if (email.Length > 30)
+            {
+                errors["email"] = new List<string> { "El Email no puede exceder 30 caracteres" };
+            }
+            else
+            {
+                var query = _context.Clientes.AsQueryable();
+                if (currentId != null)
+                {
+                    query = query.Where(c => !c.ID.SequenceEqual(currentId));
+                }
+
+                var emailExists = await query.AnyAsync(c => c.Email == email);
+                if (emailExists)
+                {
+                    errors["email"] = new List<string> { $"Ya existe {(currentId == null ? "un" : "otro")} cliente con el Email: {email}" };
+                }
+            }
         }
 
         public async Task ValidateDeleteAsync(string id)

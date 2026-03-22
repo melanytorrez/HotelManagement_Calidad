@@ -4,6 +4,7 @@ using HotelManagement.Services;
 using HotelManagement.Models;
 using HotelManagement.Datos.Config;
 using Microsoft.EntityFrameworkCore;
+using HotelManagement.Aplicacion.Exceptions;
 
 namespace HotelManagement.Controllers
 {
@@ -102,11 +103,16 @@ namespace HotelManagement.Controllers
                 _logger.LogInformation("Detalle de reserva creado exitosamente: {DetalleId}", created.ID);
                 return Created($"/api/DetalleReserva/{created.ID}", created);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is ValidationException or NotFoundException or BadRequestException or ConflictException)
             {
-                _logger.LogError(ex, "Error al crear detalle de reserva");
                 await transaction.RollbackAsync();
                 throw;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error inesperado al crear detalle de reserva");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error interno al crear el detalle de reserva.");
             }
         }
 
@@ -169,11 +175,16 @@ namespace HotelManagement.Controllers
 
                 return Created($"/api/DetalleReserva/reserva/{dto.Reserva_ID}", detallesCreados);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is ValidationException or NotFoundException or BadRequestException or ConflictException)
             {
-                _logger.LogError(ex, "Error al crear múltiples detalles de reserva");
                 await transaction.RollbackAsync();
                 throw;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error inesperado al crear múltiples detalles de reserva");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error interno al crear los detalles de reserva.");
             }
         }
 

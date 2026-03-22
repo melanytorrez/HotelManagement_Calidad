@@ -78,7 +78,7 @@ namespace HotelManagement.Presentacion.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> PartialUpdate(string id, [FromBody] ClienteUpdateDTO dto)
         {
-            var cliente = await _clienteService.UpdateAsync(id, dto);
+            var cliente = await _clienteService.PartialUpdateAsync(id, dto);
             return Ok(cliente);
         }
 

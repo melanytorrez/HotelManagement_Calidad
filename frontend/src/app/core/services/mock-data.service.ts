@@ -9,7 +9,7 @@ import { HuespedLite } from '../../shared/models/huesped-lite.model';
   providedIn: 'root'
 })
 export class MockDataService {
-  private habitacionesMock: HabitacionLite[] = [
+  private readonly habitacionesMock: HabitacionLite[] = [
     {
       id: '1',
       numero: '101',
@@ -31,7 +31,7 @@ export class MockDataService {
     // Add more mock rooms as needed
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getReservas(): Observable<ReservaLite[]> {
     return this.http.get<ReservaLite[]>('assets/data/reservas.json');

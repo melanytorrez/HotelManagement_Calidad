@@ -17,9 +17,9 @@ interface ValidationErrors {
   styleUrls: ['./nuevo-huesped.component.scss']
 })
 export class NuevoHuespedComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private service = inject(HuespedService);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly service = inject(HuespedService);
 
   submitting = signal(false);
   mensaje = signal<string | null>(null);
@@ -251,7 +251,7 @@ export class NuevoHuespedComponent implements OnInit {
    */
   getLocalError(controlName: string): string | null {
     const control = this.form.get(controlName);
-    if (!control || !control.errors || !control.touched) {
+    if (!control?.errors || !control?.touched) {
       return null;
     }
 

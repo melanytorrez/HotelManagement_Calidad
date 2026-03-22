@@ -3,6 +3,7 @@ using HotelManagement.DTOs;
 using HotelManagement.Aplicacion.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace HotelManagement.Presentacion.Controllers
 {
@@ -103,7 +104,7 @@ namespace HotelManagement.Presentacion.Controllers
             DateTime? fechaNacimiento = null;
             if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
             {
-                if (!DateTime.TryParse(dto.Fecha_Nacimiento, out var parsedDate))
+                if (!DateTime.TryParse(dto.Fecha_Nacimiento, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
                     return BadRequest("Fecha_Nacimiento tiene un formato inválido.");
                 fechaNacimiento = parsedDate;
             }
@@ -167,7 +168,7 @@ namespace HotelManagement.Presentacion.Controllers
 
             if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
             {
-                if (!DateTime.TryParse(dto.Fecha_Nacimiento, out var parsedDate))
+                if (!DateTime.TryParse(dto.Fecha_Nacimiento, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
                     return BadRequest("Fecha_Nacimiento tiene un formato inválido.");
                 huesped.Fecha_Nacimiento = parsedDate;
             }
@@ -229,7 +230,7 @@ namespace HotelManagement.Presentacion.Controllers
 
             if (!string.IsNullOrWhiteSpace(dto.Fecha_Nacimiento))
             {
-                if (!DateTime.TryParse(dto.Fecha_Nacimiento, out var parsedDate))
+                if (!DateTime.TryParse(dto.Fecha_Nacimiento, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
                     return BadRequest("Fecha_Nacimiento tiene un formato inválido.");
                 huesped.Fecha_Nacimiento = parsedDate;
             }
