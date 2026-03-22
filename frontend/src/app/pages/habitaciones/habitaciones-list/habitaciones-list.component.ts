@@ -299,7 +299,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
           if (err?.error) {
             console.error('Cuerpo de error del servidor:', err.error);
             // Si es 5xx, reintentar con otra variante
-            if (err.status >= 500 && err.status < 600 && index < estadosUnicos.length - 1) {
+            if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
               console.warn('Error 5xx, reintentando con siguiente variante de estado...');
               tryUpdate(index + 1);
               return;
@@ -311,7 +311,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
           }
 
           // si no hay cuerpo, manejo estándar
-          if (err ?. err.status ?. err.status >= 500 && index < estadosUnicos.length - 1) {
+          if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
             tryUpdate(index + 1);
             return;
           }
@@ -347,6 +347,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     }
 
     return variantesEstado.filter((v, i, a) => !!v && a.indexOf(v) === i);
+  }
+  private debeReintentarActualizacion(
+    status: number | undefined,
+    index: number,
+    totalEstados: number
+  ): boolean {
+    return status !== undefined && status >= 500 && status < 600 && index < totalEstados - 1;
   }
 
   // Eliminar
