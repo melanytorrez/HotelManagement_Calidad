@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { NuevaReservaService } from '../../../core/services/nueva-reserva.service';
 import { Subscription, timer } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HabitacionService } from '../../../core/services/habitacion.service';
@@ -15,8 +14,7 @@ import { OrderByNumeroPipe } from './order-by-numero.pipe';
   styleUrls: ['./habitaciones-list.component.scss']
 })
 export class HabitacionesListComponent implements OnInit, OnDestroy {
-    mensajeExito: string | null = null;
-  private readonly api = inject(NuevaReservaService);
+  mensajeExito: string | null = null;
 
   habitaciones: any[] = [];
   loading = true;
@@ -27,15 +25,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   // Modales
   modalEditarAbierto = false;
   habitacionAEditar: any = null;
-  // nuevo: guardar estado original para detectar cambios
-  originalEstado: string | null = null;
 
   modalEliminarAbierto = false;
   habitacionAEliminar: any = null;
 
   private pollSub: Subscription | null = null;
 
-  // Para búsqueda por número de habitación
+  // Para busqueda por numero de habitacion
   busquedaNumero: string = '';
 
   constructor(
@@ -44,7 +40,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Leer mensaje de éxito desde query param si viene de creación
+    // Leer mensaje de exito desde query param si viene de creacion
     const url = new URL(window.location.href);
     const exito = url.searchParams.get('exito');
     if (exito) {
@@ -56,13 +52,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
     this.cargarHabitaciones();
 
-    // Cargar tipos de habitación para el select
+    // Cargar tipos de habitacion para el select
     this.habitacionService.getTiposHabitacion().subscribe({
       next: (t: any[]) => {
         this.tipos = t || [];
       },
       error: (err: any) => {
-        console.error('Error cargando tipos de habitación:', err);
+        console.error('Error cargando tipos de habitacion:', err);
       }
     });
 
@@ -96,13 +92,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
   // Editar
   abrirModalEditar(h: any) {
-    console.log('=== HABITACIÓN ORIGINAL ===');
+    console.log('=== HABITACION ORIGINAL ===');
     console.log('Datos completos de h:', h);
-    
+
     // Intentar obtener el tipoId de diferentes posibles propiedades
     const tipoId = h.tipoId ?? h.tipo_Id ?? h.Tipo_Habitacion_ID ?? h.tipo_Habitacion_ID ?? null;
-    
-    this.habitacionAEditar = { 
+
+    this.habitacionAEditar = {
       id: h.id,
       numero: h.numero,
       piso: h.piso,
@@ -110,7 +106,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       capacidad: h.capacidad,
       estado: h.estado || 'Libre'
     };
-    
+
     console.log('habitacionAEditar creado:', this.habitacionAEditar);
     this.modalEditarAbierto = true;
   }
@@ -122,105 +118,147 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
   guardarEdicion() {
     if (!this.habitacionAEditar.id) {
-      console.error('Error: No se encontró el ID de la habitación');
-      alert('Error: No se encontró el ID de la habitación');
+      console.error('Error: No se encontro el ID de la habitacion');
+      alert('Error: No se encontro el ID de la habitacion');
       return;
     }
-    
-    // Validar que tipoId no sea null o undefined
+
     if (!this.habitacionAEditar.tipoId) {
-      console.error('Error: No se seleccionó un tipo de habitación');
-      alert('Error: Debe seleccionar un tipo de habitación');
+      console.error('Error: No se selecciono un tipo de habitacion');
+      alert('Error: Debe seleccionar un tipo de habitacion');
       return;
     }
-    
-    console.log('=== DATOS DE EDICIÓN ===');
+
+    console.log('=== DATOS DE EDICION ===');
     console.log('habitacionAEditar:', this.habitacionAEditar);
     console.log('tipos disponibles:', this.tipos);
-    
-    // Buscar el nombre del tipo seleccionado
-    const tipoSeleccionado = this.tipos.find(t => t.id === this.habitacionAEditar.tipoId);
+
+    const tipoSeleccionado = this.tipos.find(
+      (t) => t.id === this.habitacionAEditar.tipoId
+    );
     console.log('Tipo seleccionado:', tipoSeleccionado);
-    
-    const tipoNombre = tipoSeleccionado?.tipo_Nombre ?? tipoSeleccionado?.nombre ?? tipoSeleccionado?.tipoNombre ?? '';
-    
-    // Asegurarse de que tipoId no sea null/undefined antes de enviarlo
+
+    const tipoNombre =
+      tipoSeleccionado?.tipo_Nombre ??
+      tipoSeleccionado?.nombre ??
+      tipoSeleccionado?.tipoNombre ??
+      '';
+
     const tipoIdFinal = this.habitacionAEditar.tipoId;
-    
-    // Transformar el objeto al formato que espera el backend
-    const payload = {
+    const payload = this.construirPayloadEdicion(tipoNombre, tipoIdFinal);
+
+    console.log('=== PAYLOAD A ENVIAR ===');
+    console.log(JSON.stringify(payload, null, 2));
+
+    this.habitacionService.updateHabitacion(payload).subscribe({
+      next: (response) => this.manejarActualizacionExitosa(response),
+      error: (err: any) => this.manejarErrorActualizacion(err)
+    });
+  }
+
+  private buscarHabitacionPorNumero(numero: string): any {
+    return this.habitaciones.find((h) => h.numero === numero);
+  }
+
+  private mostrarMensajeExitoTemporal(mensaje: string): void {
+    this.mensajeExito = mensaje;
+    setTimeout(() => {
+      this.mensajeExito = null;
+    }, 3000);
+  }
+
+  private verificarCambioHabitacion(
+    numero: string,
+    estadoEsperado: string,
+    intentos: number,
+    maxIntentos: number
+  ): void {
+    this.cargarHabitaciones();
+    setTimeout(() => {
+      this.evaluarCambioHabitacion(numero, estadoEsperado, intentos, maxIntentos);
+    }, 500);
+  }
+
+  private evaluarCambioHabitacion(
+    numero: string,
+    estadoEsperado: string,
+    intentos: number,
+    maxIntentos: number
+  ): void {
+    const hab = this.buscarHabitacionPorNumero(numero);
+
+    if (hab && hab.estado === estadoEsperado) {
+      this.mostrarMensajeExitoTemporal('Habitacion actualizada correctamente');
+      this.cerrarModalEditar();
+      return;
+    }
+
+    if (intentos + 1 < maxIntentos) {
+      this.verificarCambioHabitacion(numero, estadoEsperado, intentos + 1, maxIntentos);
+      return;
+    }
+
+    this.cerrarModalEditar();
+    alert('El estado no se reflejo en la tabla tras actualizar.');
+  }
+
+  private construirPayloadEdicion(tipoNombre: string, tipoIdFinal: string): any {
+    return {
       id: this.habitacionAEditar.id,
       ID: this.habitacionAEditar.id,
       numero_Habitacion: this.habitacionAEditar.numero,
       piso: this.habitacionAEditar.piso,
       tipo_Id: tipoIdFinal,
-      Tipo_Habitacion_ID: tipoIdFinal,  // Campo REQUERIDO por el backend
+      Tipo_Habitacion_ID: tipoIdFinal,
       tipo_Nombre: tipoNombre,
       capacidad_Maxima: Number.parseInt(this.habitacionAEditar.capacidad, 10),
       estado_Habitacion: this.habitacionAEditar.estado || 'Libre'
     };
-
-    console.log('=== PAYLOAD A ENVIAR ===');
-    console.log(JSON.stringify(payload, null, 2));
-    
-    this.habitacionService.updateHabitacion(payload)
-      .subscribe({
-        next: (response) => {
-          console.log('=== RESPUESTA EXITOSA ===');
-          console.log('response:', response);
-          // Polling: recargar y verificar que el estado cambió antes de cerrar modal y mostrar éxito
-          const numero = this.habitacionAEditar.numero;
-          const estadoEsperado = this.habitacionAEditar.estado;
-          let intentos = 0;
-          const maxIntentos = 30; // hasta 15s (30*500ms)
-          const verificarCambio = () => {
-            this.cargarHabitaciones();
-            setTimeout(() => {
-              const hab = this.habitaciones.find(h => h.numero === numero);
-              if (hab && hab.estado === estadoEsperado) {
-                this.mensajeExito = 'Habitación actualizada correctamente';
-                setTimeout(() => this.mensajeExito = null, 3000);
-                this.cerrarModalEditar();
-              } else if (++intentos < maxIntentos) {
-                verificarCambio();
-              } else {
-                // Si no se refleja el cambio, cerrar igual pero avisar
-                this.cerrarModalEditar();
-                alert('El estado no se reflejó en la tabla tras actualizar.');
-              }
-            }, 500);
-          };
-          verificarCambio();
-        },
-        error: (err: any) => {
-          console.error('=== ERROR AL ACTUALIZAR ===');
-          console.error('Error completo:', err);
-          console.error('Status:', err.status);
-          console.error('Status Text:', err.statusText);
-          console.error('Error body:', err.error);
-          console.error('URL:', err.url);
-          
-          let mensaje = 'No se pudo actualizar la habitación.\n\n';
-          if (err.status === 404) {
-            mensaje += 'Error 404: La habitación no fue encontrada en el servidor.';
-          } else if (err.status === 400) {
-            mensaje += 'Error 400: Datos inválidos.\n';
-            mensaje += JSON.stringify(err.error);
-          } else if (err.status === 500) {
-            mensaje += 'Error 500: Error interno del servidor.';
-          } else {
-            mensaje += `Error ${err.status}: ${err.statusText}`;
-          }
-          
-          alert(mensaje);
-        }
-      });
   }
 
-  // Extrae la lógica de actualización completa para reusar desde el fallback
+  private manejarActualizacionExitosa(response: any): void {
+    console.log('=== RESPUESTA EXITOSA ===');
+    console.log('response:', response);
+
+    const numero = this.habitacionAEditar.numero;
+    const estadoEsperado = this.habitacionAEditar.estado;
+
+    this.verificarCambioHabitacion(numero, estadoEsperado, 0, 30);
+  }
+
+  private manejarErrorActualizacion(err: any): void {
+    console.error('=== ERROR AL ACTUALIZAR ===');
+    console.error('Error completo:', err);
+    console.error('Status:', err.status);
+    console.error('Status Text:', err.statusText);
+    console.error('Error body:', err.error);
+    console.error('URL:', err.url);
+
+    let mensaje = 'No se pudo actualizar la habitacion.\n\n';
+    if (err.status === 404) {
+      mensaje += 'Error 404: La habitacion no fue encontrada en el servidor.';
+    } else if (err.status === 400) {
+      mensaje += 'Error 400: Datos invalidos.\n';
+      mensaje += JSON.stringify(err.error);
+    } else if (err.status === 500) {
+      mensaje += 'Error 500: Error interno del servidor.';
+    } else {
+      mensaje += `Error ${err.status}: ${err.statusText}`;
+    }
+
+    alert(mensaje);
+  }
+
+  // Extrae la logica de actualizacion completa para reusar desde el fallback
   private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
-    // preparar payload base
-    const basePayload = {
+    const basePayload = this.construirPayloadBaseEdicionCompleta(tipoNombre);
+    const estadosUnicos = this.obtenerEstadosUnicos(estadoBackend);
+
+    this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, 0);
+  }
+
+  private construirPayloadBaseEdicionCompleta(tipoNombre: string): any {
+    return {
       id: this.habitacionAEditar.id,
       ID: this.habitacionAEditar.id,
       numero_Habitacion: this.habitacionAEditar.numero,
@@ -228,71 +266,103 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       tipo_Id: this.habitacionAEditar.tipoId ?? null,
       Tipo_Habitacion_ID: this.habitacionAEditar.tipoId ?? null,
       tipo_Nombre: tipoNombre,
-      capacidad_Maxima: this.habitacionAEditar.capacidad,
-      // estado_Habitacion será asignado dinámicamente en los intentos
+      capacidad_Maxima: this.habitacionAEditar.capacidad
+    };
+  }
+
+  private obtenerEstadosUnicos(estadoBackend: string): string[] {
+    const variantesEstado = [estadoBackend];
+    const up = estadoBackend.toUpperCase();
+
+    if (up !== estadoBackend) {
+      variantesEstado.push(up);
+    }
+
+    return variantesEstado.filter((v, i, a) => !!v && a.indexOf(v) === i);
+  }
+
+  private debeReintentarActualizacion(
+    status: number | undefined,
+    index: number,
+    totalEstados: number
+  ): boolean {
+    return status !== undefined && status >= 500 && status < 600 && index < totalEstados - 1;
+  }
+
+  private intentarActualizarHabitacionConEstado(
+    basePayload: any,
+    estadosUnicos: string[],
+    index: number
+  ): void {
+    if (index >= estadosUnicos.length) {
+      alert('No se pudo guardar la habitacion. Intenta nuevamente o revisa el servidor.');
+      return;
+    }
+
+    const payload = {
+      ...basePayload,
+      estado_Habitacion: estadosUnicos[index]
     };
 
-    // variantes a probar (genérico, sin rama por 'mantenimiento')
-    const estadoBase = estadoBackend;
-    const variantesEstado = [estadoBase];
-    const up = estadoBase.toUpperCase();
-    if (up !== estadoBase) variantesEstado.push(up);
-    const estadosUnicos = variantesEstado.filter((v, i, a) => v && a.indexOf(v) === i);
+    console.log(`Intento ${index + 1}/${estadosUnicos.length} - payload:`, payload);
 
-    const tryUpdate = (index: number) => {
-      if (index >= estadosUnicos.length) {
-        alert('No se pudo guardar la habitación. Intenta nuevamente o revisa el servidor.');
+    this.habitacionService.updateHabitacion(payload).subscribe({
+      next: (response) => this.manejarExitoGuardadoCompleto(response, payload),
+      error: (err: any) =>
+        this.manejarErrorGuardadoCompleto(err, basePayload, estadosUnicos, index)
+    });
+  }
+
+  private manejarExitoGuardadoCompleto(response: any, payload: any): void {
+    console.log(`Respuesta HTTP status=${response.status}`, response);
+
+    const actualizado = response.body;
+    const updated = actualizado || {
+      id: payload.ID,
+      numero: payload.numero_Habitacion,
+      piso: payload.piso,
+      tipoNombre: payload.tipo_Nombre,
+      capacidad: payload.capacidad_Maxima,
+      estado: payload.estado_Habitacion
+    };
+
+    this.habitaciones = this.habitaciones.map(h => h.id === updated.id ? updated : h);
+    this.cerrarModalEditar();
+  }
+
+  private manejarErrorGuardadoCompleto(
+    err: any,
+    basePayload: any,
+    estadosUnicos: string[],
+    index: number
+  ): void {
+    console.error(`Error intento ${index + 1}:`, err);
+
+    if (err?.error) {
+      console.error('Cuerpo de error del servidor:', err.error);
+
+      if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
+        console.warn('Error 5xx, reintentando con siguiente variante de estado...');
+        this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, index + 1);
         return;
       }
-      const payload = { ...basePayload, estado_Habitacion: estadosUnicos[index] };
-      console.log(`Intento ${index + 1}/${estadosUnicos.length} - payload:`, payload);
-      this.habitacionService.updateHabitacion(payload).subscribe({
-        next: (response) => {
-          console.log(`Respuesta HTTP status=${response.status}`, response);
-          const actualizado = response.body;
-          const updated = actualizado || {
-            id: payload.ID,
-            numero: payload.numero_Habitacion,
-            piso: payload.piso,
-            tipoNombre: payload.tipo_Nombre,
-            capacidad: payload.capacidad_Maxima,
-            estado: payload.estado_Habitacion
-          };
-          this.habitaciones = this.habitaciones.map(h => h.id === updated.id ? updated : h);
-          this.cerrarModalEditar();
-        },
-        error: (err: any) => {
-          console.error(`Error intento ${index + 1}:`, err);
-          // Mostrar cuerpo de error si lo devuelve el servidor
-          if (err?.error) {
-            console.error('Cuerpo de error del servidor:', err.error);
-            // Si es 5xx, reintentar con otra variante
-            if (err.status >= 500 && err.status < 600 && index < estadosUnicos.length - 1) {
-              console.warn('Error 5xx, reintentando con siguiente variante de estado...');
-              tryUpdate(index + 1);
-              return;
-            }
-            // Mostrar mensaje detallado al usuario
-            const serverMsg = typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
-            alert(`No se pudo guardar la habitación. Respuesta servidor: ${serverMsg}`);
-            return;
-          }
 
-          // si no hay cuerpo, manejo estándar
-          if (err ?. err.status ?. err.status >= 500 && index < estadosUnicos.length - 1) {
-            tryUpdate(index + 1);
-            return;
-          }
+      const serverMsg =
+        typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
+      alert(`No se pudo guardar la habitacion. Respuesta servidor: ${serverMsg}`);
+      return;
+    }
 
-          const serverMsg =
-            err?.message ||
-            (err?.status ? `HTTP ${err.status} ${err.statusText || ''}` : null);
-          alert(`No se pudo guardar la habitación. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
-        }
-      });
-    };
+    if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
+      this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, index + 1);
+      return;
+    }
 
-    tryUpdate(0);
+    const serverMsg =
+      err?.message ||
+      (err?.status ? `HTTP ${err.status} ${err.statusText || ''}` : null);
+
+    alert(`No se pudo guardar la habitacion. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
   }
 
   // Eliminar
@@ -312,12 +382,12 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       next: () => {
         this.habitaciones = this.habitaciones.filter(h => h.id !== this.habitacionAEliminar.id);
         this.cerrarModalEliminar();
-        this.mensajeExito = 'Habitación eliminada correctamente';
+        this.mensajeExito = 'Habitacion eliminada correctamente';
         setTimeout(() => this.mensajeExito = null, 3000);
       },
       error: (err: any) => {
-        console.error('Error eliminando habitación:', err);
-        alert('No se pudo eliminar la habitación. Intenta nuevamente.');
+        console.error('Error eliminando habitacion:', err);
+        alert('No se pudo eliminar la habitacion. Intenta nuevamente.');
       }
     });
   }
@@ -349,7 +419,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
         h.numero?.toString().includes(this.busquedaNumero.trim())
       );
     }
-    // El pipe orderByNumero se encargará de ordenar en el HTML
+    // El pipe orderByNumero se encargara de ordenar en el HTML
     return filtradas;
   }
 }
