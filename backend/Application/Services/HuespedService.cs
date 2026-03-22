@@ -3,6 +3,7 @@ using HotelManagement.Aplicacion.Validators;
 using HotelManagement.DTOs;
 using HotelManagement.Models;
 using HotelManagement.Repositories;
+using System.Globalization;
 
 namespace HotelManagement.Application.Services
 {
@@ -129,7 +130,7 @@ namespace HotelManagement.Application.Services
                 return null;
             }
 
-            if (DateTime.TryParse(value, out var parsed))
+            if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed))
             {
                 return parsed;
             }
