@@ -120,102 +120,46 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     this.habitacionAEditar = null;
   }
 
-  guardarEdicion() {
+    guardarEdicion() {
     if (!this.habitacionAEditar.id) {
       console.error('Error: No se encontró el ID de la habitación');
       alert('Error: No se encontró el ID de la habitación');
       return;
     }
-    
-    // Validar que tipoId no sea null o undefined
+
     if (!this.habitacionAEditar.tipoId) {
       console.error('Error: No se seleccionó un tipo de habitación');
       alert('Error: Debe seleccionar un tipo de habitación');
       return;
     }
-    
+
     console.log('=== DATOS DE EDICIÓN ===');
     console.log('habitacionAEditar:', this.habitacionAEditar);
     console.log('tipos disponibles:', this.tipos);
-    
-    // Buscar el nombre del tipo seleccionado
-    const tipoSeleccionado = this.tipos.find(t => t.id === this.habitacionAEditar.tipoId);
+
+    const tipoSeleccionado = this.tipos.find(
+      (t) => t.id === this.habitacionAEditar.tipoId
+    );
     console.log('Tipo seleccionado:', tipoSeleccionado);
-    
-    const tipoNombre = tipoSeleccionado?.tipo_Nombre ?? tipoSeleccionado?.nombre ?? tipoSeleccionado?.tipoNombre ?? '';
-    
-    // Asegurarse de que tipoId no sea null/undefined antes de enviarlo
+
+    const tipoNombre =
+      tipoSeleccionado?.tipo_Nombre ??
+      tipoSeleccionado?.nombre ??
+      tipoSeleccionado?.tipoNombre ??
+      '';
+
     const tipoIdFinal = this.habitacionAEditar.tipoId;
-    
-    // Transformar el objeto al formato que espera el backend
-    const payload = {
-      id: this.habitacionAEditar.id,
-      ID: this.habitacionAEditar.id,
-      numero_Habitacion: this.habitacionAEditar.numero,
-      piso: this.habitacionAEditar.piso,
-      tipo_Id: tipoIdFinal,
-      Tipo_Habitacion_ID: tipoIdFinal,  // Campo REQUERIDO por el backend
-      tipo_Nombre: tipoNombre,
-      capacidad_Maxima: Number.parseInt(this.habitacionAEditar.capacidad, 10),
-      estado_Habitacion: this.habitacionAEditar.estado || 'Libre'
-    };
+    const payload = this.construirPayloadEdicion(tipoNombre, tipoIdFinal);
 
     console.log('=== PAYLOAD A ENVIAR ===');
     console.log(JSON.stringify(payload, null, 2));
-    
-    this.habitacionService.updateHabitacion(payload)
-      .subscribe({
-        next: (response) => {
-          console.log('=== RESPUESTA EXITOSA ===');
-          console.log('response:', response);
-          // Polling: recargar y verificar que el estado cambió antes de cerrar modal y mostrar éxito
-          const numero = this.habitacionAEditar.numero;
-          const estadoEsperado = this.habitacionAEditar.estado;
-          let intentos = 0;
-          const maxIntentos = 30; // hasta 15s (30*500ms)
-          const verificarCambio = () => {
-            this.cargarHabitaciones();
-            setTimeout(() => {
-              const hab = this.habitaciones.find(h => h.numero === numero);
-              if (hab && hab.estado === estadoEsperado) {
-                this.mensajeExito = 'Habitación actualizada correctamente';
-                setTimeout(() => this.mensajeExito = null, 3000);
-                this.cerrarModalEditar();
-              } else if (++intentos < maxIntentos) {
-                verificarCambio();
-              } else {
-                // Si no se refleja el cambio, cerrar igual pero avisar
-                this.cerrarModalEditar();
-                alert('El estado no se reflejó en la tabla tras actualizar.');
-              }
-            }, 500);
-          };
-          verificarCambio();
-        },
-        error: (err: any) => {
-          console.error('=== ERROR AL ACTUALIZAR ===');
-          console.error('Error completo:', err);
-          console.error('Status:', err.status);
-          console.error('Status Text:', err.statusText);
-          console.error('Error body:', err.error);
-          console.error('URL:', err.url);
-          
-          let mensaje = 'No se pudo actualizar la habitación.\n\n';
-          if (err.status === 404) {
-            mensaje += 'Error 404: La habitación no fue encontrada en el servidor.';
-          } else if (err.status === 400) {
-            mensaje += 'Error 400: Datos inválidos.\n';
-            mensaje += JSON.stringify(err.error);
-          } else if (err.status === 500) {
-            mensaje += 'Error 500: Error interno del servidor.';
-          } else {
-            mensaje += `Error ${err.status}: ${err.statusText}`;
-          }
-          
-          alert(mensaje);
-        }
-      });
+
+    this.habitacionService.updateHabitacion(payload).subscribe({
+      next: (response) => this.manejarActualizacionExitosa(response),
+      error: (err: any) => this.manejarErrorActualizacion(err)
+    });
   }
+
   private buscarHabitacionPorNumero(numero: string): any {
     return this.habitaciones.find((h) => h.numero === numero);
   }
