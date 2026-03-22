@@ -64,8 +64,8 @@ export class NuevaReservaComponent implements OnInit {
   habitacionSearchTerm: string[] = [];
   showHabitacionSug: boolean[] = [];
 
-  private norm3 = (v: unknown) =>
-  (v ?? '').toString().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  private norm3 = (v: string | number | null | undefined) =>
+  String(v ?? '').toLowerCase().normalize('NFD').replaceAll(/\p{Diacritic}/gu, '');
 
 
   estadosReserva = ['Pendiente', 'Confirmada', 'Cancelada'];
