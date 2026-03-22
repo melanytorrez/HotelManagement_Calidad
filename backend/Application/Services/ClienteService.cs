@@ -61,26 +61,35 @@ namespace HotelManagement.Services
         public async Task<ClienteDTO> UpdateAsync(string id, ClienteUpdateDTO dto)
         {
             await _validator.ValidateUpdateAsync(id, dto);
+            return await ApplyUpdateAsync(id, dto);
+        }
 
+        public async Task<ClienteDTO> PartialUpdateAsync(string id, ClienteUpdateDTO dto)
+        {
+            await _validator.ValidatePartialUpdateAsync(id, dto);
+            return await ApplyUpdateAsync(id, dto);
+        }
+
+        private async Task<ClienteDTO> ApplyUpdateAsync(string id, ClienteUpdateDTO dto)
+        {
             var guidBytes = Guid.Parse(id).ToByteArray();
             var cliente = await _repository.GetByIdAsync(guidBytes);
 
-            if (cliente == null) 
+            if (cliente == null)
                 throw new NotFoundException($"No se encontró el cliente con ID: {id}");
 
             if (!string.IsNullOrEmpty(dto.Razon_Social))
                 cliente.Razon_Social = dto.Razon_Social;
-            
+
             if (!string.IsNullOrEmpty(dto.NIT))
                 cliente.NIT = dto.NIT;
 
             if (!string.IsNullOrEmpty(dto.Email))
                 cliente.Email = dto.Email;
-            
+
             if (dto.Activo.HasValue)
                 cliente.Activo = dto.Activo.Value;
-            
-            // Actualizar campos de auditoría
+
             cliente.Fecha_Actualizacion = DateTime.Now;
             cliente.Usuario_Actualizacion_ID = null;
 

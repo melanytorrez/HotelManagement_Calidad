@@ -38,9 +38,31 @@ namespace HotelManagement.Aplicacion.Validators
             }
 
             var guidBytes = Guid.Parse(id).ToByteArray();
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ID.SequenceEqual(guidBytes));
+            var exists = await _context.Clientes.AnyAsync(c => c.ID.SequenceEqual(guidBytes));
+            if (!exists)
+                throw new NotFoundException($"No se encontró el cliente con ID: {id}", "id");
 
-            if (cliente == null)
+            ValidateRazonSocial(dto.Razon_Social, errors);
+            await ValidateNitAsync(dto.NIT, errors, guidBytes);
+            await ValidateEmailAsync(dto.Email, errors, guidBytes);
+
+            if (errors.Any())
+                throw new ValidationException(errors);
+        }
+
+        public async Task ValidatePartialUpdateAsync(string id, ClienteUpdateDTO dto)
+        {
+            var errors = new Dictionary<string, List<string>>();
+
+            if (!IsValidUuid(id))
+            {
+                errors["id"] = new List<string> { "El ID debe ser un UUID válido" };
+                throw new ValidationException(errors);
+            }
+
+            var guidBytes = Guid.Parse(id).ToByteArray();
+            var exists = await _context.Clientes.AnyAsync(c => c.ID.SequenceEqual(guidBytes));
+            if (!exists)
                 throw new NotFoundException($"No se encontró el cliente con ID: {id}", "id");
 
             if (!string.IsNullOrEmpty(dto.Razon_Social))

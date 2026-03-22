@@ -6,6 +6,7 @@ namespace HotelManagement.Aplicacion.Validators
     {
         Task ValidateCreateAsync(ClienteCreateDTO dto);
         Task ValidateUpdateAsync(string id, ClienteUpdateDTO dto);
+        Task ValidatePartialUpdateAsync(string id, ClienteUpdateDTO dto);
         Task ValidateDeleteAsync(string id);
     }
 }
