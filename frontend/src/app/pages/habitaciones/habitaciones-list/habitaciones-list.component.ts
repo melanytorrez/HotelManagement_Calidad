@@ -225,6 +225,26 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       this.mensajeExito = null;
     }, 3000);
   }
+  private verificarCambioHabitacion(
+    numero: string,
+    estadoEsperado: string,
+    intentos: number,
+    maxIntentos: number
+  ): void {
+    this.cargarHabitaciones();
+    setTimeout(() => {
+      const hab = this.buscarHabitacionPorNumero(numero);
+      if (hab && hab.estado === estadoEsperado) {
+        this.mostrarMensajeExitoTemporal('Habitación actualizada correctamente');
+        this.cerrarModalEditar();
+      } else if (intentos + 1 < maxIntentos) {
+        this.verificarCambioHabitacion(numero, estadoEsperado, intentos + 1, maxIntentos);
+      } else {
+        this.cerrarModalEditar();
+        alert('El estado no se reflejó en la tabla tras actualizar.');
+      }
+    }, 500);
+  }
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
   private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
