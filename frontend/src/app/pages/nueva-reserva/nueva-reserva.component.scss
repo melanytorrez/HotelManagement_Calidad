@@ -670,25 +670,7 @@
 .suggestions::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 8px; }
 .suggestions::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
 /* === Panel de sugerencias (dropdown de huésped o cliente) === */
-.suggestions {
-  position: absolute;
-  z-index: 999; /* más alto para que se superponga al contenido */
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
 
-  /* --- apariencia de menú desplegable --- */
-  background-color: #ffffff; /* <--- el fondo sólido blanco */
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-  list-style: none;
-  margin: 0;
-  padding: 4px 0;
-  max-height: 250px;
-  overflow-y: auto;
-}
 
 /* cada opción dentro del menú */
 .suggestions li {
