@@ -258,6 +258,20 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     this.cerrarModalEditar();
     alert('El estado no se reflejó en la tabla tras actualizar.');
   }
+    private construirPayloadEdicion(tipoNombre: string, tipoIdFinal: string): any {
+    return {
+      id: this.habitacionAEditar.id,
+      ID: this.habitacionAEditar.id,
+      numero_Habitacion: this.habitacionAEditar.numero,
+      piso: this.habitacionAEditar.piso,
+      tipo_Id: tipoIdFinal,
+      Tipo_Habitacion_ID: tipoIdFinal,
+      tipo_Nombre: tipoNombre,
+      capacidad_Maxima: Number.parseInt(this.habitacionAEditar.capacidad, 10),
+      estado_Habitacion: this.habitacionAEditar.estado || 'Libre'
+    };
+  }
+
   private manejarActualizacionExitosa(response: any): void {
     console.log('=== RESPUESTA EXITOSA ===');
     console.log('response:', response);
