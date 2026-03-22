@@ -219,6 +219,12 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   private buscarHabitacionPorNumero(numero: string): any {
     return this.habitaciones.find((h) => h.numero === numero);
   }
+  private mostrarMensajeExitoTemporal(mensaje: string): void {
+    this.mensajeExito = mensaje;
+    setTimeout(() => {
+      this.mensajeExito = null;
+    }, 3000);
+  }
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
   private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
