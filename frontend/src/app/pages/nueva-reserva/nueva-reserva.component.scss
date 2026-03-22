@@ -448,6 +448,10 @@
     text-align: center;
     color: #4f46e5;
   }
+  input.readonly-field {
+    border: 2px solid #4caf50;
+    background: linear-gradient(to right, #f0f9f0, #ffffff);
+  }
 }
 
 .paso-navegacion {
@@ -705,9 +709,3 @@
   font-size: 1.1rem;
 }
 
-.monto-field {
-  input.readonly-field {
-    border: 2px solid #4caf50;
-    background: linear-gradient(to right, #f0f9f0, #ffffff);
-  }
-}
