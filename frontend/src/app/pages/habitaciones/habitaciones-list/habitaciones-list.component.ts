@@ -250,82 +250,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
-  private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
-    // preparar payload base
-    const basePayload = {
-      id: this.habitacionAEditar.id,
-      ID: this.habitacionAEditar.id,
-      numero_Habitacion: this.habitacionAEditar.numero,
-      piso: this.habitacionAEditar.piso,
-      tipo_Id: this.habitacionAEditar.tipoId ?? null,
-      Tipo_Habitacion_ID: this.habitacionAEditar.tipoId ?? null,
-      tipo_Nombre: tipoNombre,
-      capacidad_Maxima: this.habitacionAEditar.capacidad,
-      // estado_Habitacion será asignado dinámicamente en los intentos
-    };
+    private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
+    const basePayload = this.construirPayloadBaseEdicionCompleta(tipoNombre);
+    const estadosUnicos = this.obtenerEstadosUnicos(estadoBackend);
 
-    // variantes a probar (genérico, sin rama por 'mantenimiento')
-    const estadoBase = estadoBackend;
-    const variantesEstado = [estadoBase];
-    const up = estadoBase.toUpperCase();
-    if (up !== estadoBase) variantesEstado.push(up);
-    const estadosUnicos = variantesEstado.filter((v, i, a) => v && a.indexOf(v) === i);
-
-    const tryUpdate = (index: number) => {
-      if (index >= estadosUnicos.length) {
-        alert('No se pudo guardar la habitación. Intenta nuevamente o revisa el servidor.');
-        return;
-      }
-      const payload = { ...basePayload, estado_Habitacion: estadosUnicos[index] };
-      console.log(`Intento ${index + 1}/${estadosUnicos.length} - payload:`, payload);
-      this.habitacionService.updateHabitacion(payload).subscribe({
-        next: (response) => {
-          console.log(`Respuesta HTTP status=${response.status}`, response);
-          const actualizado = response.body;
-          const updated = actualizado || {
-            id: payload.ID,
-            numero: payload.numero_Habitacion,
-            piso: payload.piso,
-            tipoNombre: payload.tipo_Nombre,
-            capacidad: payload.capacidad_Maxima,
-            estado: payload.estado_Habitacion
-          };
-          this.habitaciones = this.habitaciones.map(h => h.id === updated.id ? updated : h);
-          this.cerrarModalEditar();
-        },
-        error: (err: any) => {
-          console.error(`Error intento ${index + 1}:`, err);
-          // Mostrar cuerpo de error si lo devuelve el servidor
-          if (err?.error) {
-            console.error('Cuerpo de error del servidor:', err.error);
-            // Si es 5xx, reintentar con otra variante
-            if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
-              console.warn('Error 5xx, reintentando con siguiente variante de estado...');
-              tryUpdate(index + 1);
-              return;
-            }
-            // Mostrar mensaje detallado al usuario
-            const serverMsg = typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
-            alert(`No se pudo guardar la habitación. Respuesta servidor: ${serverMsg}`);
-            return;
-          }
-
-          // si no hay cuerpo, manejo estándar
-          if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
-            tryUpdate(index + 1);
-            return;
-          }
-
-          const serverMsg =
-            err?.message ||
-            (err?.status ? `HTTP ${err.status} ${err.statusText || ''}` : null);
-          alert(`No se pudo guardar la habitación. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
-        }
-      });
-    };
-
-    tryUpdate(0);
+    this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, 0);
   }
+
   private construirPayloadBaseEdicionCompleta(tipoNombre: string): any {
     return {
       id: this.habitacionAEditar.id,
