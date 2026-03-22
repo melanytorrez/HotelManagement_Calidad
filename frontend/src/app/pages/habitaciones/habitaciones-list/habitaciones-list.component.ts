@@ -373,52 +373,62 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     console.log(`Intento ${index + 1}/${estadosUnicos.length} - payload:`, payload);
 
     this.habitacionService.updateHabitacion(payload).subscribe({
-      next: (response) => {
-        console.log(`Respuesta HTTP status=${response.status}`, response);
-        const actualizado = response.body;
-        const updated = actualizado || {
-          id: payload.ID,
-          numero: payload.numero_Habitacion,
-          piso: payload.piso,
-          tipoNombre: payload.tipo_Nombre,
-          capacidad: payload.capacidad_Maxima,
-          estado: payload.estado_Habitacion
-        };
-
-        this.habitaciones = this.habitaciones.map(h => h.id === updated.id ? updated : h);
-        this.cerrarModalEditar();
-      },
-      error: (err: any) => {
-        console.error(`Error intento ${index + 1}:`, err);
-
-        if (err?.error) {
-          console.error('Cuerpo de error del servidor:', err.error);
-
-          if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
-            console.warn('Error 5xx, reintentando con siguiente variante de estado...');
-            this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, index + 1);
-            return;
-          }
-
-          const serverMsg =
-            typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
-          alert(`No se pudo guardar la habitación. Respuesta servidor: ${serverMsg}`);
-          return;
-        }
-
-        if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
-          this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, index + 1);
-          return;
-        }
-
-        const serverMsg =
-          err?.message ||
-          (err?.status ? `HTTP ${err.status} ${err.statusText || ''}` : null);
-
-        alert(`No se pudo guardar la habitación. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
-      }
+      next: (response) => this.manejarExitoGuardadoCompleto(response, payload),
+      error: (err: any) =>
+        this.manejarErrorGuardadoCompleto(err, basePayload, estadosUnicos, index)
     });
   }
+  private manejarExitoGuardadoCompleto(response: any, payload: any): void {
+    console.log(`Respuesta HTTP status=${response.status}`, response);
+
+    const actualizado = response.body;
+    const updated = actualizado || {
+      id: payload.ID,
+      numero: payload.numero_Habitacion,
+      piso: payload.piso,
+      tipoNombre: payload.tipo_Nombre,
+      capacidad: payload.capacidad_Maxima,
+      estado: payload.estado_Habitacion
+    };
+
+    this.habitaciones = this.habitaciones.map(h => h.id === updated.id ? updated : h);
+    this.cerrarModalEditar();
+  }
+  private manejarErrorGuardadoCompleto(
+    err: any,
+    basePayload: any,
+    estadosUnicos: string[],
+    index: number
+  ): void {
+    console.error(`Error intento ${index + 1}:`, err);
+
+    if (err?.error) {
+      console.error('Cuerpo de error del servidor:', err.error);
+
+      if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
+        console.warn('Error 5xx, reintentando con siguiente variante de estado...');
+        this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, index + 1);
+        return;
+      }
+
+      const serverMsg =
+        typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
+      alert(`No se pudo guardar la habitación. Respuesta servidor: ${serverMsg}`);
+      return;
+    }
+
+    if (this.debeReintentarActualizacion(err?.status, index, estadosUnicos.length)) {
+      this.intentarActualizarHabitacionConEstado(basePayload, estadosUnicos, index + 1);
+      return;
+    }
+
+    const serverMsg =
+      err?.message ||
+      (err?.status ? `HTTP ${err.status} ${err.statusText || ''}` : null);
+
+    alert(`No se pudo guardar la habitación. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
+  }
+
 
   // Eliminar
   abrirModalEliminar(h: any) {
