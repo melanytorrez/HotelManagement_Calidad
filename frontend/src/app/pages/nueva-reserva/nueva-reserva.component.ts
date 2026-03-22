@@ -254,7 +254,7 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
       .normalize('NFD')
       .replaceAll(/\p{Diacritic}/gu, '');
 
-  private digits = (v: unknown) => (v ?? '').toString().replace(/\D+/g, '');
+  private digits = (v: string | number | null | undefined) => String(v ?? '').replaceAll(/\D+/g, '');
 
   filteredClientes = computed<ClienteOption[]>(() => {
     const termRaw = this.searchTerm().trim();
