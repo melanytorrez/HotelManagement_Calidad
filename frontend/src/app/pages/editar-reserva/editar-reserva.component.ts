@@ -13,10 +13,10 @@ import { NuevaReservaService, ClienteOption, HabitacionOption, HuespedOption } f
   styleUrls: ['./editar-reserva.component.scss']
 })
 export class EditarReservaComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private api = inject(NuevaReservaService);
+  private readonly fb = inject(FormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly api = inject(NuevaReservaService);
 
   clientes = signal<ClienteOption[]>([]);
   habitaciones = signal<HabitacionOption[]>([]);
