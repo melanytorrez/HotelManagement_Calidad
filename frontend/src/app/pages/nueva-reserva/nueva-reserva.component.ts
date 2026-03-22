@@ -248,12 +248,11 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
     this.form.patchValue({ montoTotal }, { emitEvent: false });
   }
 
-  private norm = (v: unknown) =>
-    (v ?? '')
-      .toString()
+  private norm = (v: string | number | null | undefined) =>
+    String(v ?? '')
       .toLowerCase()
       .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '');
+      .replaceAll(/\p{Diacritic}/gu, '');
 
   private digits = (v: unknown) => (v ?? '').toString().replace(/\D+/g, '');
 
