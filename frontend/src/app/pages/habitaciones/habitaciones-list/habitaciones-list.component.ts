@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { NuevaReservaService } from '../../../core/services/nueva-reserva.service';
 import { Subscription, timer } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HabitacionService } from '../../../core/services/habitacion.service';
@@ -15,8 +14,7 @@ import { OrderByNumeroPipe } from './order-by-numero.pipe';
   styleUrls: ['./habitaciones-list.component.scss']
 })
 export class HabitacionesListComponent implements OnInit, OnDestroy {
-    mensajeExito: string | null = null;
-  private readonly api = inject(NuevaReservaService);
+  mensajeExito: string | null = null;
 
   habitaciones: any[] = [];
   loading = true;
@@ -27,15 +25,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   // Modales
   modalEditarAbierto = false;
   habitacionAEditar: any = null;
-  // nuevo: guardar estado original para detectar cambios
-  originalEstado: string | null = null;
 
   modalEliminarAbierto = false;
   habitacionAEliminar: any = null;
 
   private pollSub: Subscription | null = null;
 
-  // Para búsqueda por número de habitación
+  // Para busqueda por numero de habitacion
   busquedaNumero: string = '';
 
   constructor(
@@ -44,7 +40,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Leer mensaje de éxito desde query param si viene de creación
+    // Leer mensaje de exito desde query param si viene de creacion
     const url = new URL(window.location.href);
     const exito = url.searchParams.get('exito');
     if (exito) {
@@ -56,13 +52,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
     this.cargarHabitaciones();
 
-    // Cargar tipos de habitación para el select
+    // Cargar tipos de habitacion para el select
     this.habitacionService.getTiposHabitacion().subscribe({
       next: (t: any[]) => {
         this.tipos = t || [];
       },
       error: (err: any) => {
-        console.error('Error cargando tipos de habitación:', err);
+        console.error('Error cargando tipos de habitacion:', err);
       }
     });
 
@@ -96,13 +92,13 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
   // Editar
   abrirModalEditar(h: any) {
-    console.log('=== HABITACIÓN ORIGINAL ===');
+    console.log('=== HABITACION ORIGINAL ===');
     console.log('Datos completos de h:', h);
-    
+
     // Intentar obtener el tipoId de diferentes posibles propiedades
     const tipoId = h.tipoId ?? h.tipo_Id ?? h.Tipo_Habitacion_ID ?? h.tipo_Habitacion_ID ?? null;
-    
-    this.habitacionAEditar = { 
+
+    this.habitacionAEditar = {
       id: h.id,
       numero: h.numero,
       piso: h.piso,
@@ -110,7 +106,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       capacidad: h.capacidad,
       estado: h.estado || 'Libre'
     };
-    
+
     console.log('habitacionAEditar creado:', this.habitacionAEditar);
     this.modalEditarAbierto = true;
   }
@@ -120,20 +116,20 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     this.habitacionAEditar = null;
   }
 
-    guardarEdicion() {
+  guardarEdicion() {
     if (!this.habitacionAEditar.id) {
-      console.error('Error: No se encontró el ID de la habitación');
-      alert('Error: No se encontró el ID de la habitación');
+      console.error('Error: No se encontro el ID de la habitacion');
+      alert('Error: No se encontro el ID de la habitacion');
       return;
     }
 
     if (!this.habitacionAEditar.tipoId) {
-      console.error('Error: No se seleccionó un tipo de habitación');
-      alert('Error: Debe seleccionar un tipo de habitación');
+      console.error('Error: No se selecciono un tipo de habitacion');
+      alert('Error: Debe seleccionar un tipo de habitacion');
       return;
     }
 
-    console.log('=== DATOS DE EDICIÓN ===');
+    console.log('=== DATOS DE EDICION ===');
     console.log('habitacionAEditar:', this.habitacionAEditar);
     console.log('tipos disponibles:', this.tipos);
 
@@ -163,13 +159,15 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   private buscarHabitacionPorNumero(numero: string): any {
     return this.habitaciones.find((h) => h.numero === numero);
   }
+
   private mostrarMensajeExitoTemporal(mensaje: string): void {
     this.mensajeExito = mensaje;
     setTimeout(() => {
       this.mensajeExito = null;
     }, 3000);
   }
-    private verificarCambioHabitacion(
+
+  private verificarCambioHabitacion(
     numero: string,
     estadoEsperado: string,
     intentos: number,
@@ -180,6 +178,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       this.evaluarCambioHabitacion(numero, estadoEsperado, intentos, maxIntentos);
     }, 500);
   }
+
   private evaluarCambioHabitacion(
     numero: string,
     estadoEsperado: string,
@@ -189,7 +188,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     const hab = this.buscarHabitacionPorNumero(numero);
 
     if (hab && hab.estado === estadoEsperado) {
-      this.mostrarMensajeExitoTemporal('Habitación actualizada correctamente');
+      this.mostrarMensajeExitoTemporal('Habitacion actualizada correctamente');
       this.cerrarModalEditar();
       return;
     }
@@ -200,9 +199,10 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     }
 
     this.cerrarModalEditar();
-    alert('El estado no se reflejó en la tabla tras actualizar.');
+    alert('El estado no se reflejo en la tabla tras actualizar.');
   }
-    private construirPayloadEdicion(tipoNombre: string, tipoIdFinal: string): any {
+
+  private construirPayloadEdicion(tipoNombre: string, tipoIdFinal: string): any {
     return {
       id: this.habitacionAEditar.id,
       ID: this.habitacionAEditar.id,
@@ -225,6 +225,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
     this.verificarCambioHabitacion(numero, estadoEsperado, 0, 30);
   }
+
   private manejarErrorActualizacion(err: any): void {
     console.error('=== ERROR AL ACTUALIZAR ===');
     console.error('Error completo:', err);
@@ -233,11 +234,11 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     console.error('Error body:', err.error);
     console.error('URL:', err.url);
 
-    let mensaje = 'No se pudo actualizar la habitación.\n\n';
+    let mensaje = 'No se pudo actualizar la habitacion.\n\n';
     if (err.status === 404) {
-      mensaje += 'Error 404: La habitación no fue encontrada en el servidor.';
+      mensaje += 'Error 404: La habitacion no fue encontrada en el servidor.';
     } else if (err.status === 400) {
-      mensaje += 'Error 400: Datos inválidos.\n';
+      mensaje += 'Error 400: Datos invalidos.\n';
       mensaje += JSON.stringify(err.error);
     } else if (err.status === 500) {
       mensaje += 'Error 500: Error interno del servidor.';
@@ -248,9 +249,8 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     alert(mensaje);
   }
 
-
-  // Extrae la lógica de actualización completa para reusar desde el fallback
-    private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
+  // Extrae la logica de actualizacion completa para reusar desde el fallback
+  private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
     const basePayload = this.construirPayloadBaseEdicionCompleta(tipoNombre);
     const estadosUnicos = this.obtenerEstadosUnicos(estadoBackend);
 
@@ -269,6 +269,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       capacidad_Maxima: this.habitacionAEditar.capacidad
     };
   }
+
   private obtenerEstadosUnicos(estadoBackend: string): string[] {
     const variantesEstado = [estadoBackend];
     const up = estadoBackend.toUpperCase();
@@ -279,6 +280,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
     return variantesEstado.filter((v, i, a) => !!v && a.indexOf(v) === i);
   }
+
   private debeReintentarActualizacion(
     status: number | undefined,
     index: number,
@@ -286,13 +288,14 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   ): boolean {
     return status !== undefined && status >= 500 && status < 600 && index < totalEstados - 1;
   }
+
   private intentarActualizarHabitacionConEstado(
     basePayload: any,
     estadosUnicos: string[],
     index: number
   ): void {
     if (index >= estadosUnicos.length) {
-      alert('No se pudo guardar la habitación. Intenta nuevamente o revisa el servidor.');
+      alert('No se pudo guardar la habitacion. Intenta nuevamente o revisa el servidor.');
       return;
     }
 
@@ -309,6 +312,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
         this.manejarErrorGuardadoCompleto(err, basePayload, estadosUnicos, index)
     });
   }
+
   private manejarExitoGuardadoCompleto(response: any, payload: any): void {
     console.log(`Respuesta HTTP status=${response.status}`, response);
 
@@ -325,6 +329,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
     this.habitaciones = this.habitaciones.map(h => h.id === updated.id ? updated : h);
     this.cerrarModalEditar();
   }
+
   private manejarErrorGuardadoCompleto(
     err: any,
     basePayload: any,
@@ -344,7 +349,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
 
       const serverMsg =
         typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
-      alert(`No se pudo guardar la habitación. Respuesta servidor: ${serverMsg}`);
+      alert(`No se pudo guardar la habitacion. Respuesta servidor: ${serverMsg}`);
       return;
     }
 
@@ -357,9 +362,8 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       err?.message ||
       (err?.status ? `HTTP ${err.status} ${err.statusText || ''}` : null);
 
-    alert(`No se pudo guardar la habitación. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
+    alert(`No se pudo guardar la habitacion. ${serverMsg ? 'Motivo: ' + serverMsg : 'Intenta nuevamente.'}`);
   }
-
 
   // Eliminar
   abrirModalEliminar(h: any) {
@@ -378,12 +382,12 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
       next: () => {
         this.habitaciones = this.habitaciones.filter(h => h.id !== this.habitacionAEliminar.id);
         this.cerrarModalEliminar();
-        this.mensajeExito = 'Habitación eliminada correctamente';
+        this.mensajeExito = 'Habitacion eliminada correctamente';
         setTimeout(() => this.mensajeExito = null, 3000);
       },
       error: (err: any) => {
-        console.error('Error eliminando habitación:', err);
-        alert('No se pudo eliminar la habitación. Intenta nuevamente.');
+        console.error('Error eliminando habitacion:', err);
+        alert('No se pudo eliminar la habitacion. Intenta nuevamente.');
       }
     });
   }
@@ -415,7 +419,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
         h.numero?.toString().includes(this.busquedaNumero.trim())
       );
     }
-    // El pipe orderByNumero se encargará de ordenar en el HTML
+    // El pipe orderByNumero se encargara de ordenar en el HTML
     return filtradas;
   }
 }
