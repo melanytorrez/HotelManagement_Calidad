@@ -216,6 +216,9 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
         }
       });
   }
+  private buscarHabitacionPorNumero(numero: string): any {
+    return this.habitaciones.find((h) => h.numero === numero);
+  }
 
   // Extrae la lógica de actualización completa para reusar desde el fallback
   private _guardarEdicionCompleta(tipoNombre: string, estadoBackend: string) {
