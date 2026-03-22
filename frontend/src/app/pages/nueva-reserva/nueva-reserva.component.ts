@@ -120,7 +120,7 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
   // Obtener IDs seleccionados en otros grupos
   const seleccionadas = new Set(
     this.habitacionesFormArray.controls
-      .map((fg, i) => i !== indexActual ? fg.get('habitacionId')?.value : null)
+      .map((fg, i) => i == indexActual ? null : fg.get('habitacionId')?.value)
       .filter(id => !!id)
   );
 
