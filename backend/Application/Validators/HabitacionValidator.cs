@@ -124,7 +124,7 @@ namespace HotelManagement.Aplicacion.Validators
             }
         }
 
-        private void ValidatePiso(int piso, Dictionary<string, List<string>> errors)
+        private static void ValidatePiso(int piso, Dictionary<string, List<string>> errors)
         {
             if (piso < 0 || piso > 100)
             {
@@ -132,7 +132,7 @@ namespace HotelManagement.Aplicacion.Validators
             }
         }
 
-        private void ValidateEstadoHabitacion(string? estado, Dictionary<string, List<string>> errors)
+        private static void ValidateEstadoHabitacion(string? estado, Dictionary<string, List<string>> errors)
         {
             var estadosValidos = new[] { "Libre", "Disponible", "Reservada", "Ocupada", "Fuera de Servicio", "Mantenimiento" };
             if (string.IsNullOrWhiteSpace(estado))
