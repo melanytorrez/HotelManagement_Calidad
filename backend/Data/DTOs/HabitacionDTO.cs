@@ -1,6 +1,6 @@
 namespace HotelManagement.DTOs
 {
-    public class HabitacionDTO
+    public class HabitacionDto
     {
         public string ID { get; set; } = string.Empty;
         public string Numero_Habitacion { get; set; } = string.Empty;
@@ -13,7 +13,7 @@ namespace HotelManagement.DTOs
         public bool Activo { get; set; }
     }
 
-    public class HabitacionCreateDTO
+    public class HabitacionCreateDto
     {
         public string Tipo_Habitacion_ID { get; set; } = string.Empty;
         public string Numero_Habitacion { get; set; } = string.Empty;
@@ -21,7 +21,7 @@ namespace HotelManagement.DTOs
         public string Estado_Habitacion { get; set; } = "Libre";
     }
 
-    public class HabitacionUpdateDTO
+    public class HabitacionUpdateDto
     {
         public string? Tipo_Habitacion_ID { get; set; }
         public string? Numero_Habitacion { get; set; }

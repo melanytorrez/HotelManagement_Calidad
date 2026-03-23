@@ -4,10 +4,10 @@ namespace HotelManagement.Application.Services
 {
     public interface IHuespedService
     {
-        Task<List<HuespedDTO>> GetAllAsync();
-        Task<HuespedDTO> GetByIdAsync(string id);
-        Task<HuespedDTO> CreateAsync(HuespedCreateDTO dto);
-        Task<HuespedDTO> UpdateAsync(string id, HuespedUpdateDTO dto);
+        Task<List<HuespedDto>> GetAllAsync();
+        Task<HuespedDto> GetByIdAsync(string id);
+        Task<HuespedDto> CreateAsync(HuespedCreateDto dto);
+        Task<HuespedDto> UpdateAsync(string id, HuespedUpdateDto dto);
         Task<bool> DeleteAsync(string id);
     }
 }

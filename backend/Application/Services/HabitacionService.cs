@@ -20,13 +20,13 @@ namespace HotelManagement.Services
             _validator = validator;
         }
 
-        public async Task<IEnumerable<HabitacionDTO>> GetAllAsync()
+        public async Task<IEnumerable<HabitacionDto>> GetAllAsync()
         {
             var habitaciones = await _repository.GetAllAsync();
             return habitaciones.Select(MapToDTO);
         }
 
-        public async Task<HabitacionDTO> GetByIdAsync(string id)
+        public async Task<HabitacionDto> GetByIdAsync(string id)
         {
             if (!Guid.TryParse(id, out Guid guid))
                 throw new BadRequestException("El ID proporcionado no es un GUID válido.");
@@ -40,7 +40,7 @@ namespace HotelManagement.Services
             return MapToDTO(habitacion);
         }
 
-        public async Task<HabitacionDTO> CreateAsync(HabitacionCreateDTO dto)
+        public async Task<HabitacionDto> CreateAsync(HabitacionCreateDto dto)
         {
             await _validator.ValidateCreateAsync(dto);
 
@@ -63,9 +63,9 @@ namespace HotelManagement.Services
             return MapToDTO(created);
         }
 
-        public async Task<HabitacionDTO> UpdateAsync(string id, HabitacionUpdateDTO dto)
+        public async Task<HabitacionDto> UpdateAsync(string id, HabitacionUpdateDto dto)
         {
-            await _validator.ValidateUpdateAsync(id, new HabitacionCreateDTO 
+            await _validator.ValidateUpdateAsync(id, new HabitacionCreateDto 
             { 
                 Tipo_Habitacion_ID = dto.Tipo_Habitacion_ID ?? string.Empty,
                 Numero_Habitacion = dto.Numero_Habitacion ?? string.Empty,
@@ -112,7 +112,7 @@ namespace HotelManagement.Services
             return await _repository.DeleteAsync(guidBytes);
         }
 
-        public async Task<HabitacionDTO> PartialUpdateAsync(string id, HabitacionUpdateDTO dto)
+        public async Task<HabitacionDto> PartialUpdateAsync(string id, HabitacionUpdateDto dto)
         {
             await _validator.ValidatePartialUpdateAsync(id, dto);
 
@@ -141,11 +141,11 @@ namespace HotelManagement.Services
             return MapToDTO(updated);
         }
 
-        public async Task<IEnumerable<HabitacionDTO>> GetByTipoHabitacionIdAsync(string tipoHabitacionId)
+        public async Task<IEnumerable<HabitacionDto>> GetByTipoHabitacionIdAsync(string tipoHabitacionId)
         {
             // Método no implementado en IHabitacionRepository
             // Se retorna lista vacía por ahora
-            return await Task.FromResult(Enumerable.Empty<HabitacionDTO>());
+            return await Task.FromResult(Enumerable.Empty<HabitacionDto>());
         }
 
         public async Task<bool> IsHabitacionAvailableAsync(string id, DateTime fechaEntrada, DateTime fechaSalida)
@@ -155,9 +155,9 @@ namespace HotelManagement.Services
             return await Task.FromResult(true);
         }
 
-        private HabitacionDTO MapToDTO(Habitacion habitacion)
+        private static HabitacionDto MapToDTO(Habitacion habitacion)
         {
-            return new HabitacionDTO
+            return new HabitacionDto
             {
                 ID = ByteArrayToGuid(habitacion.ID),
                 Numero_Habitacion = habitacion.Numero_Habitacion,
@@ -171,6 +171,6 @@ namespace HotelManagement.Services
             };
         }
 
-        private string ByteArrayToGuid(byte[] bytes) => new Guid(bytes).ToString();
+        private static string ByteArrayToGuid(byte[] bytes) => new Guid(bytes).ToString();
     }
 }
