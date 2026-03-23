@@ -187,7 +187,7 @@ export class HabitacionesListComponent implements OnInit, OnDestroy {
   ): void {
     const hab = this.buscarHabitacionPorNumero(numero);
 
-    if (hab && hab.estado === estadoEsperado) {
+    if (hab?.estado === estadoEsperado) {
       this.mostrarMensajeExitoTemporal('Habitacion actualizada correctamente');
       this.cerrarModalEditar();
       return;

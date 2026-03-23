@@ -27,7 +27,7 @@ namespace HotelManagement.Aplicacion.Validators
             var errors = new Dictionary<string, List<string>>();
 
             await ValidateNumeroHabitacionAsync(dto.Numero_Habitacion, errors);
-            ValidatePiso(dto.Piso, errors);
+            ValidatePiso(dto.Piso.Value, errors);
             ValidateEstadoHabitacion(dto.Estado_Habitacion, errors);
             await ValidateTipoHabitacionAsync(dto.Tipo_Habitacion_ID, errors);
 
@@ -52,7 +52,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new NotFoundException($"No se encontró la habitación con ID: {id}", "id");
 
             await ValidateNumeroHabitacionAsync(dto.Numero_Habitacion, errors, guidBytes);
-            ValidatePiso(dto.Piso, errors);
+            ValidatePiso(dto.Piso.Value, errors);
             ValidateEstadoHabitacion(dto.Estado_Habitacion, errors);
             await ValidateTipoHabitacionAsync(dto.Tipo_Habitacion_ID, errors);
 
@@ -124,7 +124,7 @@ namespace HotelManagement.Aplicacion.Validators
             }
         }
 
-        private void ValidatePiso(int piso, Dictionary<string, List<string>> errors)
+        private static void ValidatePiso(int piso, Dictionary<string, List<string>> errors)
         {
             if (piso < 0 || piso > 100)
             {
@@ -132,7 +132,7 @@ namespace HotelManagement.Aplicacion.Validators
             }
         }
 
-        private void ValidateEstadoHabitacion(string? estado, Dictionary<string, List<string>> errors)
+        private static void ValidateEstadoHabitacion(string? estado, Dictionary<string, List<string>> errors)
         {
             var estadosValidos = new[] { "Libre", "Disponible", "Reservada", "Ocupada", "Fuera de Servicio", "Mantenimiento" };
             if (string.IsNullOrWhiteSpace(estado))

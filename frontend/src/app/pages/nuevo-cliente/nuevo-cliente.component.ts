@@ -156,36 +156,55 @@ export class NuevoClienteComponent implements OnInit {
   }
 
   getLocalError(field: string): string {
-    const control = this.form.get(field);
-    if (control?.errors) {
-      if (control.errors['required']) return 'Este campo es obligatorio';
-      if (control.errors['email']) return 'Email inválido';
-      
-      // Errores de Razón Social
-      if (field === 'razonSocial') {
-        if (control.errors['formatoInvalido']) {
-          return 'Solo se permiten letras, números, espacios, puntos y comas';
-        }
-        if (control.errors['maxlength']) {
-          return 'La Razón Social no puede exceder 20 caracteres';
-        }
-      }
+    const errors = this.form.get(field)?.errors;
 
-      // Errores de NIT
-      if (field === 'nit') {
-        if (control.errors['formatoInvalido']) {
-          return 'El NIT solo debe contener números';
-        }
-        if (control.errors['minimoDigitos']) {
-          return 'El NIT debe tener al menos 7 dígitos';
-        }
-        if (control.errors['maximoDigitos']) {
-          return 'El NIT no puede tener más de 13 dígitos';
-        }
-      }
+    if (!errors) return '';
+    if (errors['required']) return 'Este campo es obligatorio';
+    if (errors['email']) return 'Email inválido';
+
+    return this.getFieldSpecificError(field, errors);
+  }
+
+  private getFieldSpecificError(field: string, errors: ValidationErrors): string {
+    if (field === 'razonSocial') {
+      return this.getRazonSocialError(errors);
     }
+
+    if (field === 'nit') {
+      return this.getNitError(errors);
+    }
+
     return '';
   }
+
+  private getRazonSocialError(errors: ValidationErrors): string {
+    if (errors['formatoInvalido']) {
+      return 'Solo se permiten letras, números, espacios, puntos y comas';
+    }
+
+    if (errors['maxlength']) {
+      return 'La Razón Social no puede exceder 20 caracteres';
+    }
+
+    return '';
+  }
+
+  private getNitError(errors: ValidationErrors): string {
+    if (errors['formatoInvalido']) {
+      return 'El NIT solo debe contener números';
+    }
+
+    if (errors['minimoDigitos']) {
+      return 'El NIT debe tener al menos 7 dígitos';
+    }
+
+    if (errors['maximoDigitos']) {
+      return 'El NIT no puede tener más de 13 dígitos';
+    }
+
+    return '';
+  }
+
 
   // Métodos de validación de servidor
   hasServerError(field: string): boolean {

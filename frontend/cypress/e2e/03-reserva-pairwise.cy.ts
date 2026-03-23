@@ -5,6 +5,13 @@
  */
 describe('Reservas CRUD (estables)', () => {
 	const API = 'http://localhost:5000/api';
+	
+	const validarMontoReserva = (reservaId: string, expectedMonto: number) => {
+		return cy.request('GET', `${API}/Reserva/${reservaId}`).then(getR => {
+			const montoApi = getR.body?.monto_Total ?? getR.body?.montoTotal ?? getR.body?.Monto_Total;
+			expect(Number(montoApi)).to.be.closeTo(expectedMonto, 0.01);
+		});
+	};
 
 	beforeEach(() => {
 		// Registrar intercept ANTES de la visita para no perder la petición inicial
@@ -320,11 +327,9 @@ describe('Reservas CRUD (estables)', () => {
 						};
 						return cy.request({ method: 'POST', url: `${API}/DetalleReserva/multiple`, body: detalles, failOnStatusCode: false }).then(() => {
 							// Obtener reserva y validar monto
-							cy.request('GET', `${API}/Reserva/${reservaId}`).then(getR => {
-								const montoApi = getR.body?.monto_Total ?? getR.body?.montoTotal ?? getR.body?.Monto_Total;
-								expect(Number(montoApi)).to.be.closeTo(expectedMonto, 0.01);
-							});
+							return validarMontoReserva(reservaId, expectedMonto);
 						});
+
 					});
 			});
 		});

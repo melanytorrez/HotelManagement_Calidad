@@ -35,6 +35,7 @@ export interface HabitacionOption {
   estado?: string;
   // agrega aquí otros campos que uses en el componente
 }
+type SearchableValue = string | number | null | undefined;
 
 @Component({
   selector: 'app-nueva-reserva',
@@ -64,7 +65,7 @@ export class NuevaReservaComponent implements OnInit {
   habitacionSearchTerm: string[] = [];
   showHabitacionSug: boolean[] = [];
 
-  private norm3 = (v: string | number | null | undefined) =>
+  private norm3 = (v: SearchableValue) =>
   String(v ?? '').toLowerCase().normalize('NFD').replaceAll(/\p{Diacritic}/gu, '');
 
 
@@ -248,13 +249,13 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
     this.form.patchValue({ montoTotal }, { emitEvent: false });
   }
 
-  private norm = (v: string | number | null | undefined) =>
+  private norm = (v: SearchableValue) =>
     String(v ?? '')
       .toLowerCase()
       .normalize('NFD')
       .replaceAll(/\p{Diacritic}/gu, '');
 
-  private digits = (v: string | number | null | undefined) => String(v ?? '').replaceAll(/\D+/g, '');
+  private readonly digits = (v: SearchableValue) => String(v ?? '').replaceAll(/\D+/g, '');
 
   filteredClientes = computed<ClienteOption[]>(() => {
     const termRaw = this.searchTerm().trim();

@@ -51,7 +51,7 @@ namespace HotelManagement.Services
                 ID = Guid.NewGuid().ToByteArray(),
                 Tipo_Habitacion_ID = tipoHabitacionId,
                 Numero_Habitacion = dto.Numero_Habitacion,
-                Piso = dto.Piso,
+                Piso = dto.Piso.Value,
                 Estado_Habitacion = dto.Estado_Habitacion,
                 Fecha_Creacion = DateTime.Now,
                 Fecha_Actualizacion = DateTime.Now,
