@@ -27,7 +27,7 @@ namespace HotelManagement.Aplicacion.Validators
             var errors = new Dictionary<string, List<string>>();
 
             await ValidateNumeroHabitacionAsync(dto.Numero_Habitacion, errors);
-            ValidatePiso(dto.Piso.Value, errors);
+            ValidatePiso(dto.Piso!.Value, errors);
             ValidateEstadoHabitacion(dto.Estado_Habitacion, errors);
             await ValidateTipoHabitacionAsync(dto.Tipo_Habitacion_ID, errors);
 
@@ -52,7 +52,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new NotFoundException($"No se encontró la habitación con ID: {id}", "id");
 
             await ValidateNumeroHabitacionAsync(dto.Numero_Habitacion, errors, guidBytes);
-            ValidatePiso(dto.Piso.Value, errors);
+            ValidatePiso(dto.Piso!.Value, errors);
             ValidateEstadoHabitacion(dto.Estado_Habitacion, errors);
             await ValidateTipoHabitacionAsync(dto.Tipo_Habitacion_ID, errors);
 
