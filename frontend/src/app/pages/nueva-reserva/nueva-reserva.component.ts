@@ -45,9 +45,9 @@ type SearchableValue = string | number | null | undefined;
   styleUrls: ['./nueva-reserva.component.scss']
 })
 export class NuevaReservaComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private http = inject(HttpClient);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
   private readonly API_URL = 'http://localhost:5000/api';
 
@@ -65,7 +65,7 @@ export class NuevaReservaComponent implements OnInit {
   habitacionSearchTerm: string[] = [];
   showHabitacionSug: boolean[] = [];
 
-  private norm3 = (v: SearchableValue) =>
+  private readonly norm3 = (v: SearchableValue) =>
   String(v ?? '').toLowerCase().normalize('NFD').replaceAll(/\p{Diacritic}/gu, '');
 
 
@@ -249,7 +249,7 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
     this.form.patchValue({ montoTotal }, { emitEvent: false });
   }
 
-  private norm = (v: SearchableValue) =>
+  private readonly norm = (v: SearchableValue) =>
     String(v ?? '')
       .toLowerCase()
       .normalize('NFD')
