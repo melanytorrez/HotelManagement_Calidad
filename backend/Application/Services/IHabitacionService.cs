@@ -9,19 +9,19 @@ namespace HotelManagement.Application.Services
     public interface IHabitacionService
     {
         // CRUD Básico
-        Task<IEnumerable<HabitacionDTO>> GetAllAsync();
-        Task<HabitacionDTO> GetByIdAsync(string id);
-        Task<HabitacionDTO> CreateAsync(HabitacionCreateDTO dto);
-        Task<HabitacionDTO> UpdateAsync(string id, HabitacionUpdateDTO dto);
+        Task<IEnumerable<HabitacionDto>> GetAllAsync();
+        Task<HabitacionDto> GetByIdAsync(string id);
+        Task<HabitacionDto> CreateAsync(HabitacionCreateDto dto);
+        Task<HabitacionDto> UpdateAsync(string id, HabitacionUpdateDto dto);
         
         // Operación de Eliminación
         Task<bool> DeleteAsync(string id);
         
         // Operación de Actualización Parcial (Necesario para el escenario de cambio de estado)
-        Task<HabitacionDTO> PartialUpdateAsync(string id, HabitacionUpdateDTO dto);
+        Task<HabitacionDto> PartialUpdateAsync(string id, HabitacionUpdateDto dto);
 
         // Consultas específicas
-        Task<IEnumerable<HabitacionDTO>> GetByTipoHabitacionIdAsync(string tipoHabitacionId);
+        Task<IEnumerable<HabitacionDto>> GetByTipoHabitacionIdAsync(string tipoHabitacionId);
         
         // Operación de disponibilidad (opcional, pero útil)
         Task<bool> IsHabitacionAvailableAsync(string id, System.DateTime fechaEntrada, System.DateTime fechaSalida);

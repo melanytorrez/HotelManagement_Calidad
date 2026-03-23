@@ -4,11 +4,11 @@ namespace HotelManagement.Services
 {
     public interface IDetalleReservaService
     {
-        Task<List<DetalleReservaDTO>> GetAllAsync();
-        Task<DetalleReservaDTO> GetByIdAsync(string id);
-        Task<DetalleReservaDTO> CreateAsync(DetalleReservaCreateDTO dto);
-        Task<DetalleReservaDTO> UpdateAsync(string id, DetalleReservaUpdateDTO dto);
+        Task<List<DetalleReservaDto>> GetAllAsync();
+        Task<DetalleReservaDto> GetByIdAsync(string id);
+        Task<DetalleReservaDto> CreateAsync(DetalleReservaCreateDto dto);
+        Task<DetalleReservaDto> UpdateAsync(string id, DetalleReservaUpdateDto dto);
         Task<bool> DeleteAsync(string id);
-        Task<List<DetalleReservaDTO>> GetByReservaIdAsync(string reservaId);
+        Task<List<DetalleReservaDto>> GetByReservaIdAsync(string reservaId);
     }
 }

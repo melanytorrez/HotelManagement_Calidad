@@ -6,8 +6,8 @@ namespace HotelManagement.Aplicacion.Validators
 {
     public interface IDetalleReservaValidator
     {
-        Task ValidateCreateAsync(DetalleReservaCreateDTO dto);
-        Task ValidateUpdateAsync(string id, DetalleReservaUpdateDTO dto);
+        Task ValidateCreateAsync(DetalleReservaCreateDto dto);
+        Task ValidateUpdateAsync(string id, DetalleReservaUpdateDto dto);
         Task ValidateDeleteAsync(string id);
     }
 
@@ -22,7 +22,7 @@ namespace HotelManagement.Aplicacion.Validators
             _context = context;
         }
 
-        public async Task ValidateCreateAsync(DetalleReservaCreateDTO dto)
+        public async Task ValidateCreateAsync(DetalleReservaCreateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 
@@ -67,7 +67,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ValidationException(errors);
         }
 
-        public async Task ValidateUpdateAsync(string id, DetalleReservaUpdateDTO dto)
+        public async Task ValidateUpdateAsync(string id, DetalleReservaUpdateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 
@@ -140,7 +140,7 @@ namespace HotelManagement.Aplicacion.Validators
                 errors[HabitacionIdField] = new List<string> { $"No existe una habitación con ID: {habitacionId}" };
             }
         }
-        private static void ValidateDates(DetalleReservaUpdateDTO dto, Dictionary<string, List<string>> errors)
+        private static void ValidateDates(DetalleReservaUpdateDto dto, Dictionary<string, List<string>> errors)
         {
             var entrada = dto.Fecha_Entrada;
             var salida = dto.Fecha_Salida;

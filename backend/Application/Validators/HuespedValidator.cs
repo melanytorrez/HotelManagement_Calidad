@@ -8,8 +8,8 @@ namespace HotelManagement.Aplicacion.Validators
 {
     public interface IHuespedValidator
     {
-        Task ValidateCreateAsync(HuespedCreateDTO dto);
-        Task ValidateUpdateAsync(string id, HuespedUpdateDTO dto);
+        Task ValidateCreateAsync(HuespedCreateDto dto);
+        Task ValidateUpdateAsync(string id, HuespedUpdateDto dto);
         Task ValidateDeleteAsync(string id);
     }
 
@@ -23,7 +23,7 @@ namespace HotelManagement.Aplicacion.Validators
             _context = context;
         }
 
-        public async Task ValidateCreateAsync(HuespedCreateDTO dto)
+        public async Task ValidateCreateAsync(HuespedCreateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 
@@ -41,7 +41,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ValidationException(errors);
         }
 
-        public async Task ValidateUpdateAsync(string id, HuespedUpdateDTO dto)
+        public async Task ValidateUpdateAsync(string id, HuespedUpdateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 

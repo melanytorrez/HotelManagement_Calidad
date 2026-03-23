@@ -26,7 +26,7 @@ namespace HotelManagement.Presentacion.Controllers
         {
             var habitaciones = await _context.Habitaciones
                 .Include(h => h.TipoHabitacion)
-                .Select(h => new HabitacionDTO
+                .Select(h => new HabitacionDto
                 {
                     ID = GuidToString(h.ID),
                     Numero_Habitacion = h.Numero_Habitacion,
@@ -69,7 +69,7 @@ namespace HotelManagement.Presentacion.Controllers
             if (habitacion == null)
                 return NotFound();
 
-            var result = new HabitacionDTO
+            var result = new HabitacionDto
             {
                 ID = GuidToString(habitacion.ID),
                 Numero_Habitacion = habitacion.Numero_Habitacion,
@@ -85,7 +85,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] HabitacionCreateDTO dto)
+        public async Task<IActionResult> Create([FromBody] HabitacionCreateDto dto)
         {
             if (!Guid.TryParse(dto.Tipo_Habitacion_ID, out var tipoGuid))
                 return BadRequest("Tipo_Habitacion_ID inválido.");
@@ -113,7 +113,7 @@ namespace HotelManagement.Presentacion.Controllers
 
             await _context.Entry(habitacion).Reference(h => h.TipoHabitacion).LoadAsync();
 
-            var result = new HabitacionDTO
+            var result = new HabitacionDto
             {
                 ID = GuidToString(habitacion.ID),
                 Numero_Habitacion = habitacion.Numero_Habitacion,
@@ -129,7 +129,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] HabitacionCreateDTO dto)
+        public async Task<IActionResult> Update(string id, [FromBody] HabitacionCreateDto dto)
         {
             if (!Guid.TryParse(id, out var guid))
                 return BadRequest("ID inválido.");
@@ -162,7 +162,7 @@ namespace HotelManagement.Presentacion.Controllers
             await _context.SaveChangesAsync();
             await _context.Entry(habitacion).Reference(h => h.TipoHabitacion).LoadAsync();
 
-            var result = new HabitacionDTO
+            var result = new HabitacionDto
             {
                 ID = GuidToString(habitacion.ID),
                 Numero_Habitacion = habitacion.Numero_Habitacion,
@@ -178,7 +178,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PartialUpdate(string id, [FromBody] HabitacionUpdateDTO dto)
+        public async Task<IActionResult> PartialUpdate(string id, [FromBody] HabitacionUpdateDto dto)
         {
             if (!Guid.TryParse(id, out var guid))
                 return BadRequest("ID inválido.");
@@ -221,7 +221,7 @@ namespace HotelManagement.Presentacion.Controllers
             await _context.SaveChangesAsync();
             await _context.Entry(habitacion).Reference(h => h.TipoHabitacion).LoadAsync();
 
-            var result = new HabitacionDTO
+            var result = new HabitacionDto
             {
                 ID = GuidToString(habitacion.ID),
                 Numero_Habitacion = habitacion.Numero_Habitacion,

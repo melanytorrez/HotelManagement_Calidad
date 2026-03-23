@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HotelManagement.DTOs
 {
-    public class DetalleReservaDTO
+    public class DetalleReservaDto
     {
         public string? ID { get; set; }
         public string Reserva_ID { get; set; } = string.Empty;
@@ -14,7 +14,7 @@ namespace HotelManagement.DTOs
         public string? Nombre_Huesped { get; set; }
     }
 
-    public class DetalleReservaCreateDTO
+    public class DetalleReservaCreateDto
     {
         [Required]
         public string Reserva_ID { get; set; } = string.Empty;
@@ -32,7 +32,7 @@ namespace HotelManagement.DTOs
         public DateTime? Fecha_Salida { get; set; }
     }
 
-    public class DetalleReservaUpdateDTO
+    public class DetalleReservaUpdateDto
     {
         public string? Habitacion_ID { get; set; }
         public string? Huesped_ID { get; set; }
@@ -41,17 +41,17 @@ namespace HotelManagement.DTOs
     }
 
     // DTO para crear múltiples detalles a la vez
-    public class DetalleReservaMultipleCreateDTO
+    public class DetalleReservaMultipleCreateDto
     {
         [Required]
         public string Reserva_ID { get; set; } = string.Empty;
 
         [Required]
         [MinLength(1, ErrorMessage = "Debe agregar al menos una habitación")]
-        public List<DetalleHabitacionDTO> Habitaciones { get; set; } = new();
+        public List<DetalleHabitacionDto> Habitaciones { get; set; } = new();
     }
 
-    public class DetalleHabitacionDTO
+    public class DetalleHabitacionDto
     {
         [Required]
         public string Habitacion_ID { get; set; } = string.Empty;

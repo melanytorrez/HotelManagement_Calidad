@@ -28,8 +28,8 @@ namespace HotelManagement.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<DetalleReservaDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DetalleReservaDTO>>> GetAll(
+        [ProducesResponseType(typeof(List<DetalleReservaDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<DetalleReservaDto>>> GetAll(
             [FromQuery] string? reserva_id = null,
             [FromQuery] string? habitacion_id = null,
             [FromQuery] string? huesped_id = null,
@@ -59,8 +59,8 @@ namespace HotelManagement.Controllers
         }
 
         [HttpGet("reserva/{reservaId}")]
-        [ProducesResponseType(typeof(List<DetalleReservaDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DetalleReservaDTO>>> GetByReservaId(string reservaId)
+        [ProducesResponseType(typeof(List<DetalleReservaDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<DetalleReservaDto>>> GetByReservaId(string reservaId)
         {
             _logger.LogInformation("Obteniendo detalles de reserva: {ReservaId}", reservaId);
             var detalles = await _service.GetByReservaIdAsync(reservaId);
@@ -68,9 +68,9 @@ namespace HotelManagement.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(DetalleReservaDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(DetalleReservaDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<DetalleReservaDTO>> Create([FromBody] DetalleReservaCreateDTO dto)
+        public async Task<ActionResult<DetalleReservaDto>> Create([FromBody] DetalleReservaCreateDto dto)
         {
             _logger.LogInformation("Creando nuevo detalle de reserva para habitación: {HabitacionId}", dto.Habitacion_ID);
             
@@ -120,16 +120,16 @@ namespace HotelManagement.Controllers
         /// Crea múltiples detalles de reserva (múltiples habitaciones con múltiples huéspedes)
         /// </summary>
         [HttpPost("multiple")]
-        [ProducesResponseType(typeof(List<DetalleReservaDTO>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(List<DetalleReservaDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<DetalleReservaDTO>>> CreateMultiple([FromBody] DetalleReservaMultipleCreateDTO dto)
+        public async Task<ActionResult<List<DetalleReservaDto>>> CreateMultiple([FromBody] DetalleReservaMultipleCreateDto dto)
         {
             _logger.LogInformation("Creando múltiples detalles para reserva: {ReservaId}", dto.Reserva_ID);
 
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                var detallesCreados = new List<DetalleReservaDTO>();
+                var detallesCreados = new List<DetalleReservaDto>();
                 var habitacionesIds = new HashSet<string>();
 
                 foreach (var habitacion in dto.Habitaciones)
@@ -138,7 +138,7 @@ namespace HotelManagement.Controllers
                     
                     foreach (var huespedId in habitacion.Huesped_IDs)
                     {
-                        var detalleDto = new DetalleReservaCreateDTO
+                        var detalleDto = new DetalleReservaCreateDto
                         {
                             Reserva_ID = dto.Reserva_ID,
                             Habitacion_ID = habitacion.Habitacion_ID,
@@ -189,10 +189,10 @@ namespace HotelManagement.Controllers
         }
 
         [HttpPatch("{id}")]
-        [ProducesResponseType(typeof(DetalleReservaDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DetalleReservaDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DetalleReservaDTO>> PartialUpdate(string id, [FromBody] DetalleReservaUpdateDTO dto)
+        public async Task<ActionResult<DetalleReservaDto>> PartialUpdate(string id, [FromBody] DetalleReservaUpdateDto dto)
         {
             _logger.LogInformation("Actualizando parcialmente detalle de reserva con ID: {Id}", id);
             var updated = await _service.UpdateAsync(id, dto);

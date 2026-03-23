@@ -19,13 +19,13 @@ namespace HotelManagement.Services
             _validator = validator;
         }
 
-        public async Task<List<DetalleReservaDTO>> GetAllAsync()
+        public async Task<List<DetalleReservaDto>> GetAllAsync()
         {
             var detalles = await _repository.GetAllAsync();
             return detalles.Select(MapToDTO).ToList();
         }
 
-        public async Task<DetalleReservaDTO> GetByIdAsync(string id)
+        public async Task<DetalleReservaDto> GetByIdAsync(string id)
         {
             var guidBytes = Guid.Parse(id).ToByteArray();
             var detalle = await _repository.GetByIdAsync(guidBytes);
@@ -36,7 +36,7 @@ namespace HotelManagement.Services
             return MapToDTO(detalle);
         }
 
-        public async Task<DetalleReservaDTO> CreateAsync(DetalleReservaCreateDTO dto)
+        public async Task<DetalleReservaDto> CreateAsync(DetalleReservaCreateDto dto)
         {
             await _validator.ValidateCreateAsync(dto);
 
@@ -54,7 +54,7 @@ namespace HotelManagement.Services
             return MapToDTO(created);
         }
 
-        public async Task<DetalleReservaDTO> UpdateAsync(string id, DetalleReservaUpdateDTO dto)
+        public async Task<DetalleReservaDto> UpdateAsync(string id, DetalleReservaUpdateDto dto)
         {
             await _validator.ValidateUpdateAsync(id, dto);
 
@@ -87,14 +87,14 @@ namespace HotelManagement.Services
             return await _repository.DeleteAsync(guidBytes);
         }
 
-        public async Task<List<DetalleReservaDTO>> GetByReservaIdAsync(string reservaId)
+        public async Task<List<DetalleReservaDto>> GetByReservaIdAsync(string reservaId)
         {
             var guidBytes = Guid.Parse(reservaId).ToByteArray();
             var detalles = await _repository.GetByReservaIdAsync(guidBytes);
             return detalles.Select(MapToDTO).ToList();
         }
 
-        private DetalleReservaDTO MapToDTO(DetalleReserva detalle)
+        private static DetalleReservaDto MapToDTO(DetalleReserva detalle)
         {
             string nombreHuesped = string.Empty;
             if (detalle.Huesped != null)
@@ -106,7 +106,7 @@ namespace HotelManagement.Services
                 }
             }
 
-            return new DetalleReservaDTO
+            return new DetalleReservaDto
             {
                 ID = ByteArrayToGuid(detalle.ID),
                 Reserva_ID = ByteArrayToGuid(detalle.Reserva_ID),
@@ -119,7 +119,7 @@ namespace HotelManagement.Services
             };
         }
 
-        private string ByteArrayToGuid(byte[] bytes)
+        private static string ByteArrayToGuid(byte[] bytes)
         {
             return new Guid(bytes).ToString();
         }

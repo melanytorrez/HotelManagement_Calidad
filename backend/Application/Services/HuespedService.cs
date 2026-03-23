@@ -18,13 +18,13 @@ namespace HotelManagement.Application.Services
             _validator = validator;
         }
 
-        public async Task<List<HuespedDTO>> GetAllAsync()
+        public async Task<List<HuespedDto>> GetAllAsync()
         {
             var huespedes = await _repository.GetAllAsync();
             return huespedes.Select(MapToDto).ToList();
         }
 
-        public async Task<HuespedDTO> GetByIdAsync(string id)
+        public async Task<HuespedDto> GetByIdAsync(string id)
         {
             if (!Guid.TryParse(id, out var guid))
             {
@@ -41,7 +41,7 @@ namespace HotelManagement.Application.Services
             return MapToDto(entity);
         }
 
-        public async Task<HuespedDTO> CreateAsync(HuespedCreateDTO dto)
+        public async Task<HuespedDto> CreateAsync(HuespedCreateDto dto)
         {
             await _validator.ValidateCreateAsync(dto);
 
@@ -63,7 +63,7 @@ namespace HotelManagement.Application.Services
             return MapToDto(created);
         }
 
-        public async Task<HuespedDTO> UpdateAsync(string id, HuespedUpdateDTO dto)
+        public async Task<HuespedDto> UpdateAsync(string id, HuespedUpdateDto dto)
         {
             await _validator.ValidateUpdateAsync(id, dto);
 
@@ -138,9 +138,9 @@ namespace HotelManagement.Application.Services
             throw new ValidationException("fecha_Nacimiento", "La Fecha de Nacimiento tiene un formato inválido.");
         }
 
-        private static HuespedDTO MapToDto(Huesped entity)
+        private static HuespedDto MapToDto(Huesped entity)
         {
-            return new HuespedDTO
+            return new HuespedDto
             {
                 ID = new Guid(entity.ID).ToString(),
                 Nombre = entity.Nombre,

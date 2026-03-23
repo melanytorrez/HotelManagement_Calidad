@@ -7,9 +7,9 @@ namespace HotelManagement.Aplicacion.Validators
 {
     public interface IHabitacionValidator
     {
-        Task ValidateCreateAsync(HabitacionCreateDTO dto);
-        Task ValidateUpdateAsync(string id, HabitacionCreateDTO dto);
-        Task ValidatePartialUpdateAsync(string id, HabitacionUpdateDTO dto);
+        Task ValidateCreateAsync(HabitacionCreateDto dto);
+        Task ValidateUpdateAsync(string id, HabitacionCreateDto dto);
+        Task ValidatePartialUpdateAsync(string id, HabitacionUpdateDto dto);
         Task ValidateDeleteAsync(string id);
     }
 
@@ -22,7 +22,7 @@ namespace HotelManagement.Aplicacion.Validators
             _context = context;
         }
 
-        public async Task ValidateCreateAsync(HabitacionCreateDTO dto)
+        public async Task ValidateCreateAsync(HabitacionCreateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 
@@ -35,7 +35,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ValidationException(errors);
         }
 
-        public async Task ValidateUpdateAsync(string id, HabitacionCreateDTO dto)
+        public async Task ValidateUpdateAsync(string id, HabitacionCreateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 
@@ -60,7 +60,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ValidationException(errors);
         }
 
-        public async Task ValidatePartialUpdateAsync(string id, HabitacionUpdateDTO dto)
+        public async Task ValidatePartialUpdateAsync(string id, HabitacionUpdateDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 

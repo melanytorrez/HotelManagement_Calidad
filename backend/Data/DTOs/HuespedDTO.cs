@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HotelManagement.DTOs
 {
-    public class HuespedDTO
+    public class HuespedDto
     {
         public string ID { get; set; } = string.Empty;
         public string Nombre { get; set; } = string.Empty;
@@ -19,7 +19,7 @@ namespace HotelManagement.DTOs
             (string.IsNullOrWhiteSpace(Segundo_Apellido) ? "" : $" {Segundo_Apellido}");
     }
 
-    public class HuespedCreateDTO
+    public class HuespedCreateDto
     {
         [Required]
         [StringLength(30)]
@@ -43,7 +43,7 @@ namespace HotelManagement.DTOs
         public string? Fecha_Nacimiento { get; set; }
     }
 
-    public class HuespedUpdateDTO
+    public class HuespedUpdateDto
     {
         [StringLength(30)]
         public string? Nombre { get; set; }

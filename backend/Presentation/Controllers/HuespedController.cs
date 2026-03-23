@@ -34,7 +34,7 @@ namespace HotelManagement.Presentacion.Controllers
             [FromQuery] bool? activo = null)
         {
             var huespedes = await _context.Huespedes
-                .Select(h => new HuespedDTO
+                .Select(h => new HuespedDto
                 {
                     ID = GuidToString(h.ID),
                     Nombre = h.Nombre,
@@ -67,7 +67,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<HuespedDTO>> GetById(string id)
+        public async Task<ActionResult<HuespedDto>> GetById(string id)
         {
             if (!Guid.TryParse(id, out var guid))
                 return BadRequest("ID inválido.");
@@ -79,7 +79,7 @@ namespace HotelManagement.Presentacion.Controllers
             if (huesped == null)
                 return NotFound();
 
-            return Ok(new HuespedDTO
+            return Ok(new HuespedDto
             {
                 ID = GuidToString(huesped.ID),
                 Nombre = huesped.Nombre,
@@ -93,7 +93,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<HuespedDTO>> Create([FromBody] HuespedCreateDTO dto)
+        public async Task<ActionResult<HuespedDto>> Create([FromBody] HuespedCreateDto dto)
         {
             _logger.LogInformation("POST /api/Huesped - Creando nuevo huésped");
             _logger.LogInformation("Datos recibidos: Nombre={Nombre}, Apellido={Apellido}, Documento={Documento}", 
@@ -128,7 +128,7 @@ namespace HotelManagement.Presentacion.Controllers
             
             _logger.LogInformation("Huésped creado exitosamente con ID: {ID}", GuidToString(huesped.ID));
 
-            var result = new HuespedDTO
+            var result = new HuespedDto
             {
                 ID = GuidToString(huesped.ID),
                 Nombre = huesped.Nombre,
@@ -144,7 +144,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<HuespedDTO>> Update(string id, [FromBody] HuespedUpdateDTO dto)
+        public async Task<ActionResult<HuespedDto>> Update(string id, [FromBody] HuespedUpdateDto dto)
         {
             _logger.LogInformation("🟡 PUT /api/Huesped/{ID} - Actualizando huésped", id);
 
@@ -183,7 +183,7 @@ namespace HotelManagement.Presentacion.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new HuespedDTO
+            return Ok(new HuespedDto
             {
                 ID = GuidToString(huesped.ID),
                 Nombre = huesped.Nombre,
@@ -197,7 +197,7 @@ namespace HotelManagement.Presentacion.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<HuespedDTO>> PartialUpdate(string id, [FromBody] HuespedUpdateDTO dto)
+        public async Task<ActionResult<HuespedDto>> PartialUpdate(string id, [FromBody] HuespedUpdateDto dto)
         {
             _logger.LogInformation("PATCH /api/Huesped/{ID} - Actualización parcial", id);
 
@@ -243,7 +243,7 @@ namespace HotelManagement.Presentacion.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new HuespedDTO
+            return Ok(new HuespedDto
             {
                 ID = GuidToString(huesped.ID),
                 Nombre = huesped.Nombre,

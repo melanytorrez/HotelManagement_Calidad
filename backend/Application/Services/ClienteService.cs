@@ -104,7 +104,7 @@ namespace HotelManagement.Services
             return await _repository.DeleteAsync(guidBytes);
         }
 
-        private ClienteDTO MapToDTO(Cliente cliente)
+        private static ClienteDTO MapToDTO(Cliente cliente)
         {
             return new ClienteDTO
             {
@@ -116,6 +116,6 @@ namespace HotelManagement.Services
             };
         }
 
-        private string ByteArrayToGuid(byte[] bytes) => new Guid(bytes).ToString();
+        private static string ByteArrayToGuid(byte[] bytes) => new Guid(bytes).ToString();
     }
 }
