@@ -46,7 +46,7 @@ namespace HotelManagement.Aplicacion.Validators
             await ValidateNitAsync(dto.NIT, errors, guidBytes);
             await ValidateEmailAsync(dto.Email, errors, guidBytes);
 
-            if (errors.Any())
+            if (errors.Count > 0)
                 throw new ValidationException(errors);
         }
 
