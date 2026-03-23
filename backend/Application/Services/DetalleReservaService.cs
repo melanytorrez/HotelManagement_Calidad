@@ -46,8 +46,8 @@ namespace HotelManagement.Services
                 Reserva_ID = Guid.Parse(dto.Reserva_ID).ToByteArray(),
                 Habitacion_ID = Guid.Parse(dto.Habitacion_ID).ToByteArray(),
                 Huesped_ID = Guid.Parse(dto.Huesped_ID).ToByteArray(),
-                Fecha_Entrada = dto.Fecha_Entrada.Value,
-                Fecha_Salida = dto.Fecha_Salida.Value
+                Fecha_Entrada = dto.Fecha_Entrada!.Value,
+                Fecha_Salida = dto.Fecha_Salida!.Value
             };
 
             var created = await _repository.CreateAsync(detalle);
