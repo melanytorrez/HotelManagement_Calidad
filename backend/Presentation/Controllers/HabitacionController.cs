@@ -102,7 +102,7 @@ namespace HotelManagement.Presentacion.Controllers
                 ID = Guid.NewGuid().ToByteArray(),
                 Tipo_Habitacion_ID = tipoBytes,
                 Numero_Habitacion = dto.Numero_Habitacion,
-                Piso = dto.Piso.Value,
+                Piso = dto.Piso!.Value,
                 Estado_Habitacion = dto.Estado_Habitacion,
                 Fecha_Creacion = DateTime.Now,
                 Usuario_Creacion_ID = null
@@ -154,7 +154,7 @@ namespace HotelManagement.Presentacion.Controllers
 
             habitacion.Tipo_Habitacion_ID = tipoBytes;
             habitacion.Numero_Habitacion = dto.Numero_Habitacion;
-            habitacion.Piso = dto.Piso.Value;
+            habitacion.Piso = dto.Piso!.Value;
             habitacion.Estado_Habitacion = dto.Estado_Habitacion;
             habitacion.Fecha_Actualizacion = DateTime.Now;
             habitacion.Usuario_Actualizacion_ID = null;
