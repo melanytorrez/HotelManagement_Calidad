@@ -32,8 +32,8 @@
     </div>
 
     <div class="filter-controls">
-      <label class="filter-label">Estado:</label>
-      <select [(ngModel)]="estadoSeleccionado" (change)="filtrarReservas()" class="filter-select">
+      <label class="filter-label" for="reservas-estado-filter">Estado:</label>
+      <select id="reservas-estado-filter" [(ngModel)]="estadoSeleccionado" (change)="filtrarReservas()" class="filter-select">
         <option value="">Todos</option>
         <option *ngFor="let estado of estadosDisponibles" [value]="estado">
           {{ estado }}

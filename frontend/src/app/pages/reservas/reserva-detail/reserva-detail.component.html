@@ -33,22 +33,22 @@
 
         <div class="reservation-dates-total">
           <div class="date-item">
-            <label>Entrada</label>
-            <div class="date-value">
+            <label for="reserva-fecha-entrada">Entrada</label>
+            <output id="reserva-fecha-entrada" class="date-value">
               {{ h.fechaEntrada | date:'dd/MM/yyyy' }}
-            </div>
+            </output>
           </div>
           <div class="date-item">
-            <label>Salida</label>
-            <div class="date-value">
+            <label for="reserva-fecha-salida">Salida</label>
+            <output id="reserva-fecha-salida" class="date-value">
               {{ h.fechaSalida | date:'dd/MM/yyyy' }}
-            </div>
+            </output>
           </div>
           <div class="total-item">
-            <label>Total de la Reserva</label>
-            <div class="total-value">
+            <label for="reserva-total">Total de la Reserva</label>
+            <output id="reserva-total" class="total-value">
               {{ total() | number:'1.2-2' }}
-            </div>
+            </output>
           </div>
         </div>
       </div>
