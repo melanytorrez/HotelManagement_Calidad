@@ -132,7 +132,7 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
 }
 
 
-  private _syncSeleccionConDisponibilidad = effect(() => {
+  private readonly _syncSeleccionConDisponibilidad = effect(() => {
     const libres = this.habitacionesLibres();
     const idsLibres = new Set(libres.map(h => h.id));
     for (const fg of this.habitacionesFormArray.controls) {
@@ -238,7 +238,7 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
       if (habitacionId && fechaEntrada && fechaSalida) {
         const habitacion = this.habitaciones().find(h => h.id === habitacionId);
         
-        if (habitacion && habitacion.tarifaBase) {
+        if (habitacion?.tarifaBase) {
           const dias = this.calcularDias(fechaEntrada, fechaSalida);
           const subtotal = habitacion.tarifaBase * dias;
           montoTotal += subtotal;
