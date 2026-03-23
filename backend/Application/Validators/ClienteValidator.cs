@@ -78,7 +78,7 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ValidationException(errors);
         }
 
-        private void ValidateRazonSocial(string? razonSocial, Dictionary<string, List<string>> errors)
+        private static void ValidateRazonSocial(string? razonSocial, Dictionary<string, List<string>> errors)
         {
             if (string.IsNullOrWhiteSpace(razonSocial))
             {
@@ -177,13 +177,13 @@ namespace HotelManagement.Aplicacion.Validators
                 throw new ConflictException("No se puede eliminar el cliente porque tiene reservas asociadas", "id");
         }
 
-        private bool IsValidUuid(string value) => Guid.TryParse(value, out _);
+        private static bool IsValidUuid(string value) => Guid.TryParse(value, out _);
 
-        private bool IsValidEmail(string email)
+        private static bool IsValidEmail(string email)
         {
             return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, timeout);
         }
 
-        private byte[] ConvertToGuid(string uuid) => Guid.Parse(uuid).ToByteArray();
+        private static byte[] ConvertToGuid(string uuid) => Guid.Parse(uuid).ToByteArray();
     }
 }

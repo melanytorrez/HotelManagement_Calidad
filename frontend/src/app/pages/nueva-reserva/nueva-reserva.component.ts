@@ -64,8 +64,8 @@ export class NuevaReservaComponent implements OnInit {
   habitacionSearchTerm: string[] = [];
   showHabitacionSug: boolean[] = [];
 
-  private norm3 = (v: unknown) =>
-  (v ?? '').toString().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  private norm3 = (v: string | number | null | undefined) =>
+  String(v ?? '').toLowerCase().normalize('NFD').replaceAll(/\p{Diacritic}/gu, '');
 
 
   estadosReserva = ['Pendiente', 'Confirmada', 'Cancelada'];
@@ -120,7 +120,7 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
   // Obtener IDs seleccionados en otros grupos
   const seleccionadas = new Set(
     this.habitacionesFormArray.controls
-      .map((fg, i) => i !== indexActual ? fg.get('habitacionId')?.value : null)
+      .map((fg, i) => i == indexActual ? null : fg.get('habitacionId')?.value)
       .filter(id => !!id)
   );
 
@@ -248,14 +248,13 @@ habitacionesLibres = computed<HabitacionOption[]>(() => {
     this.form.patchValue({ montoTotal }, { emitEvent: false });
   }
 
-  private norm = (v: unknown) =>
-    (v ?? '')
-      .toString()
+  private norm = (v: string | number | null | undefined) =>
+    String(v ?? '')
       .toLowerCase()
       .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '');
+      .replaceAll(/\p{Diacritic}/gu, '');
 
-  private digits = (v: unknown) => (v ?? '').toString().replace(/\D+/g, '');
+  private digits = (v: string | number | null | undefined) => String(v ?? '').replaceAll(/\D+/g, '');
 
   filteredClientes = computed<ClienteOption[]>(() => {
     const termRaw = this.searchTerm().trim();

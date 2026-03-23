@@ -21,9 +21,9 @@ interface TipoHabitacion {
   styleUrls: ['./nueva-habitacion.component.scss']
 })
 export class NuevaHabitacionComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private http = inject(HttpClient);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
   form!: FormGroup;
   tiposHabitacion = signal<TipoHabitacion[]>([]);
