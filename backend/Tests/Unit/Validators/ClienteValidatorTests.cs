@@ -23,10 +23,6 @@ namespace HotelManagement.Tests.Unit.Validators
             _validator = new ClienteValidator(_context);
         }
 
-        // ─────────────────────────────────────────────────────────────
-        // HELPERS
-        // ─────────────────────────────────────────────────────────────
-
         private async Task<Cliente> SeedClienteAsync(
             string razonSocial = "HOTEL TEST",
             string nit = "12345678",
@@ -53,9 +49,7 @@ namespace HotelManagement.Tests.Unit.Validators
             string email = "test@hotel.com")
             => new() { Razon_Social = razonSocial, NIT = nit, Email = email };
 
-        // ─────────────────────────────────────────────────────────────
         // ValidateCreateAsync — HAPPY PATH
-        // ─────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task ValidateCreateAsync_DatosValidos_NoLanzaExcepcion()
@@ -81,9 +75,7 @@ namespace HotelManagement.Tests.Unit.Validators
             Assert.Null(exception);
         }
 
-        // ─────────────────────────────────────────────────────────────
-        // ValidateCreateAsync — RAZON SOCIAL
-        // ─────────────────────────────────────────────────────────────
+        // ValidateCreateAsync
 
         [Fact]
         public async Task ValidateCreateAsync_RazonSocialVacia_LanzaValidationException()
@@ -131,9 +123,7 @@ namespace HotelManagement.Tests.Unit.Validators
             Assert.Null(exception);
         }
 
-        // ─────────────────────────────────────────────────────────────
         // ValidateCreateAsync — NIT
-        // ─────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task ValidateCreateAsync_NitVacio_LanzaValidationException()
@@ -185,9 +175,7 @@ namespace HotelManagement.Tests.Unit.Validators
             Assert.Contains("99887766", ex.Errors["nit"].First());
         }
 
-        // ─────────────────────────────────────────────────────────────
         // ValidateCreateAsync — EMAIL
-        // ─────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task ValidateCreateAsync_EmailVacio_LanzaValidationException()
@@ -221,7 +209,6 @@ namespace HotelManagement.Tests.Unit.Validators
         [Fact]
         public async Task ValidateCreateAsync_EmailMayorA30Chars_LanzaValidationException()
         {
-            // 31 chars exactos
             var dto = ValidCreateDto(email: "abcdefghijklmno@dominiotest.ext");
             var ex = await Assert.ThrowsAsync<ValidationException>(
                 () => _validator.ValidateCreateAsync(dto));
@@ -245,9 +232,9 @@ namespace HotelManagement.Tests.Unit.Validators
         {
             var dto = new ClienteCreateDTO
             {
-                Razon_Social = "",   // error razon_Social
-                NIT = "ABC",         // error nit (letras + menos de 7)
-                Email = ""           // error email
+                Razon_Social = "",   
+                NIT = "ABC",         
+                Email = ""           
             };
             var ex = await Assert.ThrowsAsync<ValidationException>(
                 () => _validator.ValidateCreateAsync(dto));
@@ -256,9 +243,8 @@ namespace HotelManagement.Tests.Unit.Validators
             Assert.True(ex.Errors.ContainsKey("email"));
         }
 
-        // ─────────────────────────────────────────────────────────────
         // ValidateUpdateAsync
-        // ─────────────────────────────────────────────────────────────
+
 
         [Fact]
         public async Task ValidateUpdateAsync_GuidInvalido_LanzaValidationException()
@@ -326,9 +312,7 @@ namespace HotelManagement.Tests.Unit.Validators
             Assert.True(ex.Errors.ContainsKey("nit"));
         }
 
-        // ─────────────────────────────────────────────────────────────
         // ValidatePartialUpdateAsync
-        // ─────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task ValidatePartialUpdateAsync_GuidInvalido_LanzaValidationException()
@@ -374,15 +358,13 @@ namespace HotelManagement.Tests.Unit.Validators
         {
             var cliente = await SeedClienteAsync();
             var id = new Guid(cliente.ID).ToString();
-            var dto = new ClienteUpdateDTO { Razon_Social = "AB" }; // muy corta
+            var dto = new ClienteUpdateDTO { Razon_Social = "AB" }; 
             var ex = await Assert.ThrowsAsync<ValidationException>(
                 () => _validator.ValidatePartialUpdateAsync(id, dto));
             Assert.True(ex.Errors.ContainsKey("razon_Social"));
         }
 
-        // ─────────────────────────────────────────────────────────────
         // ValidateDeleteAsync
-        // ─────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task ValidateDeleteAsync_GuidInvalido_LanzaBadRequestException()
