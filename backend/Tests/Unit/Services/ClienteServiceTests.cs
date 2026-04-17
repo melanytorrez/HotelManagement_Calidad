@@ -44,6 +44,16 @@ namespace HotelManagement.Tests.Unit.Services
             Assert.Single(result);
             Assert.Equal("A", result[0].Razon_Social);
         }
+        [Fact]
+        public async Task GetAllAsync_EmptyList_ReturnsEmptyList()
+        {
+            _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Cliente>());
+
+            var result = await _service.GetAllAsync();
+
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
 
         #endregion
 
@@ -130,6 +140,47 @@ namespace HotelManagement.Tests.Unit.Services
 
             Assert.NotNull(result);
             Assert.Equal("Test", result.Razon_Social);
+        }
+
+        #endregion
+
+        #region Pruebas de PartialUpdateAsync 
+
+        [Fact]
+        public async Task PartialUpdateAsync_Path1_ValidationFails_ThrowsValidationException()
+        {
+            var id = Guid.NewGuid().ToString();
+            var dto = new ClienteUpdateDTO();
+            
+            var errores = new Dictionary<string, List<string>> {
+                { "Propiedad", new List<string> { "Error de validación parcial" } }
+            };
+
+            _validatorMock.Setup(v => v.ValidatePartialUpdateAsync(id, dto))
+                          .ThrowsAsync(new ValidationException(errores));
+
+            await Assert.ThrowsAsync<ValidationException>(() => 
+                _service.PartialUpdateAsync(id, dto));
+        }
+
+        [Fact]
+        public async Task PartialUpdateAsync_Path2_Success_ReturnsDTO()
+        {
+            var guid = Guid.NewGuid();
+            var idString = guid.ToString();
+            var dto = new ClienteUpdateDTO { Razon_Social = "ACTUALIZACION PARCIAL" };
+            
+            var clienteEnBD = new Cliente { ID = guid.ToByteArray(), Razon_Social = "VIEJO NOMBRE" };
+
+            _validatorMock.Setup(v => v.ValidatePartialUpdateAsync(idString, dto))
+                          .Returns(Task.CompletedTask);
+            
+            _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<byte[]>())).ReturnsAsync(clienteEnBD);
+            _repoMock.Setup(r => r.UpdateAsync(It.IsAny<Cliente>())).ReturnsAsync(clienteEnBD);
+        
+            var result = await _service.PartialUpdateAsync(idString, dto);
+            Assert.NotNull(result);
+            Assert.Equal("ACTUALIZACION PARCIAL", result.Razon_Social);
         }
 
         #endregion
