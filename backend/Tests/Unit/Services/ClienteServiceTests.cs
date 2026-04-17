@@ -24,9 +24,8 @@ namespace HotelManagement.Tests.Unit.Services
             
             _service = new ClienteService(_repoMock.Object, _validatorMock.Object);
         }
-        #region Pruebas de CreateAsync (Complejidad M=2)
+        #region Pruebas de CreateAsync 
 
-        // CAMINO 1 (Flecha True del Grafo): La validación falla
         [Fact]
         public async Task CreateAsync_Path1_ValidationFails_ThrowsValidationException()
         {
@@ -73,6 +72,41 @@ namespace HotelManagement.Tests.Unit.Services
             Assert.True(result.Activo);
             
             _repoMock.Verify(r => r.CreateAsync(It.IsAny<Cliente>()), Times.Once);
+        }
+
+        #endregion
+
+        #region Pruebas de GetByIdAsync 
+
+        [Fact]
+        public async Task GetByIdAsync_Path1_InvalidGuid_ThrowsBadRequestException()
+        {
+            await Assert.ThrowsAsync<BadRequestException>(() => 
+                _service.GetByIdAsync("formato-incorrecto"));
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Path2_ClientNotFound_ThrowsNotFoundException()
+        {
+            var guid = Guid.NewGuid().ToString();
+            _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<byte[]>()))
+                     .ReturnsAsync((Cliente)null!);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => 
+                _service.GetByIdAsync(guid));
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Path3_Success_ReturnsDTO()
+        {
+            var guid = Guid.NewGuid();
+            var cliente = new Cliente { ID = guid.ToByteArray(), Razon_Social = "Test" };
+            _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<byte[]>())).ReturnsAsync(cliente);
+
+            var result = await _service.GetByIdAsync(guid.ToString());
+
+            Assert.NotNull(result);
+            Assert.Equal("Test", result.Razon_Social);
         }
 
         #endregion
