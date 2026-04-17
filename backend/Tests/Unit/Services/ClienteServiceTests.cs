@@ -210,5 +210,40 @@ namespace HotelManagement.Tests.Unit.Services
         }
 
         #endregion
+
+        #region Pruebas de DeleteAsync 
+
+        [Fact]
+        public async Task DeleteAsync_Path1_ValidationFails_ThrowsValidationException()
+        {
+            var id = Guid.NewGuid().ToString();
+            var errores = new Dictionary<string, List<string>> {
+                { "Eliminación", new List<string> { "El cliente tiene facturas pendientes." } }
+            };
+
+            _validatorMock.Setup(v => v.ValidateDeleteAsync(id))
+                          .ThrowsAsync(new ValidationException(errores));
+
+            await Assert.ThrowsAsync<ValidationException>(() => 
+                _service.DeleteAsync(id));
+            
+            _repoMock.Verify(r => r.DeleteAsync(It.IsAny<byte[]>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_Path2_Success_ReturnsTrue()
+        {
+            // Camino 2: Eliminación exitosa
+            var id = Guid.NewGuid().ToString();
+            _validatorMock.Setup(v => v.ValidateDeleteAsync(id)).Returns(Task.CompletedTask);
+            _repoMock.Setup(r => r.DeleteAsync(It.IsAny<byte[]>())).ReturnsAsync(true);
+
+            var result = await _service.DeleteAsync(id);
+
+            Assert.True(result);
+            _repoMock.Verify(r => r.DeleteAsync(It.IsAny<byte[]>()), Times.Once);
+        }
+
+        #endregion
     }
 }
