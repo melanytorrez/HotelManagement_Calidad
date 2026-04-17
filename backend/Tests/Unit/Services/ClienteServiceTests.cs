@@ -24,6 +24,29 @@ namespace HotelManagement.Tests.Unit.Services
             
             _service = new ClienteService(_repoMock.Object, _validatorMock.Object);
         }
+
+        #region Pruebas de GetAllAsync (M=1)
+
+        [Fact]
+        public async Task GetAllAsync_ReturnsMappedList()
+        {
+            var lista = new List<Cliente> { 
+                new Cliente { 
+                    ID = Guid.NewGuid().ToByteArray(), 
+                    Razon_Social = "A" 
+                } 
+            };
+            
+            _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(lista);
+
+            var result = await _service.GetAllAsync();
+
+            Assert.Single(result);
+            Assert.Equal("A", result[0].Razon_Social);
+        }
+
+        #endregion
+
         #region Pruebas de CreateAsync 
 
         [Fact]
