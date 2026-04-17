@@ -19,17 +19,66 @@ namespace HotelManagement.Tests.Unit.Services
 
         public ClienteServiceTests()
         {
-            // Paso 1: Infraestructura de Mocks
             _repoMock = new Mock<IClienteRepository>();
             _validatorMock = new Mock<IClienteValidator>();
             
-            // Inyección de dependencias mockeadas en el servicio
             _service = new ClienteService(_repoMock.Object, _validatorMock.Object);
         }
+        #region Pruebas de CreateAsync (Complejidad M=2)
+
+        // CAMINO 1 (Flecha True del Grafo): La validación falla
+        [Fact]
+        public async Task CreateAsync_Path1_ValidationFails_ThrowsValidationException()
+        {
+            var dto = new ClienteCreateDTO();
+            
+            var erroresSimulados = new Dictionary<string, List<string>>
+            {
+                { "Razon_Social", new List<string> { "La Razón Social es obligatoria." } }
+            };
+
+            _validatorMock.Setup(v => v.ValidateCreateAsync(dto))
+                        .ThrowsAsync(new ValidationException(erroresSimulados));
+
+            await Assert.ThrowsAsync<ValidationException>(() => 
+                _service.CreateAsync(dto));
+            
+            _repoMock.Verify(r => r.CreateAsync(It.IsAny<Cliente>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task CreateAsync_Path2_ValidData_CreatesAndReturnsDTO()
+        {
+            var dto = new ClienteCreateDTO { 
+                Razon_Social = "HOTEL TEST S.A.", 
+                NIT = "987654321"
+            };
+            
+            var cliente = new Cliente { 
+                ID = Guid.NewGuid().ToByteArray(), 
+                Razon_Social = "HOTEL TEST S.A.",
+                Activo = true
+            };
+            
+            _validatorMock.Setup(v => v.ValidateCreateAsync(dto))
+                        .Returns(Task.CompletedTask);
+            
+            _repoMock.Setup(r => r.CreateAsync(It.IsAny<Cliente>()))
+                    .ReturnsAsync(cliente);
+
+            var result = await _service.CreateAsync(dto);
+
+            Assert.NotNull(result);
+            Assert.Equal("HOTEL TEST S.A.", result.Razon_Social);
+            Assert.True(result.Activo);
+            
+            _repoMock.Verify(r => r.CreateAsync(It.IsAny<Cliente>()), Times.Once);
+        }
+
+        #endregion
 
         #region Pruebas de ApplyUpdateAsync
 
-        // CAMINO 1: client == null -> True (Lanza excepción)
         [Fact]
         public async Task ApplyUpdateAsync_Path1_ClientNotFound_ThrowsNotFoundException()
         {
@@ -41,7 +90,6 @@ namespace HotelManagement.Tests.Unit.Services
                 _service.UpdateAsync(id, new ClienteUpdateDTO()));
         }
 
-        // CAMINO 2: client != null -> Todos los campos con valor (True)
         [Fact]
         public async Task ApplyUpdateAsync_Path2_FullUpdate_Success()
         {
@@ -64,7 +112,6 @@ namespace HotelManagement.Tests.Unit.Services
             Assert.False(cliente.Activo);
         }
 
-        // CAMINO 3: client != null -> Solo Razon_Social tiene valor
         [Fact]
         public async Task ApplyUpdateAsync_Path3_OnlyRazonSocial()
         {
@@ -81,7 +128,6 @@ namespace HotelManagement.Tests.Unit.Services
             Assert.Equal("77777", cliente.NIT);
         }
 
-        // CAMINO 4: client != null -> Solo NIT tiene valor
         [Fact]
         public async Task ApplyUpdateAsync_Path4_OnlyNIT()
         {
@@ -98,7 +144,6 @@ namespace HotelManagement.Tests.Unit.Services
             Assert.Equal("888888", cliente.NIT);
         }
 
-        // CAMINO 5: client != null -> Solo Email tiene valor
         [Fact]
         public async Task ApplyUpdateAsync_Path5_OnlyEmail()
         {
@@ -115,7 +160,6 @@ namespace HotelManagement.Tests.Unit.Services
             Assert.Equal("nuevo@email.com", cliente.Email);
         }
 
-        // CAMINO 6: client != null -> Solo Activo tiene valor
         [Fact]
         public async Task ApplyUpdateAsync_Path6_OnlyActivoState()
         {
