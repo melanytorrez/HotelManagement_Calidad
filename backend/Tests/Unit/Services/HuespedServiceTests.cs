@@ -300,5 +300,21 @@ namespace HotelManagement.Tests.Unit.Services
         }
 
         #endregion
+
+        #region Pruebas de Métodos de Soporte (ParseNullableDate)
+
+        [Fact]
+        public async Task CreateAsync_NullDate_ReturnsNullWithoutExploding()
+        {
+            var dto = new HuespedCreateDto { Nombre = "Luis", Fecha_Nacimiento = "  " };
+            _validatorMock.Setup(v => v.ValidateCreateAsync(dto)).Returns(Task.CompletedTask);
+            _repoMock.Setup(r => r.CreateAsync(It.IsAny<Huesped>())).ReturnsAsync(new Huesped { ID = Guid.NewGuid().ToByteArray() });
+
+            var result = await _service.CreateAsync(dto);
+
+            Assert.Null(result.Fecha_Nacimiento);
+        }
+
+        #endregion
     }
 }
