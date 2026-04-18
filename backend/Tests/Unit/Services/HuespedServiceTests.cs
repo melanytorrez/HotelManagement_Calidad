@@ -67,6 +67,56 @@ namespace HotelManagement.Tests.Unit.Services
 
         #endregion
 
+        #region Pruebas de CreateAsync
+        [Fact]
+        public async Task CreateAsync_Path1_BusinessValidationFails_ThrowsException()
+        {
+            var dto = new HuespedCreateDto { Nombre = "Test" };
+            _validatorMock.Setup(v => v.ValidateCreateAsync(dto))
+                          .ThrowsAsync(new ValidationException(new Dictionary<string, List<string>> { { "Documento", new List<string> { "Duplicado" } } }));
+
+            await Assert.ThrowsAsync<ValidationException>(() => _service.CreateAsync(dto));
+            _repoMock.Verify(r => r.CreateAsync(It.IsAny<Huesped>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task CreateAsync_Path2_InvalidDate_ThrowsValidationException()
+        {
+            var dto = new HuespedCreateDto { 
+                Nombre = "Luis", 
+                Fecha_Nacimiento = "fecha-invalida" 
+            };
+            _validatorMock.Setup(v => v.ValidateCreateAsync(dto)).Returns(Task.CompletedTask);
+
+            await Assert.ThrowsAsync<ValidationException>(() => _service.CreateAsync(dto));
+        }
+
+        [Fact]
+        public async Task CreateAsync_Path3_Success_ReturnsHuespedDto()
+        {
+            // Arrange
+            var dto = new HuespedCreateDto { 
+                Nombre = "Luis", 
+                Apellido = "Sosa",
+                Fecha_Nacimiento = "1995-05-20"
+            };
+            var entityCreada = new Huesped { 
+                ID = Guid.NewGuid().ToByteArray(), 
+                Nombre = "Luis" 
+            };
+
+            _validatorMock.Setup(v => v.ValidateCreateAsync(dto)).Returns(Task.CompletedTask);
+            _repoMock.Setup(r => r.CreateAsync(It.IsAny<Huesped>())).ReturnsAsync(entityCreada);
+
+            var result = await _service.CreateAsync(dto);
+
+            Assert.NotNull(result);
+            Assert.Equal("Luis", result.Nombre);
+            _repoMock.Verify(r => r.CreateAsync(It.Is<Huesped>(h => h.Activo == true)), Times.Once);
+        }
+
+        #endregion
+
         #region Pruebas de UpdateAsync
 
         [Fact]
