@@ -22,6 +22,51 @@ namespace HotelManagement.Tests.Unit.Services
             _service = new HuespedService(_repoMock.Object, _validatorMock.Object);
         }
 
+        #region Pruebas de GetByIdAsync
+
+        [Fact]
+        public async Task GetByIdAsync_Path1_InvalidGuidFormat_ThrowsBadRequestException()
+        {
+            var ex = await Assert.ThrowsAsync<BadRequestException>(() => 
+                _service.GetByIdAsync("esto-no-es-un-guid"));
+            
+            Assert.Equal("id", ex.Field);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Path2_HuespedNotFound_ThrowsNotFoundException()
+        {
+            var guid = Guid.NewGuid().ToString();
+            _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<byte[]>()))
+                     .ReturnsAsync((Huesped)null!);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => 
+                _service.GetByIdAsync(guid));
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Path3_Success_ReturnsHuespedDto()
+        {
+            var guid = Guid.NewGuid();
+            var entity = new Huesped 
+            { 
+                ID = guid.ToByteArray(), 
+                Nombre = "Test", 
+                Apellido = "Huesped" 
+            };
+
+            _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<byte[]>()))
+                     .ReturnsAsync(entity);
+
+            var result = await _service.GetByIdAsync(guid.ToString());
+
+            Assert.NotNull(result);
+            Assert.Equal("Test", result.Nombre);
+            Assert.Equal(guid.ToString(), result.ID);
+        }
+
+        #endregion
+
         #region Pruebas de UpdateAsync
 
         [Fact]
