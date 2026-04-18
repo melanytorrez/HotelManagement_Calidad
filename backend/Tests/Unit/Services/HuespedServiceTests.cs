@@ -22,6 +22,28 @@ namespace HotelManagement.Tests.Unit.Services
             _service = new HuespedService(_repoMock.Object, _validatorMock.Object);
         }
 
+        #region Pruebas de GetAllAsync 
+
+        [Fact]
+        public async Task GetAllAsync_Path1_ReturnsMappedList()
+        {
+            // Arrange
+            var lista = new List<Huesped> 
+            { 
+                new Huesped { ID = Guid.NewGuid().ToByteArray(), Nombre = "Huesped 1" },
+                new Huesped { ID = Guid.NewGuid().ToByteArray(), Nombre = "Huesped 2" }
+            };
+            _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(lista);
+
+            // Act
+            var result = await _service.GetAllAsync();
+
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Equal("Huesped 1", result[0].Nombre);
+        }
+
+        #endregion
         #region Pruebas de GetByIdAsync
 
         [Fact]
